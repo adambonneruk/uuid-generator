@@ -1,13 +1,18 @@
 import uuid
 import sys
 
-def print_uuid(version,namespace,namespace_value):
+def print_uuid(version,urnFlag,namespace,namespace_value):
+
+	if urnFlag:
+		urnString = "urn:uuid:"
+	else:
+		urnString = ""
 
 	if version == 0:
-		print("00000000-0000-0000-0000-000000000000")
+		print(urnString + "00000000-0000-0000-0000-000000000000")
 
 	elif version == 1:
-		print(uuid.uuid1())
+		print(urnString + str(uuid.uuid1()))
 
 	elif version == 3:
 		if namespace == "dns":
@@ -22,7 +27,7 @@ def print_uuid(version,namespace,namespace_value):
 			print("error - uuid v3 - namespace")
 
 	elif version == 4:
-		print(uuid.uuid4())
+		print(urnString + str(uuid.uuid4()))
 
 	elif version == 5:
 		if namespace == "dns":
@@ -39,10 +44,10 @@ def print_uuid(version,namespace,namespace_value):
 	else:
 		print("error - uuid version")
 
-def generate(version = 4, count = 1, namespace = "dns", namespace_value = "python.org"):
+def generate(version = 4, count = 1, urnFlag = True, namespace = "dns", namespace_value = "python.org"):
 	i = 1
 	for i in range(i, count + 1):
-		print_uuid(version,namespace,namespace_value)
+		print_uuid(version,urnFlag,namespace,namespace_value)
 
 '''
 The uuid module defines the following namespace identifiers for use with uuid3() or uuid5().
