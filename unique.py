@@ -9,10 +9,11 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 		args = len(sys.argv) - 1 # number of arguments (minus the program itself)
 		version = 4
 		count = 1
+		urnFlag = False
 		argumentError = False
 		for i in range(1, args + 1): # 1 to the number of arguments
 
-			if not re.search(r"^(-v|--version|-c|--count|\d+)$",sys.argv[i]):
+			if not re.search(r"^(-v|--version|-c|--count|\d+|-u|--urn)$",sys.argv[i]):
 				argumentError = True
 			else:
 				try:
@@ -20,6 +21,8 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 						version = int(sys.argv[i+1])
 					if re.search(r"^(-c|--count)$",sys.argv[i]):
 						count = int(sys.argv[i+1])
+					if re.search(r"^(-u|--urn)$",sys.argv[i]):
+						urnFlag = True
 				except:
 					argumentError = True
 
@@ -36,7 +39,7 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 			quit(-1)
 
 		else:
-			generate(version,count)
+			generate(version,count,urnFlag)
 
 	except:
 		help()
