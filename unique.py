@@ -27,7 +27,7 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 			print("error: invalid argument(s)")
 			quit(-1)
 
-		elif re.search(r"^[^014]$",str(version)):
+		elif re.search(r"^[^01345]$",str(version)):
 			print("error: uuid version incorrect")
 			quit(-1)
 
