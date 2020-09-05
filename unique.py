@@ -15,9 +15,9 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 		args = len(sys.argv) - 1 # number of arguments (minus the program itself)
 		version = 4
 		count = 1
-		print("")
-		print("default version:" + str(version))
-		print("default count:" + str(count))
+		#print("")
+		#print("default version:" + str(version))
+		#print("default count:" + str(count))
 		argumentError = False
 		for i in range(1, args + 1): # 1 to the number of arguments
 
@@ -45,9 +45,9 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 			quit(-1)
 
 		else:
-			print("")
-			print("argument version:" + str(version))
-			print("argument count:" + str(count))
+			#print("")
+			#print("argument version:" + str(version))
+			#print("argument count:" + str(count))
 			generate(version,count)
 
 	except:
