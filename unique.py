@@ -4,12 +4,6 @@ import re
 from unique_help import help
 from unique_generate import generate
 
-#########################################################################################
-import os
-os.system("cls")
-print(str(sys.argv))
-#########################################################################################
-
 if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argument found
 	try:
 		args = len(sys.argv) - 1 # number of arguments (minus the program itself)

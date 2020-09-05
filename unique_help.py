@@ -21,5 +21,5 @@ def help():
 	print("\tunique -c 100 -v 1")
 	print("")
 	print("")
-	print("adam bonner, 2020, https://github.com/adambonneruk/UUID-generator")
+	print("adam bonner, 2020, https://github.com/adambonneruk/uuid-generator/")
 	print("python %s\n" % (sys.version,))
