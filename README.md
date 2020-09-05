@@ -85,4 +85,5 @@ pip install pyinstaller
 
 ## Future Ideas (braindump)
 * Adding support for uuid namespaces, including UUIDv3 and UUIDv5
+* decoding UUIDs
 
