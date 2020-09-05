@@ -36,7 +36,7 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 			print("error: invalid argument(s)")
 			quit(-1)
 
-		elif version < 1 or version > 4:
+		elif version < 0 or version > 5:
 			print("error: uuid version incorrect")
 			quit(-1)
 
