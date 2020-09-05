@@ -1,4 +1,5 @@
 import sys
+import re
 
 from unique_help import help
 from unique_generate import generate
@@ -10,14 +11,19 @@ os.system("cls")
 
 args = len(sys.argv) - 1 # number of arguments (minus the program itself)
 
-if args == 0: #no arguments, just run with default single UUIDv4
-	print("...zero")
+
+
+if args == 0:
 	generate()
-elif args == 2: #just one argument and parameter pair (number or version)
+elif args == 2:
 	print("...two")
-	generate()
-elif args == 4: #both version and number specified
+	if re.search(r"^(-v|--version)$",sys.argv[1]):
+		generate(sys.argv[2],1)
+	elif re.search(r"^(-c|--count)$",sys.argv[1]):
+		generate(4,sys.argv[2])
+	else:
+		help()
+elif args == 4:
 	print("...four")
-	generate()
-else: #any other (wrong) number of arguments, display help
+else:
 	help()
