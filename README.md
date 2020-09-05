@@ -19,7 +19,7 @@ b6a4587d-a3de-4e4c-8d84-a3fad6b14192
 4085c90e-b195-40fb-b31e-e5faf76eb34a
 
 # two UUIDv1
->./unique.exe --version 1 -c 7
+>./unique.exe --version 1 -c 2
 6e75ec44-ef9b-11ea-aeea-e4b31802edf0
 6e75ec45-ef9b-11ea-b621-e4b31802edf0
 
