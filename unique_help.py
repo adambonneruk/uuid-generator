@@ -23,4 +23,3 @@ def help():
 	print("")
 	print("Adam Bonner, 2020, https://github.com/adambonneruk/uuid-generator")
 	print("Python %s\n" % (sys.version,))
-	print("")
