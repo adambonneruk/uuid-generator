@@ -15,9 +15,6 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 		args = len(sys.argv) - 1 # number of arguments (minus the program itself)
 		version = 4
 		count = 1
-		#print("")
-		#print("default version:" + str(version))
-		#print("default count:" + str(count))
 		argumentError = False
 		for i in range(1, args + 1): # 1 to the number of arguments
 
@@ -45,9 +42,6 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 			quit(-1)
 
 		else:
-			#print("")
-			#print("argument version:" + str(version))
-			#print("argument count:" + str(count))
 			generate(version,count)
 
 	except:
@@ -56,37 +50,3 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 
 else:
 	help()
-
-########################################################################################
-
-
-	#set defaults
-
-
-	try:
-		for i in range(1, args + 1): # 1 to the number of arguments
-			if re.search(r"^(-v|--version)$",sys.argv[i]):
-					version = int(sys.argv[i+1])
-			if re.search(r"^(-c|--count)$",sys.argv[i]):
-					count = int(sys.argv[i+1])
-
-		if args == 0:
-			generate()
-
-		elif args == 2 or args == 4:
-
-			if ( #sanitise input
-				re.search(r"^(-v|--version|-c|--count)$",sys.argv[1])
-				and re.search(r"^(-v|--version|-c|--count)$",sys.argv[3])
-				and (
-					count <= 65536 and version <= 4
-				)
-			):
-				generate(version,count)
-			else:
-				help()
-
-		else:
-			help()
-	except:
-		help()
