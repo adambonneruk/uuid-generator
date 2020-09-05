@@ -37,7 +37,7 @@ b6a4587d-a3de-4e4c-8d84-a3fad6b14192
 ### Help File
 Using the ```--help``` switch will trigger the help text
 ```
-usage: unique.(py|exe) [-n <number_of_UUIDs>] [-v <version_of_UUIDs>]
+usage: unique.(py|exe) [-n <number_of_UUIDs>] [-v <version_of_UUIDs>] [-u]
 
 generate a number of version-specific UUIDs
 
