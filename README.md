@@ -69,6 +69,8 @@ A version 4 UUID is randomly generated. As in other UUIDs, 4 bits are used to in
 * Python 3 (3.8.5+)
   * sys
   * os
+  * uuid
+  * re
 * PyInstaller (4.0+)
 
 ### Install Guide
