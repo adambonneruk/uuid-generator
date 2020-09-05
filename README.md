@@ -1,5 +1,5 @@
 # uuid-generator (in Python)
-CLI-based Version 4 UUID Generator. Written in Python using Python 3.8.5. Executable created with pyinstaller 4.0
+CLI-based UUID Generator (Supporting v0, v1 and v4). The code will generate 1 UUID by default or more if specified. Written in Python using Python 3.8.5. Executable created with pyinstaller 4.0
 
 ## Background
 Sometimes you just need a nice random number for some purpose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; such as using modules, arguments, for loops, function parameter defaulting (as opposed to overloading) and regex. 
