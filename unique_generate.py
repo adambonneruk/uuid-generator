@@ -39,7 +39,7 @@ def print_uuid(version,namespace,namespace_value):
 	else:
 		print("error - uuid version")
 
-def generate(version = 4, count = 1, namespace = "url", namespace_value = "http://python.org"):
+def generate(version = 4, count = 1, namespace = "dns", namespace_value = "python.org"):
 	i = 1
 	for i in range(i, count + 1):
 		print_uuid(version,namespace,namespace_value)
