@@ -1,8 +1,8 @@
 import sys
 import re
 
-from unique_help import help
-from unique_generate import generate
+from help import help
+from generate import generate
 
 if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argument found
 	try:
