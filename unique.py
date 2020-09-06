@@ -20,7 +20,7 @@ parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="
 parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="?")
 parser.add_argument("-s","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
 parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_OR_FQDN_NAME>",help="?")
-parser.add_argument("-u","--urn",dest="urnFlag",action="store_const",const=True,default=False,help="?")
+parser.add_argument("-u","--urn",dest="urnFlag",action="store_true",default=False,help="?")
 args = parser.parse_args()
 
 logging.debug("\nOutput default or given settings")
