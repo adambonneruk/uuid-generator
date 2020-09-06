@@ -1,6 +1,7 @@
 import sys
 import re
 import argparse
+import logging
 
 from help import help
 from generate import generate
@@ -8,8 +9,9 @@ from valid import isValidHostname
 
 import os
 os.system("cls")
-print("-------------------------------------")
-print(str(sys.argv))
+logging.basicConfig(level=logging.DEBUG)
+logging.debug("----------------------------------------------------------------------------------------------------")
+logging.debug(str(sys.argv))
 
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
 
@@ -26,13 +28,13 @@ parser.add_argument("-c","--count"
 	,metavar="<COUNT_OF_UUIDS>"
 	,help="?"
 )
-parser.add_argument("-n","--namespace"
+parser.add_argument("-s","--namespace"
 	,type=str,default = ""
 	,dest="namespace"
 	,metavar="<NAMESPACE>"
 	,help="?"
 )
-parser.add_argument("-s","--name"
+parser.add_argument("-n","--name"
 	,type=str,default = ""
 	,dest="name"
 	,metavar="<URL_OR_FQDN_NAME>"
@@ -47,37 +49,36 @@ parser.add_argument("-u","--urn"
 )
 
 args = parser.parse_args()
+logging.debug("----------------------------------------------------------------------------------------------------")
+logging.debug("Version: " + str(args.version))
+logging.debug("Count: " + str(args.count))
+logging.debug("Namespace: " + str(args.namespace))
+logging.debug("Name: " + str(args.name))
+logging.debug("URN Mode: " + str(args.urnFlag))
 
-print("-------------------------------------")
-print("Version: " + str(args.version))
-print("Count: " + str(args.count))
-print("Namespace: " + str(args.namespace))
-print("Name: " + str(args.name))
-print("URN Mode: " + str(args.urnFlag))
-
-print("-------------------------------------")
+logging.debug("----------------------------------------------------------------------------------------------------")
 if re.search(r"^[01345]$",str(args.version)):
-	print("version ok")
+	logging.debug("version ok")
 else:
 	parser.error("not a valid uuid version (0, 1, 3, 4, 5)")
 
 if (int(args.count) >= 1 and int(args.count) <= 65536):
-	print("count ok")
+	logging.debug("count ok")
 else:
 	parser.error("count value out of limits (1 - 65536)")
 
-print("-------------------------------------")
+logging.debug("----------------------------------------------------------------------------------------------------")
 if (str(args.version) == "3" or str(args.version) == "5"):
-	print(str(args.namespace) + "-")
+	logging.debug(str(args.namespace) + "-")
 	if str(args.namespace) == "":
 		parser.error("namespace required for version 3 and 5 uuids")
 	# check for valid name
-		print("this")
+		logging.debug("this")
 	else:
-		print("that")
+		logging.debug("that")
 else:
 	# throw error is ns or n are passed in
-	print("adam")	
+	logging.debug("adam")	
 
 
 
