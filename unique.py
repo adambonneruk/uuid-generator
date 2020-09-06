@@ -4,86 +4,72 @@ import re
 import argparse
 import logging
 
-from help import help
 from generate import generate
 from valid import isValidHostname
 
 debug = True
 if debug:
-	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 	os.system("cls")
-	print("DEBUG MODE ACTIVE")
-	logging.debug("----------------------------------------------------------------------------------------------------")
+	logging.debug("DEBUG MODE ACTIVE")
 	logging.debug(str(sys.argv))
 
+logging.debug("\nConfigure Arguments")
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
 parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="<UUID_VERSION>",help="?")
 parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="?")
 parser.add_argument("-s","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
 parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_OR_FQDN_NAME>",help="?")
 parser.add_argument("-u","--urn",dest="urnFlag",action="store_const",const=True,default=False,help="?")
-
 args = parser.parse_args()
-logging.debug("----------------------------------------------------------------------------------------------------")
-logging.debug("Version: " + str(args.version))
-logging.debug("Count: " + str(args.count))
-logging.debug("Namespace: " + str(args.namespace))
-logging.debug("Name: " + str(args.name))
-logging.debug("URN Mode: " + str(args.urnFlag))
 
-logging.debug("----------------------------------------------------------------------------------------------------")
+logging.debug("\nOutput default or given settings")
+logging.debug("\tVersion: " + str(args.version))
+logging.debug("\tCount: " + str(args.count))
+logging.debug("\tNamespace: " + str(args.namespace))
+logging.debug("\tName: " + str(args.name))
+logging.debug("\tURN Mode: " + str(args.urnFlag))
+
+logging.debug("\nCheck settings are valid")
 if re.search(r"^[01345]$",str(args.version)):
-	logging.debug("version ok")
+	logging.debug("\tVerion OK")
 else:
 	parser.error("not a valid uuid version (0, 1, 3, 4, 5)")
 
 if (int(args.count) >= 1 and int(args.count) <= 65536):
-	logging.debug("count ok")
+	logging.debug("\tCount OK")
 else:
 	parser.error("count value out of limits (1 - 65536)")
 
-logging.debug("----------------------------------------------------------------------------------------------------")
 if (str(args.version) == "3" or str(args.version) == "5"):
-	logging.debug(str(args.namespace) + "-")
-	if str(args.namespace) == "":
-		parser.error("namespace required for version 3 and 5 uuids")
-	# check for valid name
-		logging.debug("this")
+	logging.debug("\tVersion 3/5 Namespace and Name Checks")
+
+	'''
+		uuid.NAMESPACE_DNS
+			When this namespace is specified, the name string is a fully-qualified domain name.
+		uuid.NAMESPACE_URL
+			When this namespace is specified, the name string is a URL.
+		uuid.NAMESPACE_OID
+			When this namespace is specified, the name string is an ISO OID.
+		uuid.NAMESPACE_X500
+			When this namespace is specified, the name string is an X.500 DN in DER or a text output format
+	'''
+	if re.search(r"^(DNS|URL|OID|X500)$",str(args.namespace).upper()):
+		logging.debug("\t\tNamespace OK")
 	else:
-		logging.debug("that")
-else:
-	# throw error is ns or n are passed in
-	logging.debug("adam")
+		parser.error("namespace required for version 3 and 5 uuids")
 
+	if str(args.name) == "":
+		parser.error("name (e.g. url or fqdn) required for version 3 and 5 uuids")
+	else:
+		logging.debug("\t\tName Entered")
+		if str(args.namespace).upper() == "DNS":
+			pass
+		elif str(args.namespace).upper() == "URL":
+			pass
+		elif str(args.namespace).upper() == "OID":
+			pass
+		elif str(args.namespace).upper() == "X500":
+			pass
 
-
-
-#  if not args.two:
-#        if args.three is None or args.four is None:
-#            parser.error('without -2, *both* -3 <a> *and* -4 <b> are required')
-
-
-"""
-
-# Boolean flag (does not accept input data), with default value
-parser.add_argument("-a1", action="store_true", default=False)
-
-# Cast input to integer, with a default value
-parser.add_argument("-a2", type=int, default=0)
-
-# Provide long form name as well (maps to "argument3" not "a3")
-parser.add_argument("-a3", "--argument3", type=str)
-
-# Make argument mandatory
-parser.add_argument("-a4", required=True)
-
-# Retur the input via different parameter name
-parser.add_argument("-a5", "--argument5", dest="my_argument")
-
-args = parser.parse_args()
-print(args.a1)
-print(args.a2)
-print(args.argument3)
-print(args.a4)
-print(args.my_argument)
-"""
+print("UUID STRING HERE :-)")
