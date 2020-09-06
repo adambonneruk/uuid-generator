@@ -72,4 +72,4 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 		elif str(args.namespace).upper() == "X500":
 			pass
 
-print("UUID STRING HERE :-)")
+generate()
