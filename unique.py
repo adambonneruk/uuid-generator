@@ -3,9 +3,7 @@ import sys
 import re
 import argparse
 import logging
-
-from generate import generate
-from valid import isValidHostname
+import uuid
 
 debug = True
 if debug:
@@ -20,7 +18,7 @@ parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="
 parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="?")
 parser.add_argument("-s","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
 parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_OR_FQDN_NAME>",help="?")
-parser.add_argument("-u","--urn",dest="urnFlag",action="store_true",default=False,help="?")
+parser.add_argument("-u","--urn",dest="urn_flag",action="store_true",default=False,help="?")
 args = parser.parse_args()
 
 logging.debug("\nOutput default or given settings")
@@ -28,7 +26,7 @@ logging.debug("\tVersion: " + str(args.version))
 logging.debug("\tCount: " + str(args.count))
 logging.debug("\tNamespace: " + str(args.namespace))
 logging.debug("\tName: " + str(args.name))
-logging.debug("\tURN Mode: " + str(args.urnFlag))
+logging.debug("\tURN Mode: " + str(args.urn_flag))
 
 logging.debug("\nCheck settings are valid")
 if re.search(r"^[01345]$",str(args.version)):
@@ -54,22 +52,58 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 		uuid.NAMESPACE_X500
 			When this namespace is specified, the name string is an X.500 DN in DER or a text output format
 	'''
+
 	if re.search(r"^(DNS|URL|OID|X500)$",str(args.namespace).upper()):
 		logging.debug("\t\tNamespace OK")
 	else:
-		parser.error("namespace required for version 3 and 5 uuids")
+		parser.error("valid namespace required for version 3 and 5 uuids (dns, url, oid, or x500)")
 
 	if str(args.name) == "":
 		parser.error("name (e.g. url or fqdn) required for version 3 and 5 uuids")
 	else:
 		logging.debug("\t\tName Entered")
 		if str(args.namespace).upper() == "DNS":
-			pass
+			pass #validation here for future
 		elif str(args.namespace).upper() == "URL":
-			pass
+			pass #validation here for future
 		elif str(args.namespace).upper() == "OID":
-			pass
+			pass #validation here for future
 		elif str(args.namespace).upper() == "X500":
-			pass
+			pass #validation here for future
 
-generate()
+def generate_uuids(version,quantity,urn_flag,namespace="dns",name="example.com"):
+	i = 1
+	for i in range(i,quantity+1):
+
+		if urn_flag:
+			urnString = "urn:uuid:"
+		else:
+			urnString = ""
+
+		if version == 0:
+			print(urnString + "00000000-0000-0000-0000-000000000000")
+		elif version == 1:
+			print(urnString + str(uuid.uuid1()))
+		elif version == 4:
+			print(urnString + str(uuid.uuid4()))
+		elif version == 3:
+			if namespace == "dns":
+				print(uuid.uuid3(uuid.NAMESPACE_DNS, name))
+			elif namespace == "url":
+				print(uuid.uuid3(uuid.NAMESPACE_URL, name))
+			elif namespace == "oid":
+				print(uuid.uuid3(uuid.NAMESPACE_OID, name))
+			elif namespace == "x500":
+				print(uuid.uuid3(uuid.NAMESPACE_X500, name))
+		elif version == 5:
+			if namespace == "dns":
+				print(uuid.uuid5(uuid.NAMESPACE_DNS, name))
+			elif namespace == "url":
+				print(uuid.uuid5(uuid.NAMESPACE_URL, name))
+			elif namespace == "oid":
+				print(uuid.uuid5(uuid.NAMESPACE_OID, name))
+			elif namespace == "x500":
+				print(uuid.uuid5(uuid.NAMESPACE_X500, name))
+
+logging.debug("\nUUIDs:")
+generate_uuids(args.version,args.count,args.urn_flag)
