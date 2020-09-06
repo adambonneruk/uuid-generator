@@ -3,6 +3,13 @@ import re
 
 from help import help
 from generate import generate
+from valid import isValidHostname
+
+#########################################################################################
+import os
+os.system("cls")
+print(str(sys.argv))
+#########################################################################################
 
 if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argument found
 	try:
@@ -13,7 +20,7 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 		argumentError = False
 		for i in range(1, args + 1): # 1 to the number of arguments
 
-			if not re.search(r"^(-v|--version|-c|--count|\d+|-u|--urn)$",sys.argv[i]):
+			if not re.search(r"^(-v|--version|-c|--count|\d+|-u|--urn|-s|--namespace|-n|--name)$",sys.argv[i]):
 				argumentError = True
 			else:
 				try:
@@ -23,6 +30,10 @@ if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argu
 						count = int(sys.argv[i+1])
 					if re.search(r"^(-u|--urn)$",sys.argv[i]):
 						urnFlag = True
+					if re.search(r"^(-s|--namespace)$",sys.argv[i]): #namespace
+						namespace = str(sys.argv[i+1])
+					if re.search(r"^(-n|--name)$",sys.argv[i]): #name
+						namespace = str(sys.argv[i+1])
 				except:
 					argumentError = True
 
