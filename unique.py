@@ -1,5 +1,6 @@
 import sys
 import re
+import argparse
 
 from help import help
 from generate import generate
@@ -11,50 +12,33 @@ os.system("cls")
 print(str(sys.argv))
 #########################################################################################
 
-if not re.search(r"--help",str(sys.argv)): ## display just help if "--help" argument found
-	try:
-		args = len(sys.argv) - 1 # number of arguments (minus the program itself)
-		version = 4
-		count = 1
-		urnFlag = False
-		argumentError = False
-		for i in range(1, args + 1): # 1 to the number of arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('-v', '--version', type=int, default = 0, dest='version', metavar='N', help='an integer for the accumulator')
 
-			if not re.search(r"^(-v|--version|-c|--count|\d+|-u|--urn|-s|--namespace|-n|--name)$",sys.argv[i]):
-				argumentError = True
-			else:
-				try:
-					if re.search(r"^(-v|--version)$",sys.argv[i]):
-						version = int(sys.argv[i+1])
-					if re.search(r"^(-c|--count)$",sys.argv[i]):
-						count = int(sys.argv[i+1])
-					if re.search(r"^(-u|--urn)$",sys.argv[i]):
-						urnFlag = True
-					if re.search(r"^(-s|--namespace)$",sys.argv[i]): #namespace
-						namespace = str(sys.argv[i+1])
-					if re.search(r"^(-n|--name)$",sys.argv[i]): #name
-						namespace = str(sys.argv[i+1])
-				except:
-					argumentError = True
+args = parser.parse_args()
+print(args.version)
 
-		if argumentError == True :
-			print("error: invalid argument(s)")
-			quit(-1)
+'''
 
-		elif re.search(r"^[^01345]$",str(version)):
-			print("error: uuid version incorrect")
-			quit(-1)
+# Boolean flag (does not accept input data), with default value
+parser.add_argument('-a1', action="store_true", default=False)
 
-		elif count < 1 or count > 65536:
-			print("error: incorrect number (count) of outputs")
-			quit(-1)
+# Cast input to integer, with a default value
+parser.add_argument('-a2', type=int, default=0)
 
-		else:
-			generate(version,count,urnFlag)
+# Provide long form name as well (maps to 'argument3' not 'a3')
+parser.add_argument('-a3', '--argument3', type=str)
 
-	except:
-		help()
-		quit(-1)
+# Make argument mandatory
+parser.add_argument('-a4', required=True)
 
-else:
-	help()
+# Retur the input via different parameter name
+parser.add_argument('-a5', '--argument5', dest='my_argument')
+
+args = parser.parse_args()
+print(args.a1)
+print(args.a2)
+print(args.argument3)
+print(args.a4)
+print(args.my_argument)
+'''
