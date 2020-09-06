@@ -71,6 +71,10 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 		elif str(args.namespace).upper() == "X500":
 			pass #validation here for future
 
+else: #not v3/5 so v0/1/4
+	if (str(args.namespace) != "" or str(args.name) != ""):
+		parser.error("name and/or namespace not required/valid for UUID v1, v4 or nil (v0)")
+
 def generate_uuids(version,quantity,urn_flag,namespace="dns",name="example.com"):
 	i = 1
 	for i in range(i,quantity+1):
