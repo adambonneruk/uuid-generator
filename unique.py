@@ -17,39 +17,11 @@ if debug:
 	logging.debug(str(sys.argv))
 
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
-
-# Optional Arguments
-parser.add_argument("-v","--version"
-	,type=int,default = 4
-	,dest="version"
-	,metavar="<UUID_VERSION>"
-	,help="?"
-)
-parser.add_argument("-c","--count"
-	,type=int,default = 1
-	,dest="count"
-	,metavar="<COUNT_OF_UUIDS>"
-	,help="?"
-)
-parser.add_argument("-s","--namespace"
-	,type=str,default = ""
-	,dest="namespace"
-	,metavar="<NAMESPACE>"
-	,help="?"
-)
-parser.add_argument("-n","--name"
-	,type=str,default = ""
-	,dest="name"
-	,metavar="<URL_OR_FQDN_NAME>"
-	,help="?"
-)
-# Option Flags (True/False)
-parser.add_argument("-u","--urn"
-	,dest="urnFlag"
-	,action="store_const"
-	,const=True,default=False
-	,help="?"
-)
+parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="<UUID_VERSION>",help="?")
+parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="?")
+parser.add_argument("-s","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
+parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_OR_FQDN_NAME>",help="?")
+parser.add_argument("-u","--urn",dest="urnFlag",action="store_const",const=True,default=False,help="?")
 
 args = parser.parse_args()
 logging.debug("----------------------------------------------------------------------------------------------------")
