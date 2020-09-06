@@ -92,22 +92,22 @@ def generate_uuids(version,quantity,urn_flag,namespace="dns",name="example.com")
 			print(urnString + str(uuid.uuid4()))
 		elif version == 3:
 			if namespace == "dns":
-				print(uuid.uuid3(uuid.NAMESPACE_DNS, name))
+				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_DNS, name)))
 			elif namespace == "url":
-				print(uuid.uuid3(uuid.NAMESPACE_URL, name))
+				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_URL, name)))
 			elif namespace == "oid":
-				print(uuid.uuid3(uuid.NAMESPACE_OID, name))
+				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_OID, name)))
 			elif namespace == "x500":
-				print(uuid.uuid3(uuid.NAMESPACE_X500, name))
+				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_X500, name)))
 		elif version == 5:
 			if namespace == "dns":
-				print(uuid.uuid5(uuid.NAMESPACE_DNS, name))
+				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_DNS, name)))
 			elif namespace == "url":
-				print(uuid.uuid5(uuid.NAMESPACE_URL, name))
+				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_URL, name)))
 			elif namespace == "oid":
-				print(uuid.uuid5(uuid.NAMESPACE_OID, name))
+				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_OID, name)))
 			elif namespace == "x500":
-				print(uuid.uuid5(uuid.NAMESPACE_X500, name))
+				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_X500, name)))
 
 logging.debug("\nUUIDs:")
-generate_uuids(args.version,args.count,args.urn_flag)
+generate_uuids(args.version,args.count,args.urn_flag,args.namespace,args.name)
