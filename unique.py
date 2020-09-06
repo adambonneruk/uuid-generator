@@ -1,3 +1,4 @@
+import os
 import sys
 import re
 import argparse
@@ -7,11 +8,13 @@ from help import help
 from generate import generate
 from valid import isValidHostname
 
-import os
-os.system("cls")
-logging.basicConfig(level=logging.DEBUG)
-logging.debug("----------------------------------------------------------------------------------------------------")
-logging.debug(str(sys.argv))
+debug = True
+if debug:
+	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+	os.system("cls")
+	print("DEBUG MODE ACTIVE")
+	logging.debug("----------------------------------------------------------------------------------------------------")
+	logging.debug(str(sys.argv))
 
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
 
@@ -78,7 +81,7 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 		logging.debug("that")
 else:
 	# throw error is ns or n are passed in
-	logging.debug("adam")	
+	logging.debug("adam")
 
 
 
