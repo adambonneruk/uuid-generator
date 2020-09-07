@@ -18,7 +18,7 @@ logging.debug("\nConfigure Arguments")
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
 parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="<UUID_VERSION>",help="?")
 parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="?")
-parser.add_argument("-s","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
+parser.add_argument("-s","--ns","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
 parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_OR_FQDN_NAME>",help="?")
 parser.add_argument("-u","--urn",dest="urn_flag",action="store_true",default=False,help="?")
 args = parser.parse_args()
@@ -42,7 +42,7 @@ else:
 	parser.error("count value out of limits (1 - 65536)")
 
 if (str(args.version) == "3" or str(args.version) == "5"):
-	logging.debug("\tVersion 3/5 Namespace and Name Checks")
+	logging.debug("\tVersion " + str(args.version) + " Namespace and Name Checks")
 
 	'''
 		uuid.NAMESPACE_DNS
@@ -58,14 +58,16 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 	if re.search(r"^(DNS|URL|OID|X500)$",str(args.namespace).upper()):
 		logging.debug("\t\tNamespace OK")
 	else:
-		parser.error("valid namespace required for version 3 and 5 uuids (dns, url, oid, or x500)")
+		parser.error("valid namespace required for version " + str(args.version) + " uuids (dns, url, oid, or x500)")
 
 	if str(args.name) == "":
-		parser.error("name (e.g. url or fqdn) required for version 3 and 5 uuids")
+		parser.error("name (e.g. url or fqdn) required for version " + str(args.version) + " uuids")
 	else:
 		logging.debug("\t\tName Entered")
 		if str(args.namespace).upper() == "DNS":
-			if not is_fqdn(args.name):
+			if is_fqdn(args.name):
+				logging.debug("\t\tValid FQDN")
+			else:
 				parser.error("specified name for uuid v" + str(args.version) + " namspace is not a fqdn")
 		elif str(args.namespace).upper() == "URL":
 			pass #validation here for future
