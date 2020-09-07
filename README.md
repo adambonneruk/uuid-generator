@@ -1,101 +1,108 @@
-# uuid-generator (in Python)
-CLI-based UUID Generator (Supporting v0, v1 and v4). The code will generate 1 UUID by default or more if specified. Written in Python using Python 3.8.5. Executable created with pyinstaller 4.0
+# uuid-generator (in Python) ![](icon/16.png)
+CLI-based UUID generator tool. ```unique.exe``` will print a single generated UUIDv4 string. Using the ```-v``` and ```-c``` switches can change the versiona and quantity (respectively) as required. This project builds on code originally developed in 2016; leveraging different python libraries to provide a comprehensive unix-like experience. Executable created with pyinstaller 4.0
 
 ## Background
-Sometimes you just need a nice random number for some purpose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; such as using modules, arguments, for loops, function parameter defaulting (as opposed to overloading) and regex.
+Sometimes you just need a nice random number for your purposose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; using Modules, Arguments, Function/Parameter defaulting (as opposed to overloading), URI, OID, X.500 Distinguished Names and RegEx.
+
+## UUID (from [Wikipedia](https://https://en.wikipedia.org/wiki/Universally_unique_identifier))
+A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems. UUIDs are, for practical purposes, unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them. While the probability that a UUID will be duplicated is not zero, it is close enough to zero to be negligible. Thus, anyone can create a UUID and use it to identify something with near certainty that the identifier does not duplicate one that has already been, or will be, created to identify something else. Information labeled with UUIDs by independent parties can therefore be later combined into a single database or transmitted on the same channel, with a negligible probability of duplication.
+
+>__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
+
+### Further Reading:
+* [URN / Uniform Resource Name](https://en.wikipedia.org/wiki/Uniform_Resource_Name)
+* [URI / Uniform Resource Identifier
+](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)
+* [URL / Uniform Resource Locator](https://en.wikipedia.org/wiki/URL)
+* [OID / object identifier](https://en.wikipedia.org/wiki/Object_identifier)
+* [X.500 Distinguished Names](https://www.ibm.com/support/knowledgecenter/en/SSYKE2_7.0.0/com.ibm.java.security.component.70.doc/security-component/keytoolDocs/x500dnames.html)
+* [MAC Address](https://www.ibm.com/support/knowledgecenter/en/SSYKE2_7.0.0/com.ibm.java.security.component.70.doc/security-component/keytoolDocs/x500dnames.html)
 
 ## Usage
 ```powershell
-# single UUIDv4
+# UUIDv4
 >./unique.exe
-f6c50e93-92ba-40af-a85e-bf466acf7b52
+27fd1448-3c0d-4d73-94c4-9f16dd9e0c16
 
-# five UUIDv4
->./unique.exe --count 5
+# 5 x UUIDv4
+>./unique.exe -c 5
 32ec9ca1-2a84-40c9-afa4-f67a7a8c3156
 039ee9f1-c5a0-4d85-805a-89b84974a6c7
 b6a4587d-a3de-4e4c-8d84-a3fad6b14192
 91bd7bf0-8b6e-46af-ad01-7f91ca66aa25
 4085c90e-b195-40fb-b31e-e5faf76eb34a
 
-# two UUIDv1
->./unique.exe --version 1 -c 2
-6e75ec44-ef9b-11ea-aeea-e4b31802edf0
-6e75ec45-ef9b-11ea-b621-e4b31802edf0
+# 2 x UUIDv1 with URN prefix
+>./unique.exe -v 1 -c 2 -u
+urn:uuid:7ed04b31-f14c-11ea-ac52-e4b31802edf0
+urn:uuid:7ed0c3d9-f14c-11ea-aabd-e4b31802edf0
 
-# three UUIDv1 with URN namespace
->/unique.exe -v 1 -c 3 -u
-urn:uuid:f76548a4-efcb-11ea-90cc-e4b31802edf0
-urn:uuid:f765f91e-efcb-11ea-8d21-e4b31802edf0
-urn:uuid:f765f91f-efcb-11ea-8c14-e4b31802edf0
-
-# single special nil UUID
+# Special Nil UUID
 >./unique.exe -c 1 -v 0
 00000000-0000-0000-0000-000000000000
 
+# UUIDv5 for "python.org" Fully qualified domain name
+>./unique.exe -v 5 --ns dns -n "python.org"
+886313e1-3b8a-5372-9b90-0c9aee199e5d
+
+# Uppercase UUIDv3 for "http://adambonner.co.uk" URL with URN prefix
+>./unique.exe -U -v 3 -n "http://adambonner.co.uk" --ns url -u
+urn:uuid:1FDC56DF-BB86-3F0D-9356-8612ABA227FF
+
+# Display Help
+>./unique.exe --help
+usage: unique.py [-h] [-v <UUID_VERSION>] [-c <COUNT_OF_UUIDS>] [-s <NAMESPACE>] [-n <URL_FQDN_OID_X500_NAME>] [-u] [-U]
+
+Generate a number of version specific UUIDs.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v <UUID_VERSION>, --version <UUID_VERSION>
+                        Specify UUID version: 0/nil, 1, 3, 4, or 5
+  -c <COUNT_OF_UUIDS>, --count <COUNT_OF_UUIDS>
+                        Specify number of output UUIDs (max. 65536)
+  -s <NAMESPACE>, --ns <NAMESPACE>, --namespace <NAMESPACE>
+                        UUID v3 or v5 namespace
+  -n <URL_FQDN_OID_X500_NAME>, --name <URL_FQDN_OID_X500_NAME>
+                        Specify UUID v3 or v4 name
+  -u, --urn             Specify URN standard prefix
+  -U, --uppercase       Non-standard uppercase UUID string
+
 ```
-### Help File
-Using the ```--help``` switch will trigger the help text
-```
-usage: unique.(py|exe) [-n <number_of_UUIDs>] [-v <version_of_UUIDs>] [-u]
 
-generate a number of version-specific UUIDs
+## Supported UUID Versions
 
-supported switches/arguments.
-  -c, --count    specify the number of output UUIDs (1-65536)
-  -v, --version  specify which version the output UUIDs should be (0, 1, or 4)
-  -u, --urn      display the output UUID with the valid RFC-4122 namespace
-      --help     display this help message
-
-usage examples:
-  generate 1 UUIDv4 (default behaviour)
-        unique
-
-  generate 25 UUIDv4 with URN namespace
-        unique -c 25 -v 4 -u
-
-  generate 100 UUIDv1
-        unique -c 100 -v 1
-```
-
-## [Wikipedia](https://https://en.wikipedia.org/wiki/Universally_unique_identifier) description of UUID:
-A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems.
-
-When generated according to the standard methods, UUIDs are, for practical purposes, unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them, unlike most other numbering schemes. While the probability that a UUID will be duplicated is not zero, it is close enough to zero to be negligible. Thus, anyone can create a UUID and use it to identify something with near certainty that the identifier does not duplicate one that has already been, or will be, created to identify something else. Information labeled with UUIDs by independent parties can therefore be later combined into a single database or transmitted on the same channel, with a negligible probability of duplication.
-
-#### URN Namespace / RFC 4122
-RFC 4122 defines a Uniform Resource Name (URN) namespace for UUIDs. A UUID presented as a URN appears as follows:
-urn:uuid:123e4567-e89b-12d3-a456-426655440000
-
-### UUIDv0 / Nil UUID
-The "nil" UUID, a special case, is the UUID 00000000-0000-0000-0000-000000000000; that is, all bits set to zero.
-
-### [UUIDv1](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_1_(date-time_and_MAC_address))
-rsion 1 concatenates the 48-bit MAC address of the "node" (that is, the computer generating the UUID), with a 60-bit timestamp, being the number of 100-nanosecond intervals since midnight 15 October 1582 Coordinated Universal Time (UTC), the date on which the Gregorian calendar was first adopted. RFC 4122 states that the time value rolls over around 3400 AD, depending on the algorithm used, which implies that the 60-bit timestamp is a signed quantity.
-
-### [UUIDv4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
-A version 4 UUID is randomly generated. As in other UUIDs, 4 bits are used to indicate version 4, and 2 or 3 bits to indicate the variant (102 or 1102 for variants 1 and 2 respectively). Thus, for variant 1 (that is, most UUIDs) a random version-4 UUID will have 6 predetermined variant and version bits, leaving 122 bits for the randomly generated part, for a total of 2122, or 5.3×1036 (5.3 undecillion) possible version-4 variant-1 UUIDs. There are half as many possible version-4 variant-2 UUIDs (legacy GUIDs) because there is one less random bit available, 3 bits being consumed for the variant.
+Version | Switch | Specifics                  | Additional Options (Bold = Mandatory)
+--------|--------|----------------------------|---------------------------------------------------------
+0 / Nil | --version 0   | Special Nil UUID                  | --count, --urn, --uppercase
+1       | --version 1   | Datetime and MAC address   | --count, --urn, --uppercase
+3       | --version 3   | Namespace & Name-based     | --count, --urn, --uppercase, __--namespa-versione__, __--name__
+4       | --version 4   | Random Data                | --count, --urn, --uppercase
+5       | --version 5   | Namespace & Name-based     | --count, --urn, --uppercase, __--namespace__, __--name__
 
 ## Prerequisites
 * Python 3 (3.8.5+)
-  * sys
   * os
-  * uuid
+  * sys
   * re
+  * argparse
+  * logging
+  * uuid
 * PyInstaller (4.0+)
 * [Paint.net 4.2.13](https://www.getpaint.net)
 * [IcoFX Portable (1.6.4 Rev 3)](https://portableapps.com/apps/graphics_pictures/icofx_portable)
 
 ### Install Guide
+How to configure ```uuid-generator``` in your envrionment:
 ```powershell
-#restart after installing python
 choco install python -y
+#restart after installing python
 pip install pyinstaller
 ```
 
 ## Note / Limitations
-* currently only support UUIDv1 and UUIDv4 with the special "v0" nil UUID
+* Limit of the 4 predefined UUID v3/v5 namespaces (URL, DNS, OID, X.500)
 
-## Future Ideas (braindump)
-* Adding support for uuid namespaces, including UUIDv3 and UUIDv5
-* decoding UUIDs
+## Future Ideas
+* ~~Adding support for uuid namespaces, including UUIDv3 and UUIDv5~~
+* Decoding UUIDs
