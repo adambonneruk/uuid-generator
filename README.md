@@ -2,7 +2,7 @@
 CLI-based UUID Generator (Supporting v0, v1 and v4). The code will generate 1 UUID by default or more if specified. Written in Python using Python 3.8.5. Executable created with pyinstaller 4.0
 
 ## Background
-Sometimes you just need a nice random number for some purpose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; such as using modules, arguments, for loops, function parameter defaulting (as opposed to overloading) and regex. 
+Sometimes you just need a nice random number for some purpose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; such as using modules, arguments, for loops, function parameter defaulting (as opposed to overloading) and regex.
 
 ## Usage
 ```powershell
@@ -60,7 +60,7 @@ When generated according to the standard methods, UUIDs are, for practical purpo
 The "nil" UUID, a special case, is the UUID 00000000-0000-0000-0000-000000000000; that is, all bits set to zero.
 
 ### [UUIDv1](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_1_(date-time_and_MAC_address))
-rsion 1 concatenates the 48-bit MAC address of the "node" (that is, the computer generating the UUID), with a 60-bit timestamp, being the number of 100-nanosecond intervals since midnight 15 October 1582 Coordinated Universal Time (UTC), the date on which the Gregorian calendar was first adopted. RFC 4122 states that the time value rolls over around 3400 AD, depending on the algorithm used, which implies that the 60-bit timestamp is a signed quantity. 
+rsion 1 concatenates the 48-bit MAC address of the "node" (that is, the computer generating the UUID), with a 60-bit timestamp, being the number of 100-nanosecond intervals since midnight 15 October 1582 Coordinated Universal Time (UTC), the date on which the Gregorian calendar was first adopted. RFC 4122 states that the time value rolls over around 3400 AD, depending on the algorithm used, which implies that the 60-bit timestamp is a signed quantity.
 
 ### [UUIDv4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
 A version 4 UUID is randomly generated. As in other UUIDs, 4 bits are used to indicate version 4, and 2 or 3 bits to indicate the variant (102 or 1102 for variants 1 and 2 respectively). Thus, for variant 1 (that is, most UUIDs) a random version-4 UUID will have 6 predetermined variant and version bits, leaving 122 bits for the randomly generated part, for a total of 2122, or 5.3×1036 (5.3 undecillion) possible version-4 variant-1 UUIDs. There are half as many possible version-4 variant-2 UUIDs (legacy GUIDs) because there is one less random bit available, 3 bits being consumed for the variant.
@@ -72,11 +72,12 @@ A version 4 UUID is randomly generated. As in other UUIDs, 4 bits are used to in
   * uuid
   * re
 * PyInstaller (4.0+)
+* [IcoFX Portable (1.6.4 Rev 3)](https://portableapps.com/apps/graphics_pictures/icofx_portable)
 
 ### Install Guide
 ```powershell
-choco install python
-# restart commandline for system path edits
+#restart after installing python
+choco install python -y
 pip install pyinstaller
 ```
 
@@ -86,4 +87,3 @@ pip install pyinstaller
 ## Future Ideas (braindump)
 * Adding support for uuid namespaces, including UUIDv3 and UUIDv5
 * decoding UUIDs
-
