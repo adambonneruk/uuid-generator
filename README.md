@@ -72,6 +72,7 @@ A version 4 UUID is randomly generated. As in other UUIDs, 4 bits are used to in
   * uuid
   * re
 * PyInstaller (4.0+)
+* [Paint.net 4.2.13](https://www.getpaint.net)
 * [IcoFX Portable (1.6.4 Rev 3)](https://portableapps.com/apps/graphics_pictures/icofx_portable)
 
 ### Install Guide
