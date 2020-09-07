@@ -53,6 +53,17 @@ def is_oid(oid):
 	else:
 		return True
 
+def is_url(url):
+	'''
+	the string is a URL.
+	'''
+	return False
+def is_x500(x500):
+	'''
+	the string is an X.500 DN in DER or a text output format
+	'''
+	return False
+
 '''
 last item of array
 some_list = [1, 2, 3]
