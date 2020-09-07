@@ -6,6 +6,7 @@ import logging
 import uuid
 
 from valid import is_fqdn
+from valid import is_oid
 
 debug = True
 if debug:
@@ -68,11 +69,14 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 			if is_fqdn(args.name):
 				logging.debug("\t\tValid FQDN")
 			else:
-				parser.error("specified name for uuid v" + str(args.version) + " namspace is not a fqdn")
+				parser.error("specified name for uuid v" + str(args.version) + " namespace is not a fqdn")
 		elif str(args.namespace).upper() == "URL":
 			pass #validation here for future
 		elif str(args.namespace).upper() == "OID":
-			pass #validation here for future
+			if is_oid(args.name):
+				logging.debug("\t\tValid OID")
+			else:
+				parser.error("specified name for uuid v" + str(args.version) + " namespace is not an oid")
 		elif str(args.namespace).upper() == "X500":
 			pass #validation here for future
 
