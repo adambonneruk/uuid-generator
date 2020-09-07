@@ -81,9 +81,38 @@ def is_url(url):
 
 def is_x500(x500):
 	'''
-	the string is an X.500 DN in DER or a text output format
+	X.500 Distinguished Names are used to identify entities, such as those which are named by the subject and issuer (signer) fields of X.509 certificates. keytool supports the following subparts:
+		commonName - common name of a person, e.g., "Susan Jones"
+		organizationUnit - small organization (e.g, department or division) name, e.g., "Purchasing"
+		organizationName - large organization name, e.g., "ABCSystems, Inc."
+		localityName - locality (city) name, e.g., "Palo Alto"
+		stateName - state or province name, e.g., "California"
+		country - two-letter country code, e.g., "CH"
+
+		https://stackoverflow.com/questions/9289357/javascript-regular-expression-for-dn
 	'''
-	return False
+	x500ns_regex = re.compile(
+		r'^(?:[A-Za-z][\w-]*|\d+(?:\.\d+)*)='#Attribure Type
+		r'(?:#(?:[\dA-Fa-f]{2})+' #Attribute Value: A Hex String
+		r'|(?:[^,=\+<>#;\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*' #Attribute Value: Escaped String
+		r'|"(?:[^\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*")' #Attribute Value: Quoted String
+		r'(?:\+(?:[A-Za-z][\w-]*|\d+(?:\.\d+)*)='
+		r'(?:#(?:[\dA-Fa-f]{2})+'
+		r'|(?:[^,=\+<>#;\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*'
+		r'|"(?:[^\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*"))*'
+		r'(?:,(?:[A-Za-z][\w-]*|\d+(?:\.\d+)*)='
+		r'(?:#(?:[\dA-Fa-f]{2})+'
+		r'|(?:[^,=\+<>#;\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*'
+		r'|"(?:[^\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*")'
+		r'(?:\+(?:[A-Za-z][\w-]*|\d+(?:\.\d+)*)='
+		r'(?:#(?:[\dA-Fa-f]{2})+'
+		r'|(?:[^,=\+<>#;\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*'
+		r'|"(?:[^\\"]|\\[,=\+<>#;\\"]|\\[\dA-Fa-f]{2})*"))*)*$')
+
+	if not x500ns_regex.match(x500):
+		return False
+	else:
+		return True
 
 '''
 last item of array

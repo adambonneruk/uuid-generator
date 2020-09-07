@@ -8,6 +8,7 @@ import uuid
 from valid import is_fqdn
 from valid import is_url
 from valid import is_oid
+from valid import is_x500
 
 debug = True
 if debug:
@@ -85,7 +86,11 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 			else:
 				parser.error("specified name for uuid v" + str(args.version) + " namespace is not an oid")
 		elif str(args.namespace).upper() == "X500":
-			pass #validation here for future
+			if is_x500(args.name):
+				logging.debug("\t\tValid X500 DN")
+			else:
+				parser.error("specified name for uuid v" + str(args.version) + " namespace is not an x500 dn")
+
 
 else: #not v3/5 so v0/1/4
 	if (str(args.namespace) != "" or str(args.name) != ""):
