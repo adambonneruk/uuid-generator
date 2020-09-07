@@ -24,6 +24,7 @@ parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COU
 parser.add_argument("-s","--ns","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="?")
 parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_OR_FQDN_NAME>",help="?")
 parser.add_argument("-u","--urn",dest="urn_flag",action="store_true",default=False,help="?")
+parser.add_argument("-U","--uppercase",dest="upper_flag",action="store_true",default=False,help="?")
 args = parser.parse_args()
 
 #sanitise input
@@ -35,6 +36,7 @@ logging.debug("\tCount: " + str(args.count))
 logging.debug("\tNamespace: " + str(args.namespace))
 logging.debug("\tName: " + str(args.name))
 logging.debug("\tURN Mode: " + str(args.urn_flag))
+logging.debug("\tUppercase Mode: " + str(args.upper_flag))
 
 logging.debug("\nCheck settings are valid")
 if re.search(r"^[01345]$",str(args.version)):
@@ -96,39 +98,41 @@ else: #not v3/5 so v0/1/4
 	if (str(args.namespace) != "" or str(args.name) != ""):
 		parser.error("name and/or namespace not required/valid for UUID v1, v4 or nil (v0)")
 
-def generate_uuids(version,quantity,urn_flag,namespace="dns",name="example.com"):
+def generate_uuids(version=4,quantity=1,urn_flag=False,namespace="dns",name="example.com",upper_flag=False):
 	i = 1
 	for i in range(i,quantity+1):
 
-		if urn_flag:
-			urnString = "urn:uuid:"
-		else:
-			urnString = ""
-
 		if version == 0:
-			print(urnString + "00000000-0000-0000-0000-000000000000")
+			uuidString = "00000000-0000-0000-0000-000000000000"
 		elif version == 1:
-			print(urnString + str(uuid.uuid1()))
+			uuidString = str(uuid.uuid1())
 		elif version == 4:
-			print(urnString + str(uuid.uuid4()))
+			uuidString = str(uuid.uuid4())
 		elif version == 3:
 			if namespace == "dns":
-				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_DNS, name)))
+				uuidString = str(uuid.uuid3(uuid.NAMESPACE_DNS, name))
 			elif namespace == "url":
-				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_URL, name)))
+				uuidString = str(uuid.uuid3(uuid.NAMESPACE_URL, name))
 			elif namespace == "oid":
-				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_OID, name)))
+				uuidString = str(uuid.uuid3(uuid.NAMESPACE_OID, name))
 			elif namespace == "x500":
-				print(urnString + str(uuid.uuid3(uuid.NAMESPACE_X500, name)))
+				uuidString =str(uuid.uuid3(uuid.NAMESPACE_X500, name))
 		elif version == 5:
 			if namespace == "dns":
-				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_DNS, name)))
+				uuidString = str(uuid.uuid5(uuid.NAMESPACE_DNS, name))
 			elif namespace == "url":
-				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_URL, name)))
+				uuidString = str(uuid.uuid5(uuid.NAMESPACE_URL, name))
 			elif namespace == "oid":
-				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_OID, name)))
+				uuidString = str(uuid.uuid5(uuid.NAMESPACE_OID, name))
 			elif namespace == "x500":
-				print(urnString + str(uuid.uuid5(uuid.NAMESPACE_X500, name)))
+				uuidString = str(uuid.uuid5(uuid.NAMESPACE_X500, name))
+
+		if upper_flag: # == True
+			uuidString = uuidString.upper()
+		if urn_flag: # == True
+			uuidString = "urn:uuid:" + uuidString
+
+		print(uuidString)
 
 logging.debug("\nUUIDs:")
-generate_uuids(args.version,args.count,args.urn_flag,args.namespace,args.name)
+generate_uuids(args.version,args.count,args.urn_flag,args.namespace,args.name,args.upper_flag)
