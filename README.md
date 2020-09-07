@@ -1,11 +1,11 @@
 # uuid-generator (in Python) ![](icon/16.png)
-CLI-based UUID generator tool. ```unique.exe``` will print a single generated UUIDv4 string. Using the ```-v``` and ```-c``` switches can change the versiona and quantity (respectively) as required. This project builds on code originally developed in 2016; leveraging different python libraries to provide a comprehensive unix-like experience. Executable created with pyinstaller 4.0
+CLI-based UUID generator tool. ```unique.exe``` will print a single generated UUIDv4 string. Using the ```-v``` and ```-c``` switches can change the version and quantity (respectively) output UUIDs as required. This project builds on code originally developed in 2016; leveraging different python libraries to provide a comprehensive unix-like experience. Executable created with pyinstaller 4.0
 
 ## Background
-Sometimes you just need a nice random number for your purposose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; using Modules, Arguments, Function/Parameter defaulting (as opposed to overloading), URI, OID, X.500 Distinguished Names and RegEx.
+Sometimes you just need a nice random number for your purpose, what better than a UUID! I first worked on this problem back in May 2016. I need a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only random one not engineered to a set of hardware etc.) and has now been updated and released to demonstrate my Python skills; using Modules, Arguments, Function/Parameter defaulting (as opposed to overloading), URI, OID, X.500 Distinguished Names and RegEx.
 
 ## UUID (from [Wikipedia](https://https://en.wikipedia.org/wiki/Universally_unique_identifier))
-A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems. UUIDs are, for practical purposes, unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them. While the probability that a UUID will be duplicated is not zero, it is close enough to zero to be negligible. Thus, anyone can create a UUID and use it to identify something with near certainty that the identifier does not duplicate one that has already been, or will be, created to identify something else. Information labeled with UUIDs by independent parties can therefore be later combined into a single database or transmitted on the same channel, with a negligible probability of duplication.
+A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems. UUIDs are, for practical purposes, unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them. While the probability that a UUID will be duplicated is not zero, it is close enough to zero to be negligible. Thus, anyone can create a UUID and use it to identify something with near certainty that the identifier does not duplicate one that has already been, or will be, created to identify something else. Information labe;led with UUIDs by independent parties can therefore be later combined into a single database or transmitted on the same channel, with a negligible probability of duplication.
 
 >__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
 
@@ -72,11 +72,11 @@ optional arguments:
 
 ## Supported UUID Versions
 
-Version | Switch | Specifics                  | Additional Options (Bold = Mandatory)
---------|--------|----------------------------|---------------------------------------------------------
-0 / Nil | --version 0   | Special Nil UUID                  | --count, --urn, --uppercase
+Version | Switch        | Specifics                  | Additional Options (Bold = Mandatory)
+--------|---------------|----------------------------|---------------------------------------------------------
+0 / Nil | --version 0   | Special Nil UUID           | --count, --urn, --uppercase
 1       | --version 1   | Datetime and MAC address   | --count, --urn, --uppercase
-3       | --version 3   | Namespace & Name-based     | --count, --urn, --uppercase, __--namespa-versione__, __--name__
+3       | --version 3   | Namespace & Name-based     | --count, --urn, --uppercase, __--namespace__, __--name__
 4       | --version 4   | Random Data                | --count, --urn, --uppercase
 5       | --version 5   | Namespace & Name-based     | --count, --urn, --uppercase, __--namespace__, __--name__
 
@@ -93,7 +93,7 @@ Version | Switch | Specifics                  | Additional Options (Bold = Manda
 * [IcoFX Portable (1.6.4 Rev 3)](https://portableapps.com/apps/graphics_pictures/icofx_portable)
 
 ### Install Guide
-How to configure ```uuid-generator``` in your envrionment:
+How to configure ```uuid-generator``` in your environment:
 ```powershell
 choco install python -y
 #restart after installing python
