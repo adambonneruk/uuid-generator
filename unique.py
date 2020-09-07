@@ -6,6 +6,7 @@ import logging
 import uuid
 
 from valid import is_fqdn
+from valid import is_url
 from valid import is_oid
 
 debug = True
@@ -74,7 +75,10 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 			else:
 				parser.error("specified name for uuid v" + str(args.version) + " namespace is not a fqdn")
 		elif str(args.namespace).upper() == "URL":
-			pass #validation here for future
+			if is_url(args.name):
+				logging.debug("\t\tValid URL")
+			else:
+				parser.error("specified name for uuid v" + str(args.version) + " namespace is not a valid url")
 		elif str(args.namespace).upper() == "OID":
 			if is_oid(args.name):
 				logging.debug("\t\tValid OID")
