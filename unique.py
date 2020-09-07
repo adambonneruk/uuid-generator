@@ -5,6 +5,8 @@ import argparse
 import logging
 import uuid
 
+from valid import is_fqdn
+
 debug = True
 if debug:
 	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
@@ -63,7 +65,8 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 	else:
 		logging.debug("\t\tName Entered")
 		if str(args.namespace).upper() == "DNS":
-			pass #validation here for future
+			if not is_fqdn(args.name):
+				parser.error("specified name for uuid v" + str(args.version) + " namspace is not a fqdn")
 		elif str(args.namespace).upper() == "URL":
 			pass #validation here for future
 		elif str(args.namespace).upper() == "OID":
