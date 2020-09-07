@@ -10,7 +10,7 @@ from valid import is_url
 from valid import is_oid
 from valid import is_x500
 
-debug = True
+debug = False
 if debug:
 	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 	os.system("cls")
@@ -20,7 +20,7 @@ if debug:
 logging.debug("\nConfigure Arguments")
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
 parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="<UUID_VERSION>",help="Specify UUID version: 0/nil, 1, 3, 4, or 5")
-parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="Specify number of output UUIDs")
+parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="Specify number of output UUIDs (max. 65536)")
 parser.add_argument("-s","--ns","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="UUID v3 or v5 namespace")
 parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_FQDN_OID_X500_NAME>",help="Specify UUID v3 or v4 name")
 parser.add_argument("-u","--urn",dest="urn_flag",action="store_true",default=False,help="Specify URN standard prefix")
