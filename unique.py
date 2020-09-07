@@ -24,6 +24,9 @@ parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_
 parser.add_argument("-u","--urn",dest="urn_flag",action="store_true",default=False,help="?")
 args = parser.parse_args()
 
+#sanitise input
+args.namespace = args.namespace.lower()
+
 logging.debug("\nOutput default or given settings")
 logging.debug("\tVersion: " + str(args.version))
 logging.debug("\tCount: " + str(args.count))
