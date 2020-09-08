@@ -26,12 +26,38 @@ window.config(menu=menuBar)
 #canvas = tk.Canvas(window, width=800, height=600)  # define the size
 #canvas.pack()
 
-photo = tk.PhotoImage(file="./design/mockup-cut.png")
-imgLabel = tk.Label(window, image=photo)
-imgLabel.pack(side="left")
+left_frame = tk.Frame(height = 256, width = 256, bg = "red")
+left_frame.pack(side="left")
 
-for fm in ['blue','red','yellow','green','white','black']:
-	tk.Frame(height = 20,width = 640,bg = fm).pack()
+hello = tk.Label(left_frame,text="hello world")
+hello.place(x=10,y=20)
+
+'''hello2 = tk.Label(left_frame,text="hello world")
+hello2.pack()
+
+hello3 = tk.Label(left_frame,text="hello world")
+hello3.pack()
+
+hello4 = tk.Label(left_frame,text="hello world")
+hello4.pack()'''
+
+
+
+right_frame = tk.Frame(height = 256, width = 256, bg = "blue")
+right_frame.pack(side="left")
+
+#tk.Frame(height = 256, width = 256, bg = "grey").pack(side="left")
+#tk.Frame(height = 256, width = 256, bg = "red").pack(side="left")
+
+#bluebutton = tk.Button(frame, text="Blue", fg="blue")
+#bluebutton.pack(side="left")
+
+#photo = tk.PhotoImage(file="./design/mockup-cut.png")
+#imgLabel = tk.Label(window, image=photo)
+#imgLabel.pack(side="left")
+
+#for fm in ['blue','red','yellow','green','white','black']:
+#	tk.Frame(height = 20,width = 640,bg = fm).pack()
 
 #label = tk.Label(frame.frame,text='General Inf', bd='3', fg='blue', font='Helvetica 9 bold')  # placing labels
 #entry_field = tk.Entry(frame.frame, bd='3', justify="center")
@@ -40,8 +66,8 @@ for fm in ['blue','red','yellow','green','white','black']:
 #frame = tk.Frame(window, bg="grey")
 #frame.place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.9)
 
-window.title('Unique: The UUID Generator') #https://stackoverflow.com/questions/33637292/change-tkinter-frame-title
-window.iconbitmap('./icon/icon.ico') #https://www.delftstack.com/howto/python-tkinter/how-to-set-window-icon-in-tkinter/
+#window.title('Unique: The UUID Generator') #https://stackoverflow.com/questions/33637292/change-tkinter-frame-title
+#window.iconbitmap('./icon/icon.ico') #https://www.delftstack.com/howto/python-tkinter/how-to-set-window-icon-in-tkinter/
 window.mainloop()
 
 
