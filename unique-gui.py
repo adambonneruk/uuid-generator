@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import scrolledtext
 
 window = tk.Tk()
 
@@ -26,25 +27,29 @@ window.config(menu=menuBar)
 #canvas = tk.Canvas(window, width=800, height=600)  # define the size
 #canvas.pack()
 
-left_frame = tk.Frame(height = 256, width = 256, bg = "red")
+
+'''for fm in ['blue','red','yellow','green','white','black','purple','blue','red','yellow','green','white','black','purple']:  
+    Frame(height = 20,width = 640,bg = fm).pack()  
+root.mainloop() '''
+
+left_frame = tk.Frame(height = 600, width = 256)
 left_frame.pack(side="left")
 
-hello = tk.Label(left_frame,text="hello world")
-hello.place(x=10,y=20)
+for i in range(0,7):
+	print(i)
+	hello = tk.Label(left_frame,text="hello world")
+	hello.pack(padx = 10, pady = 10) #hello.place(x=10,y=60)
 
-'''hello2 = tk.Label(left_frame,text="hello world")
-hello2.pack()
-
-hello3 = tk.Label(left_frame,text="hello world")
-hello3.pack()
-
-hello4 = tk.Label(left_frame,text="hello world")
-hello4.pack()'''
-
-
-
-right_frame = tk.Frame(height = 256, width = 256, bg = "blue")
+right_frame = tk.Frame(height = 600, width = (800-256))
 right_frame.pack(side="left")
+
+text_area = scrolledtext.ScrolledText(right_frame,wrap = tk.WORD,font = ("Lucida Console",10)) 
+text_area.grid(column = 0, pady = 10, padx = 10)
+
+#photo = tk.PhotoImage(file="./design/mockup-cut.png")
+#imgLabel = tk.Label(right_frame, image=photo)
+#imgLabel.pack()
+
 
 #tk.Frame(height = 256, width = 256, bg = "grey").pack(side="left")
 #tk.Frame(height = 256, width = 256, bg = "red").pack(side="left")
