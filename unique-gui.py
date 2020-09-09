@@ -32,7 +32,27 @@ window.config(menu=menuBar)
     Frame(height = 20,width = 640,bg = fm).pack()  
 root.mainloop() '''
 
-left_frame = tk.Frame(height = 600, width = 256)
+master_width = 800
+master_height = 480
+master_frame = tk.Frame(window, width = master_width, height = master_height, bg = "purple")
+master_frame.pack()
+
+left_frame = tk.Frame(master_frame, width = master_width/4, height = master_height, bg = "red")
+left_frame.place(x=0,y=0)
+
+right_top_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height/16, bg = "blue")
+right_top_frame.place(x=master_width/4,y=0)
+
+right_middle_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height/16*14, bg = "green")
+right_middle_frame.place(x=master_width/4,y=master_height/16)
+
+right_bottom_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height/16, bg = "yellow")
+right_bottom_frame.place(x=master_width/4,y=master_height/16*15)
+
+
+
+
+'''left_frame = tk.Frame(height = 600, width = 256)
 left_frame.pack(side="left")
 
 for i in range(0,7):
@@ -44,7 +64,7 @@ right_frame = tk.Frame(height = 600, width = (800-256))
 right_frame.pack(side="left")
 
 text_area = scrolledtext.ScrolledText(right_frame,wrap = tk.WORD,font = ("Lucida Console",10)) 
-text_area.grid(column = 0, pady = 10, padx = 10)
+text_area.grid(column = 0, pady = 10, padx = 10)'''
 
 #photo = tk.PhotoImage(file="./design/mockup-cut.png")
 #imgLabel = tk.Label(right_frame, image=photo)
