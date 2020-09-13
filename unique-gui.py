@@ -33,21 +33,38 @@ window.config(menu=menuBar)
 root.mainloop() '''
 
 master_width = 800
-master_height = 480
+master_height = 400
 master_frame = tk.Frame(window, width = master_width, height = master_height, bg = "purple")
 master_frame.pack()
 
 left_frame = tk.Frame(master_frame, width = master_width/4, height = master_height, bg = "red")
-left_frame.place(x=0,y=0)
+left_frame.grid(row=0,column=0)
+left_frame.grid_propagate(False)
 
-right_top_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height/16, bg = "blue")
-right_top_frame.place(x=master_width/4,y=0)
+hello = tk.Label(left_frame,text="hello world")
+hello.grid()
 
-right_middle_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height/16*14, bg = "green")
-right_middle_frame.place(x=master_width/4,y=master_height/16)
+right_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height, bg = "orange")
+right_frame.grid(row=0,column=1)
+left_frame.grid_propagate(False)
 
-right_bottom_frame = tk.Frame(master_frame, width = master_width/4*3, height = master_height/16, bg = "yellow")
-right_bottom_frame.place(x=master_width/4,y=master_height/16*15)
+right_top_frame = tk.Frame(right_frame, width = master_width/4*3, height = master_height/16, bg = "blue")
+#right_top_frame.place(x=master_width/4,y=0)
+right_top_frame.grid(row=0,column=0)
+
+right_middle_frame = tk.Frame(right_frame, width = master_width/4*3, height = master_height/16*14, bg = "green")
+#right_middle_frame.place(x=master_width/4,y=master_height/16)
+right_middle_frame.grid(row=1,column=0)
+right_middle_frame.columnconfigure(0, weight=10)
+right_middle_frame.grid_propagate(False)
+
+text_area = scrolledtext.ScrolledText(right_middle_frame,wrap = tk.WORD,font = ("Lucida Console",10)) 
+#text_area.grid(column = 0, pady = 3, padx = 3)
+text_area.grid(sticky="we",pady = 3, padx = 3)
+
+right_bottom_frame = tk.Frame(right_frame, width = master_width/4*3, height = master_height/16, bg = "yellow")
+#right_bottom_frame.place(x=master_width/4,y=master_height/16*15)
+right_bottom_frame.grid(row=2,column=0)
 
 
 
