@@ -4,11 +4,7 @@ import re
 import argparse
 import logging
 
-from valid import is_fqdn
-from valid import is_url
-from valid import is_oid
-from valid import is_x500
-
+from valid import is_fqdn, is_url, is_oid, is_x500
 from generate_uuid import generate_uuid
 
 debug = False
