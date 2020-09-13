@@ -6,7 +6,7 @@ import re
 from toast import quit, about
 from generate_uuid import generate_uuid
 
-debug = True
+debug = False
 if debug:
 	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 	logging.debug("DEBUG MODE ACTIVE")
