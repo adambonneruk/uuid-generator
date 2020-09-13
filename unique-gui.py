@@ -6,6 +6,13 @@ window.title('Unique: The UUID Generator')
 window.iconbitmap('./icon/icon.ico')
 window.geometry("512x256")
 
+#Create Text Area
+plainTextArea = tk.Text(window)
+scrollBar = tk.Scrollbar(window, command=plainTextArea.yview)
+plainTextArea.configure(yscrollcommand=scrollBar.set)
+scrollBar.pack(side='right', fill="both")
+plainTextArea.pack(fill="both", expand="yes")
+
 # Create the Top Menu Bar
 menuBar = tk.Menu(window)
 fileMenu = tk.Menu(menuBar,tearoff=0)
