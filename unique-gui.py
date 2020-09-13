@@ -1,9 +1,10 @@
 import tkinter as tk
+from toast import quit, about
 
 # Create the Window
 window = tk.Tk()
-window.title('Unique: The UUID Generator')
-window.iconbitmap('./icon/icon.ico')
+window.title("Unique: The UUID Generator")
+window.iconbitmap("./icon/icon.ico")
 window.geometry("512x256")
 
 #Create Text Area
@@ -21,7 +22,7 @@ fileMenu.add_command(label="Open")
 fileMenu.add_command(label="Save")
 fileMenu.add_command(label="Save As...")
 fileMenu.add_separator()
-fileMenu.add_command(label="Exit")
+fileMenu.add_command(label="Exit",command=lambda: quit(window))
 menuBar.add_cascade(label="File", menu=fileMenu)
 
 uuidMenu = tk.Menu(menuBar,tearoff=0)
@@ -34,7 +35,7 @@ uuidMenu.add_command(label="Version 5")
 menuBar.add_cascade(label="Generate UUIDs", menu=uuidMenu)
 
 helpMenu = tk.Menu(menuBar,tearoff=0)
-helpMenu.add_command(label="About")
+helpMenu.add_command(label="About",command=lambda: about(window))
 menuBar.add_cascade(label="Help", menu=helpMenu)
 
 window.config(menu=menuBar)
