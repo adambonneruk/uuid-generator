@@ -3,12 +3,13 @@ import sys
 import re
 import argparse
 import logging
-import uuid
 
 from valid import is_fqdn
 from valid import is_url
 from valid import is_oid
 from valid import is_x500
+
+from generate_uuid import generate_uuid
 
 debug = False
 if debug:
@@ -93,46 +94,10 @@ if (str(args.version) == "3" or str(args.version) == "5"):
 			else:
 				parser.error("specified name for uuid v" + str(args.version) + " namespace is not an x500 dn")
 
-
 else: #not v3/5 so v0/1/4
 	if (str(args.namespace) != "" or str(args.name) != ""):
 		parser.error("name and/or namespace not required/valid for UUID v1, v4 or nil (v0)")
 
-def generate_uuids(version=4,quantity=1,urn_flag=False,namespace="dns",name="example.com",upper_flag=False):
-	i = 1
-	for i in range(i,quantity+1):
-
-		if version == 0:
-			uuidString = "00000000-0000-0000-0000-000000000000"
-		elif version == 1:
-			uuidString = str(uuid.uuid1())
-		elif version == 4:
-			uuidString = str(uuid.uuid4())
-		elif version == 3:
-			if namespace == "dns":
-				uuidString = str(uuid.uuid3(uuid.NAMESPACE_DNS, name))
-			elif namespace == "url":
-				uuidString = str(uuid.uuid3(uuid.NAMESPACE_URL, name))
-			elif namespace == "oid":
-				uuidString = str(uuid.uuid3(uuid.NAMESPACE_OID, name))
-			elif namespace == "x500":
-				uuidString =str(uuid.uuid3(uuid.NAMESPACE_X500, name))
-		elif version == 5:
-			if namespace == "dns":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_DNS, name))
-			elif namespace == "url":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_URL, name))
-			elif namespace == "oid":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_OID, name))
-			elif namespace == "x500":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_X500, name))
-
-		if upper_flag: # == True
-			uuidString = uuidString.upper()
-		if urn_flag: # == True
-			uuidString = "urn:uuid:" + uuidString
-
-		print(uuidString)
-
 logging.debug("\nUUIDs:")
-generate_uuids(args.version,args.count,args.urn_flag,args.namespace,args.name,args.upper_flag)
+for i in range(0,args.count):
+	print(generate_uuid(args.version,args.urn_flag,args.namespace,args.name,args.upper_flag))
