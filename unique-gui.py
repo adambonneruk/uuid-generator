@@ -10,7 +10,8 @@ if debug:
 	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 	logging.debug("DEBUG MODE ACTIVE")
 
-count = 0
+# Default the number of UUIDs generated to 0, to prompt question
+uuidCount = 0
 
 # Create the Window
 window = tk.Tk()
@@ -18,13 +19,13 @@ window.title("Unique: UUID Generator")
 window.iconbitmap("./icon/icon.ico")
 window.geometry("310x275")
 
-def uuid4():
-	global count
-	if count == 0:
+def insertUuid(version=4):
+	global uuidCount
+	if uuidCount == 0:
 		quantity()
-	for i in range(0,count):
+	for i in range(0,uuidCount):
 		plainText = plainTextArea.get('1.0', "end"+'-1c')
-		uuid = generate_uuid()
+		uuid = generate_uuid(version)
 		if plainText != "":
 			plainTextArea.insert("end","\n")
 		plainTextArea.insert("end",uuid)
@@ -48,20 +49,23 @@ fileMenu.add_command(label="Exit",command=lambda: quit(window))
 menuBar.add_cascade(label="File", menu=fileMenu)
 
 def quantity():
-	global count
-	count = simpledialog.askinteger("UUID Quantity", "Configure Number of UUIDs to Generate")
-	return count
+	global uuidCount
+	uuidCount = simpledialog.askinteger("UUID Quantity", "Configure Number of UUIDs to Generate")
 
 uuidMenu = tk.Menu(menuBar,tearoff=0)
 #uuidMenu.add_command(label="Version 0")
 #uuidMenu.add_command(label="Version 1")
-uuidMenu.add_command(label="Version 4",command=uuid4)
+uuidMenu.add_command(label="Version 0",command=lambda: insertUuid(0))
+uuidMenu.add_command(label="Version 1",command=lambda: insertUuid(1))
+uuidMenu.add_command(label="Version 4",command=lambda: insertUuid())
 #uuidMenu.add_separator()
 #uuidMenu.add_command(label="Version 3")
 #uuidMenu.add_command(label="Version 5")
-uuidMenu.add_separator()
-uuidMenu.add_command(label="Quantity",command=lambda: quantity())
 menuBar.add_cascade(label="Generate UUIDs", menu=uuidMenu)
+
+configMenu = tk.Menu(menuBar,tearoff=0)
+configMenu.add_command(label="Quantity",command=lambda: quantity())
+menuBar.add_cascade(label="Configuration", menu=configMenu)
 
 helpMenu = tk.Menu(menuBar,tearoff=0)
 helpMenu.add_command(label="About",command=lambda: about(window))
