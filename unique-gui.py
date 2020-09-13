@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import simpledialog
+from tkinter import messagebox, simpledialog
 import logging
+import re
 
 from toast import quit, about
 from generate_uuid import generate_uuid
@@ -12,20 +13,69 @@ if debug:
 
 # Default the number of UUIDs generated to 0, to prompt question
 uuidCount = 0
+uppercase = False
+urnprefix = False
+namespace = ""
+name = ""
 
 # Create the Window
 window = tk.Tk()
 window.title("Unique: UUID Generator")
 window.iconbitmap("./icon/icon.ico")
-window.geometry("310x275")
+window.geometry("385x275")
+
+def setQuantity():
+	global uuidCount
+	uuidCount = simpledialog.askinteger("UUID Quantity", "Configure Number of UUIDs to Generate")
+	logging.debug(uuidCount)
+
+def setNamespace():
+	global namespace
+	namespace = simpledialog.askstring("Namespace", "Set the Required Namespace (e.g. DNS)")
+	namespace = namespace.lower()
+	logging.debug(namespace)
+
+def setName():
+	global name
+	name = simpledialog.askstring("Name/Value", "Set the Required Name/Value (e.g. python.org)")
+	logging.debug(name)
+
+def setUppercase():
+	global uppercase
+	if messagebox.askyesnocancel("Uppercase UUID", "Set Uppercase for UUID Generation? ", default="no"):
+		uppercase = True
+	elif "no":
+		uppercase = False
+	else:
+		uppercase = uppercase
+
+def setUrnPrefix():
+	global urnprefix
+	if messagebox.askyesnocancel("UUID URN Prefix", "Set Prefix for URN:UUID Generation? ", default="no"):
+		urnprefix = True
+	elif "no":
+		urnprefix = False
+	else:
+		urnprefix = uppercase
 
 def insertUuid(version=4):
-	global uuidCount
+
 	if uuidCount == 0:
-		quantity()
+		setQuantity()
+
 	for i in range(0,uuidCount):
+		i=i
 		plainText = plainTextArea.get('1.0', "end"+'-1c')
-		uuid = generate_uuid(version)
+
+		if version == 3 or version == 5: #ask for namespace and name
+
+			while not re.search(r"^(DNS|URL|OID|X500)$",str(namespace).upper()):
+				setNamespace()
+			if name == "":
+				setName()
+
+		uuid = generate_uuid(version,urnprefix,namespace,name,uppercase)
+
 		if plainText != "":
 			plainTextArea.insert("end","\n")
 		plainTextArea.insert("end",uuid)
@@ -48,23 +98,23 @@ fileMenu.add_separator()
 fileMenu.add_command(label="Exit",command=lambda: quit(window))
 menuBar.add_cascade(label="File", menu=fileMenu)
 
-def quantity():
-	global uuidCount
-	uuidCount = simpledialog.askinteger("UUID Quantity", "Configure Number of UUIDs to Generate")
-
 uuidMenu = tk.Menu(menuBar,tearoff=0)
-#uuidMenu.add_command(label="Version 0")
-#uuidMenu.add_command(label="Version 1")
 uuidMenu.add_command(label="Version 0",command=lambda: insertUuid(0))
 uuidMenu.add_command(label="Version 1",command=lambda: insertUuid(1))
 uuidMenu.add_command(label="Version 4",command=lambda: insertUuid())
-#uuidMenu.add_separator()
-#uuidMenu.add_command(label="Version 3")
-#uuidMenu.add_command(label="Version 5")
+uuidMenu.add_separator()
+uuidMenu.add_command(label="Version 3",command=lambda: insertUuid(3))
+uuidMenu.add_command(label="Version 5",command=lambda: insertUuid(5))
 menuBar.add_cascade(label="Generate UUIDs", menu=uuidMenu)
 
 configMenu = tk.Menu(menuBar,tearoff=0)
-configMenu.add_command(label="Quantity",command=lambda: quantity())
+configMenu.add_command(label="Quantity",command=lambda: setQuantity())
+configMenu.add_command(label="URN Prefix",command=lambda: setUrnPrefix())
+configMenu.add_command(label="Uppercase",command=lambda: setUppercase())
+configMenu.add_separator()
+configMenu.add_command(label="Version 3/5 Only",state="disabled")
+configMenu.add_command(label="Set Namespace",command=lambda: setNamespace())
+configMenu.add_command(label="Set Name",command=lambda: setNamespace())
 menuBar.add_cascade(label="Configuration", menu=configMenu)
 
 helpMenu = tk.Menu(menuBar,tearoff=0)
