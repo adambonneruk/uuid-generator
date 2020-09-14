@@ -139,3 +139,8 @@ The following project icon was created with paint.net. Using a screenshot of Pow
   * Dark Mode
   * Settings Panel (instead of seperate pop-ups)
 * Decoding UUIDs
+
+## Shoutouts
+Thanks to these github users I was able to figure out how to use tkinter for the GUI.
+* [jatinkarthik-tripathy](https://github.com/jatinkarthik-tripathy/Text-Editor)
+* [six519](https://github.com/six519/Python-Notepad)
