@@ -3,13 +3,20 @@ from tkinter import messagebox, simpledialog
 import logging
 import re
 
-from toast import quit, about
 from generate_uuid import generate_uuid
 
 debug = False
 if debug:
-	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
-	logging.debug("DEBUG MODE ACTIVE")
+    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+    logging.debug("DEBUG MODE ACTIVE")
+
+def quit():
+    if tk.messagebox.askyesno("Quit", "Quit without Saving?"):
+        window.destroy()
+
+def about():
+    aboutMe = ["Unique: The UUID Generator", 'Adam Bonner, 2020', 'MIT Licence', 'https://github.com/adambonneruk/uuid-generator']
+    messagebox.showinfo("About", "\n".join(aboutMe))
 
 # Default the number of UUIDs generated to 0, to prompt question
 uuidCount = 0
@@ -25,60 +32,60 @@ window.iconbitmap("./icon/icon.ico")
 window.geometry("385x275")
 
 def setQuantity():
-	global uuidCount
-	uuidCount = simpledialog.askinteger("UUID Quantity", "Configure Number of UUIDs to Generate")
-	logging.debug(uuidCount)
+    global uuidCount
+    uuidCount = simpledialog.askinteger("UUID Quantity", "Configure Number of UUIDs to Generate")
+    logging.debug(uuidCount)
 
 def setNamespace():
-	global namespace
-	namespace = simpledialog.askstring("Namespace", "Set the Required Namespace (e.g. DNS)")
-	namespace = namespace.lower()
-	logging.debug(namespace)
+    global namespace
+    namespace = simpledialog.askstring("Namespace", "Set the Required Namespace (e.g. DNS)")
+    namespace = namespace.lower()
+    logging.debug(namespace)
 
 def setName():
-	global name
-	name = simpledialog.askstring("Name/Value", "Set the Required Name/Value (e.g. python.org)")
-	logging.debug(name)
+    global name
+    name = simpledialog.askstring("Name/Value", "Set the Required Name/Value (e.g. python.org)")
+    logging.debug(name)
 
 def setUppercase():
-	global uppercase
-	if messagebox.askyesnocancel("Uppercase UUID", "Set Uppercase for UUID Generation? ", default="no"):
-		uppercase = True
-	elif "no":
-		uppercase = False
-	else:
-		uppercase = uppercase
+    global uppercase
+    if messagebox.askyesnocancel("Uppercase UUID", "Set Uppercase for UUID Generation? ", default="no"):
+        uppercase = True
+    elif "no":
+        uppercase = False
+    else:
+        uppercase = uppercase
 
 def setUrnPrefix():
-	global urnprefix
-	if messagebox.askyesnocancel("UUID URN Prefix", "Set Prefix for URN:UUID Generation? ", default="no"):
-		urnprefix = True
-	elif "no":
-		urnprefix = False
-	else:
-		urnprefix = uppercase
+    global urnprefix
+    if messagebox.askyesnocancel("UUID URN Prefix", "Set Prefix for URN:UUID Generation? ", default="no"):
+        urnprefix = True
+    elif "no":
+        urnprefix = False
+    else:
+        urnprefix = uppercase
 
 def insertUuid(version=4):
 
-	if uuidCount == 0:
-		setQuantity()
+    if uuidCount == 0:
+        setQuantity()
 
-	for i in range(0,uuidCount):
-		i=i
-		plainText = plainTextArea.get('1.0', "end"+'-1c')
+    for i in range(0,uuidCount):
+        i=i
+        plainText = plainTextArea.get('1.0', "end"+'-1c')
 
-		if version == 3 or version == 5: #ask for namespace and name
+        if version == 3 or version == 5: #ask for namespace and name
 
-			while not re.search(r"^(DNS|URL|OID|X500)$",str(namespace).upper()):
-				setNamespace()
-			if name == "":
-				setName()
+            while not re.search(r"^(DNS|URL|OID|X500)$",str(namespace).upper()):
+                setNamespace()
+            if name == "":
+                setName()
 
-		uuid = generate_uuid(version,urnprefix,namespace,name,uppercase)
+        uuid = generate_uuid(version,urnprefix,namespace,name,uppercase)
 
-		if plainText != "":
-			plainTextArea.insert("end","\n")
-		plainTextArea.insert("end",uuid)
+        if plainText != "":
+            plainTextArea.insert("end","\n")
+        plainTextArea.insert("end",uuid)
 
 #Create Text Area
 plainTextArea = tk.Text(window)
@@ -95,7 +102,7 @@ menuBar = tk.Menu(window)
 #fileMenu.add_command(label="Save")
 #fileMenu.add_command(label="Save As...")
 #fileMenu.add_separator()
-#fileMenu.add_command(label="Exit",command=lambda: quit(window))
+#fileMenu.add_command(label="Exit",command=lambda: quit())
 #menuBar.add_cascade(label="File", menu=fileMenu)
 
 uuidMenu = tk.Menu(menuBar,tearoff=0)
@@ -120,7 +127,7 @@ configMenu.add_command(label="Set Name",command=lambda: setNamespace())
 menuBar.add_cascade(label="Configuration", menu=configMenu)
 
 helpMenu = tk.Menu(menuBar,tearoff=0)
-helpMenu.add_command(label="About",command=lambda: about(window))
+helpMenu.add_command(label="About",command=lambda: about())
 menuBar.add_cascade(label="Help", menu=helpMenu)
 
 window.config(menu=menuBar)
