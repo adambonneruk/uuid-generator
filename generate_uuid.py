@@ -40,19 +40,19 @@ def uuid_5(namespace, name):
 
     return uuid5_string
 
-def generate_uuid(version=4, urn_flag=False,namespace="dns", name="example.com", upper_flag=False):
+def generate_uuid(version=4, urn_flag=False, namespace="dns", name="example.com", upper_flag=False):
     """Generate UUID passing in a number of flags for the configuration of the output string"""
 
     if version == 0:
-        uuid_0()
+        uuid_string = uuid_0()
     elif version == 1:
-        uuid_1()
+        uuid_string = uuid_1()
     elif version == 3:
-        uuid_3(namespace, name)
+        uuid_string = uuid_3(namespace, name)
     elif version == 4:
-        uuid_4()
+        uuid_string = uuid_4()
     elif version == 5:
-        uuid_5(namespace, name)
+        uuid_string = uuid_5(namespace, name)
 
     if upper_flag:
         uuid_string = uuid_string.upper()
