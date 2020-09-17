@@ -7,7 +7,7 @@ from valid import is_uuid_version, is_reasonable_quantity, is_uuid_namespace, is
 from generate_uuid import generate_uuid
 
 #Enabled/Disable Debug Mode
-DEBUGMODE = True
+DEBUGMODE = False
 if DEBUGMODE:
     logging.basicConfig(format='%(message)s', level=logging.DEBUG)
     logging.debug("DEBUG MODE ACTIVE")
