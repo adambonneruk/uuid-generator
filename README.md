@@ -106,3 +106,24 @@ pip install pyinstaller
 ## Future Ideas
 * ~~Adding support for uuid namespaces, including UUIDv3 and UUIDv5~~
 * Decoding UUIDs
+
+## Run in docker
+App can be ran in docker.
+
+### Build image
+
+`docker build . -t uuid`
+
+### Run
+
+```
+# UUIDv4
+docker run --rm -it uuid:latest
+
+# 5 x UUIDv4
+docker run --rm -it uuid:latest -c 5
+
+# Display Help
+docker run --rm -it uuid:latest --help
+```
+
