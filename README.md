@@ -145,3 +145,24 @@ Thanks to these github users I was able to figure out how to use tkinter for the
 * [jatinkarthik-tripathy](https://github.com/jatinkarthik-tripathy/Text-Editor)
 * [six519](https://github.com/six519/Python-Notepad)
 * [code-mentor.org](https://code-mentor.org/notepad-using-tkinter-in-python-with-source-code)
+
+## Run in docker
+App can be ran in docker.
+
+### Build image
+
+`docker build . -t uuid`
+
+### Run
+
+```
+# UUIDv4
+docker run --rm -it uuid:latest
+
+# 5 x UUIDv4
+docker run --rm -it uuid:latest -c 5
+
+# Display Help
+docker run --rm -it uuid:latest --help
+```
+
