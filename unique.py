@@ -1,138 +1,126 @@
-import os
+"""Generate a Unique UUID"""
 import sys
-import re
 import argparse
 import logging
-import uuid
 
-from valid import is_fqdn
-from valid import is_url
-from valid import is_oid
-from valid import is_x500
+from valid import is_uuid_version, is_reasonable_quantity, is_uuid_namespace, is_uuid_ns_name
+from generate_uuid import generate_uuid
 
-debug = False
-if debug:
-	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
-	os.system("cls")
-	logging.debug("DEBUG MODE ACTIVE")
-	logging.debug(str(sys.argv))
+#Enabled/Disable Debug Mode
+DEBUGMODE = False
+if DEBUGMODE:
+    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+    logging.debug("DEBUG MODE ACTIVE")
+    logging.debug(str(sys.argv))
 
+#Configure Arguments
 logging.debug("\nConfigure Arguments")
 parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
-parser.add_argument("-v","--version",type=int,default=4,dest="version",metavar="<UUID_VERSION>",help="Specify UUID version: 0/nil, 1, 3, 4, or 5")
-parser.add_argument("-c","--count",type=int,default=1,dest="count",metavar="<COUNT_OF_UUIDS>",help="Specify number of output UUIDs (max. 65536)")
-parser.add_argument("-s","--ns","--namespace",type=str,default="",dest="namespace",metavar="<NAMESPACE>",help="UUID v3 or v5 namespace")
-parser.add_argument("-n","--name",type=str,default="",dest="name",metavar="<URL_FQDN_OID_X500_NAME>",help="Specify UUID v3 or v4 name")
-parser.add_argument("-u","--urn",dest="urn_flag",action="store_true",default=False,help="Specify URN standard prefix")
-parser.add_argument("-U","--uppercase",dest="upper_flag",action="store_true",default=False,help="Non-standard uppercase UUID string")
+parser.add_argument("-v", "--version",
+                    type=int,
+                    default=4,
+                    dest="version",
+                    metavar="<VERSION>",
+                    help="Specify output UUID version (0, 1, 3, 4, or 5)"
+                    )
+parser.add_argument("-q", "--quantity",
+                    type=int,
+                    default=1,
+                    dest="quantity",
+                    metavar="<QUANTITY>",
+                    help="Specify output quanitity (1 - 65536)"
+                    )
+parser.add_argument("--ns", "--namespace",
+                    type=lambda s: s.lower(),
+                    default="",
+                    dest="namespace",
+                    metavar="<NAMESPACE>",
+                    help="UUID v3 or v5 namespace"
+                    )
+parser.add_argument("-n", "--name",
+                    type=str,
+                    default="",
+                    dest="name",
+                    metavar="<NAME>",
+                    help="Specify UUID v3 or v4 name"
+                    )
+parser.add_argument("-u", "--urn",
+                    dest="urn_flag",
+                    action="store_true",
+                    default=False,
+                    help="Specify URN standard prefix"
+                    )
+parser.add_argument("-U", "--uppercase",
+                    dest="upper_flag",
+                    action="store_true",
+                    default=False,
+                    help="Non-standard uppercase UUID string"
+                    )
 args = parser.parse_args()
 
-#sanitise input
-args.namespace = args.namespace.lower()
-
-logging.debug("\nOutput default or given settings")
-logging.debug("\tVersion: " + str(args.version))
-logging.debug("\tCount: " + str(args.count))
-logging.debug("\tNamespace: " + str(args.namespace))
-logging.debug("\tName: " + str(args.name))
-logging.debug("\tURN Mode: " + str(args.urn_flag))
-logging.debug("\tUppercase Mode: " + str(args.upper_flag))
-
-logging.debug("\nCheck settings are valid")
-if re.search(r"^[01345]$",str(args.version)):
-	logging.debug("\tVerion OK")
+#Argument Validation
+logging.debug("\nValidate Arguments")
+#Quanitity Check
+logging.debug("\n\tQuantity: %s", str(args.quantity))
+if not is_reasonable_quantity(args.quantity):
+    parser.error("Not a Valid Quantity")
 else:
-	parser.error("not a valid uuid version (0, 1, 3, 4, 5)")
+    logging.debug("\tQuantity OK")
 
-if (int(args.count) >= 1 and int(args.count) <= 65536):
-	logging.debug("\tCount OK")
+#URN Check
+logging.debug("\n\tURN Mode: %s", str(args.urn_flag))
+
+#Uppercase Check
+logging.debug("\n\tUppercase Mode: %s", str(args.upper_flag))
+
+#Version Check
+logging.debug("\n\tVersion: %s", str(args.version))
+if not is_uuid_version(args.version):
+    parser.error("Not a Valid UUID Version")
 else:
-	parser.error("count value out of limits (1 - 65536)")
+    logging.debug("\tVersion OK")
 
-if (str(args.version) == "3" or str(args.version) == "5"):
-	logging.debug("\tVersion " + str(args.version) + " Namespace and Name Checks")
+    #Versions 0, 1, and 4
+    if (str(args.version) == "0" or str(args.version) == "1" or str(args.version) == "4"):
+        logging.debug("\tNamespace and Name: Not Required")
+        if str(args.namespace) != "":
+            parser.error("Namespace not required for Version " + str(args.version) + " UUID")
+        if str(args.name) != "":
+            parser.error("Name not required for Version " + str(args.version) + " UUID")
 
-	'''
-		uuid.NAMESPACE_DNS
-			When this namespace is specified, the name string is a fully-qualified domain name.
-		uuid.NAMESPACE_URL
-			When this namespace is specified, the name string is a URL.
-		uuid.NAMESPACE_OID
-			When this namespace is specified, the name string is an ISO OID.
-		uuid.NAMESPACE_X500
-			When this namespace is specified, the name string is an X.500 DN in DER or a text output format
-	'''
+    #Versions 3 and 5
+    elif (str(args.version) == "3" or str(args.version) == "5"):
+        logging.debug("\tNamespace and Name: Required")
 
-	if re.search(r"^(DNS|URL|OID|X500)$",str(args.namespace).upper()):
-		logging.debug("\t\tNamespace OK")
-	else:
-		parser.error("valid namespace required for version " + str(args.version) + " uuids (dns, url, oid, or x500)")
+        #Namespace Checking
+        logging.debug("\n\tNamespace: %s", str(args.namespace))
+        if str(args.namespace) == "":
+            parser.error("Namespace required for Version " + str(args.version) + " UUID")
+        elif not is_uuid_namespace(args.namespace):
+            parser.error("Not a Valid Namespace")
+        else:
+            logging.debug("\tNamespace OK")
 
-	if str(args.name) == "":
-		parser.error("name (e.g. url or fqdn) required for version " + str(args.version) + " uuids")
-	else:
-		logging.debug("\t\tName Entered")
-		if str(args.namespace).upper() == "DNS":
-			if is_fqdn(args.name):
-				logging.debug("\t\tValid FQDN")
-			else:
-				parser.error("specified name for uuid v" + str(args.version) + " namespace is not a fqdn")
-		elif str(args.namespace).upper() == "URL":
-			if is_url(args.name):
-				logging.debug("\t\tValid URL")
-			else:
-				parser.error("specified name for uuid v" + str(args.version) + " namespace is not a valid url")
-		elif str(args.namespace).upper() == "OID":
-			if is_oid(args.name):
-				logging.debug("\t\tValid OID")
-			else:
-				parser.error("specified name for uuid v" + str(args.version) + " namespace is not an oid")
-		elif str(args.namespace).upper() == "X500":
-			if is_x500(args.name):
-				logging.debug("\t\tValid X500 DN")
-			else:
-				parser.error("specified name for uuid v" + str(args.version) + " namespace is not an x500 dn")
+        #Namespace & Name Checking
+        logging.debug("\n\tName: %s", str(args.name))
+        if str(args.name) == "":
+            parser.error("Name required for Version " + str(args.version) + " UUID")
+        elif not is_uuid_ns_name(args.namespace, args.name):
+            parser.error("Not a Valid Name for " + str(args.namespace).upper() + " Namespace")
+        else:
+            logging.debug("\tName OK")
 
+    else:
+        pass
 
-else: #not v3/5 so v0/1/4
-	if (str(args.namespace) != "" or str(args.name) != ""):
-		parser.error("name and/or namespace not required/valid for UUID v1, v4 or nil (v0)")
-
-def generate_uuids(version=4,quantity=1,urn_flag=False,namespace="dns",name="example.com",upper_flag=False):
-	i = 1
-	for i in range(i,quantity+1):
-
-		if version == 0:
-			uuidString = "00000000-0000-0000-0000-000000000000"
-		elif version == 1:
-			uuidString = str(uuid.uuid1())
-		elif version == 4:
-			uuidString = str(uuid.uuid4())
-		elif version == 3:
-			if namespace == "dns":
-				uuidString = str(uuid.uuid3(uuid.NAMESPACE_DNS, name))
-			elif namespace == "url":
-				uuidString = str(uuid.uuid3(uuid.NAMESPACE_URL, name))
-			elif namespace == "oid":
-				uuidString = str(uuid.uuid3(uuid.NAMESPACE_OID, name))
-			elif namespace == "x500":
-				uuidString =str(uuid.uuid3(uuid.NAMESPACE_X500, name))
-		elif version == 5:
-			if namespace == "dns":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_DNS, name))
-			elif namespace == "url":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_URL, name))
-			elif namespace == "oid":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_OID, name))
-			elif namespace == "x500":
-				uuidString = str(uuid.uuid5(uuid.NAMESPACE_X500, name))
-
-		if upper_flag: # == True
-			uuidString = uuidString.upper()
-		if urn_flag: # == True
-			uuidString = "urn:uuid:" + uuidString
-
-		print(uuidString)
-
+#Print UUID "q" times
 logging.debug("\nUUIDs:")
-generate_uuids(args.version,args.count,args.urn_flag,args.namespace,args.name,args.upper_flag)
+for i in range(0, args.quantity):
+    output_uuid = generate_uuid(args.version, # pylint: disable=C0103
+                                args.urn_flag,
+                                args.namespace,
+                                args.name,
+                                args.upper_flag
+                                )
+
+    print(output_uuid)
