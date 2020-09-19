@@ -1,25 +1,15 @@
-"""foobar"""
+"""Generate UUIDs using a Simple GUI"""
 import tkinter as tk
 from tkinter import messagebox
 import logging
 from generate_uuid import generate_uuid
 from valid import is_reasonable_quantity
 
-class Celsius:
-    """temp conversion example"""
-    def __init__(self, temperature=1):
-        """foobar"""
-        self.temperature = temperature
-
-    def to_fahrenheit(self):
-        """foobar"""
-        return (self.temperature * 1.8) + 32
-
 class Settings:
-    """store session settings as a class"""
+    """Settings for UUID Generation Class"""
     def __init__(self):
-        """initialise class variables"""
-        logging.debug("initialise settings class")
+        """Initialise Application Settings Class"""
+        logging.debug("Initialise Application Settings Class")
         self.quantity = 1
         self.urn_flag = False
         self.upper_flag = False
@@ -30,30 +20,29 @@ class Settings:
 def about():
     """Display About Message"""
     about_me = ["Unique: The UUID Generator",
-                "Version 4",
+                "Version 4.0.0",
                 "MIT Licence",
                 "Adam Bonner, 2020",
                 "https://github.com/adambonneruk/uuid-generator"]
     messagebox.showinfo("About", "\n".join(about_me))
 
 def add_uuids_to_pta(version):
-    """Append a new UUID to the End of the Plain Text Area"""
-    logging.debug("----------------------------------------")
-    logging.debug("generating uuid(s), heres some settings:")
-    logging.debug("current_settings.urn_flag is %s", str(current_settings.urn_flag))
-    logging.debug("current_settings.namespace is %s", str(current_settings.namespace))
-    logging.debug("current_settings.name is %s", str(current_settings.name))
-    logging.debug("current_settings.upper_flag is %s", str(current_settings.upper_flag))
-    logging.debug("...and im going to do it %s times", str(current_settings.quantity))
-    logging.debug("...afor a version %s uuid", str(version))
+    """Append a new UUID(s) to the Plain Text Area"""
+    logging.debug("---------------------------------------------")
+    logging.debug("Append a new UUID(s) to the \"Plain Text Area\"")
+
+    #Settings
+    logging.debug("Version: %s", str(version))
+    if version == 3 or version == 5:
+        logging.debug("\tNamespace:%s", str(current_settings.namespace).upper())
+        logging.debug("\tName: %s", str(current_settings.name))
+    logging.debug("Quantity: %s", str(current_settings.quantity))
+    logging.debug("URN Prefix?: %s", str(current_settings.urn_flag))
+    logging.debug("Uppercase?: %s", str(current_settings.upper_flag))
 
     for _ in range(0, current_settings.quantity):
-        # Get Plain Text Area as text_blob
-        logging.debug("Get Plain Text Area as text_blob")
-        text_blob = plain_text_area.get('1.0', "end"+'-1c')
-
         # Generate a UUID
-        logging.debug("Generate a UUID")
+        logging.debug("Generate a UUID:")
         generated_uuid = generate_uuid(version,
                                        current_settings.urn_flag,
                                        current_settings.namespace,
@@ -61,11 +50,17 @@ def add_uuids_to_pta(version):
                                        current_settings.upper_flag)
         logging.debug(generated_uuid)
 
-        # Insert text_blob into Plain Text Area with new UUID
-        logging.debug("Insert text_blob into Plain Text Area with generated UUID")
+        # Get contents of "Plain Text Area" as text_blob
+        logging.debug("Get contents of \"Plain Text Area\" as text_blob")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+
+        #If the "Plain Text Area" isn't Empty, Newline Required
         if text_blob != "":
-            logging.debug("Plain Text Area not empty, newline required")
+            logging.debug("\"Plain Text Area\" isn't Empty, Newline Required")
             plain_text_area.insert("end", "\n")
+
+        # Insert text_blob into Plain Text Area with new UUID
+        logging.debug("Insert UUID at \"end\" of plain_text_area")
         plain_text_area.insert("end", generated_uuid)
 
 def exit_are_you_sure():
@@ -80,53 +75,41 @@ def exit_are_you_sure():
         logging.debug("Quit")
         window.destroy()
 
-#def onehundred():
-#    """scaffolding, please delete"""
-#    current_settings.quantity = 100
-
-def options_popup():
-    """foobar"""
-    #Creating Popup for Options
-    logging.debug("Creating Popup for Options")
-    popup = tk.Toplevel(window)
-    popup.transient(window)
-    popup.title("Options")
-    popup.geometry("+150+150")
-    popup.iconbitmap("./icon/icon.ico")
-
-    # QUANTITY ##################################################################
-
+def options_quantity(popup):
+    """Create Quantity Entry Box"""
+    logging.debug("Create Quantity Entry Box")
     quant_var = tk.StringVar()
 
-    #Log currentsetting.quantity
-    logging.debug("Log current_setting.quantity")
-    logging.debug(current_settings.quantity)
+    # Log current_settings.quantity
+    logging.debug("Original Quantity: %s", str(current_settings.quantity))
     quant_var.set(str(current_settings.quantity))
-
     current_settings.quant_colour = "pale green"
+
+    #Create Entry Box with current colour
     quant = tk.Entry(popup, width=6, textvariable=quant_var, bg=current_settings.quant_colour)
     tk.Label(popup, text="Quantity").grid(sticky="w", padx=2, row=0, column=0)
     quant.grid(row=0, column=1, pady=8)
 
     def set_quant():
-        logging.debug(quant_var.get())
+        """Quanitiy Set Button Pressed"""
+        logging.debug("Event: Quanitiy Set Button Pressed")
         new_quant = quant_var.get()
         try:
             int(new_quant)
-            logging.debug("yay its an int")
+            logging.debug("\tValue is an Integer")
             if is_reasonable_quantity(int(new_quant)):
-                #set currentsetting.quantity
-                logging.debug("set current_setting.quantity")
+                logging.debug("\t...and of a reasonable quanitity")
+                logging.debug("\tSaving new quanitity is current_settings")
                 current_settings.quantity = int(new_quant)
                 current_settings.quant_colour = "pale green"
                 quant.config(bg=current_settings.quant_colour) #refresh
             else:
-                logging.debug("eek, too big (or small)")
+                logging.debug("\t...but too low or high")
                 current_settings.quant_colour = "light goldenrod"
                 quant.config(bg=current_settings.quant_colour) #refresh
                 messagebox.showwarning("Quantity", "Value too large (1 - 65536)")
         except ValueError:
-            logging.debug("nay, not an int")
+            logging.debug("\tValue is not an Integer")
             current_settings.quant_colour = "light coral"
             quant.config(bg=current_settings.quant_colour) #refresh
             messagebox.showerror("Quantity", "Value not an integer")
@@ -134,32 +117,35 @@ def options_popup():
     button = tk.Button(popup, text="Set", command=set_quant)
     button.grid(row=0, column=2)
 
-    # URN PREFIX ##################################################################
+def options_urnprefix(popup):
+    """Create URN Prefix Option Box"""
+    logging.debug("Create URN Prefix Option Box")
+
     prefixes_var = tk.StringVar()
     prefixes = {"Disabled", "Enabled"}
 
-    # Set prefixes_var.set based on current_settings Class
+    # Set and Log current_settings.urn_flag
+    logging.debug("Original URN Prefix Flag: %s", str(current_settings.urn_flag))
     if current_settings.urn_flag:
-        logging.debug("urn currently true so show enabled")
         prefixes_var.set("Enabled")
     else:
-        logging.debug("urn currently false so show disabled")
         prefixes_var.set("Disabled")
 
+    # Create Option Box
     tk.Label(popup, text="URN Prefix").grid(sticky="w", padx=2, row=1, column=0)
     prefixes_popup = tk.OptionMenu(popup, prefixes_var, *prefixes)
     prefixes_popup.grid(row=1, column=1, columnspan=2, padx=2, pady=2)
 
     def change_prefix(*args):
         """Changing the Prefix"""
-        #Grab Prefix Selection
-        logging.debug("Grab Prefix Selection")
-        logging.debug(args)
+        logging.debug("Event: Changing the URN Prefix Flag with the following arguments: %s",
+                      str(args))
+
         current_prefix = prefixes_var.get()
-        logging.debug(current_prefix)
+        logging.debug("\tNew Selection is: %s", current_prefix)
 
         #Update current_settings Class
-        logging.debug("Update current_settings Class")
+        logging.debug("\tSaving new URN Prefix Flag choice in current_settings")
         if current_prefix == "Enabled":
             current_settings.urn_flag = True
         else:
@@ -167,16 +153,18 @@ def options_popup():
 
     prefixes_var.trace('w', change_prefix)
 
-    # UPPERCASE #################################################################
+def options_uppercase(popup):
+    """Create Uppercase Option Box"""
+    logging.debug("Create Uppercase Option Box")
+
     uppercase_var = tk.StringVar()
     uppercase = {"Enabled", "Disabled"}
 
-    # Set uppercase_var.set based on current_settings Class
+    # Set and Log current_settings.upper_flag
+    logging.debug("Original Uppercase Flag: %s", str(current_settings.upper_flag))
     if current_settings.upper_flag:
-        logging.debug("upper currently true so show enabled")
         uppercase_var.set("Enabled")
     else:
-        logging.debug("upper currently false so show disabled")
         uppercase_var.set("Disabled")
 
     tk.Label(popup, text="Uppercase").grid(sticky="w", padx=2, row=2, column=0)
@@ -184,21 +172,40 @@ def options_popup():
     uppercase_popup.grid(row=2, column=1, columnspan=2, padx=2, pady=2)
 
     def change_uppercase(*args):
-        """Changing the uppercase"""
-        #Grab uppercase Selection
-        logging.debug("Grab uppercase Selection")
-        logging.debug(args)
+        """Changing the Prefix"""
+        logging.debug("Event: Changing the Uppercase Flag with the following arguments: %s",
+                      str(args))
+
         current_uppercase = uppercase_var.get()
-        logging.debug(current_uppercase)
+        logging.debug("\tNew Selection is: %s", current_uppercase)
 
         #Update current_settings Class
-        logging.debug("Update current_settings Class")
+        logging.debug("\tSaving new Uppercase Flag choice in current_settings")
         if current_uppercase == "Enabled":
             current_settings.upper_flag = True
         else:
             current_settings.upper_flag = False
 
     uppercase_var.trace('w', change_uppercase)
+
+def options_popup():
+    """Create a Small Popup Window to Set Application Options"""
+    logging.debug("------------------------------------------------------")
+    logging.debug("Create a Small Popup Window to Set Application Options")
+    popup = tk.Toplevel(window)
+    popup.transient(window)
+    popup.title("Options")
+    popup.geometry("+150+150")
+    popup.iconbitmap("./icon/icon.ico")
+
+    #Quanitity Entrybox
+    options_quantity(popup)
+
+    #URN Prefix Drop Down
+    options_urnprefix(popup)
+
+    #URN Prefix Drop Down
+    options_uppercase(popup)
 
 def create_menu_bar():
     """creates the menu bar, including all menus and commands"""
@@ -243,23 +250,18 @@ def create_menu_bar():
 DEBUG = True
 if DEBUG:
     logging.basicConfig(format='%(message)s', level=logging.DEBUG)
-    logging.debug("DEBUG MODE ACTIVE")
-
-human = Celsius()
-human.temperature = 37
-print(human.temperature)
+    logging.debug("-----------------\nDEBUG MODE ACTIVE\n-----------------")
 
 current_settings = Settings()
 
 # Create the Window
-logging.debug("Create the Window")
+logging.info("Create the Window")
 window = tk.Tk()
 window.title("Unique: UUID Generator")
 window.iconbitmap("./icon/icon.ico")
 window.geometry("385x275+100+100")
-
-#Close Buttom Prompt
-#window.protocol("WM_DELETE_WINDOW", lambda: exit_are_you_sure(window))
+window.wm_attributes("-topmost", 1) #always on top
+#window.protocol("WM_DELETE_WINDOW", lambda: exit_are_you_sure(window)) #Close Buttom Prompt
 
 # Create Plain Text Area
 logging.debug("Create Plain Text Area")
@@ -274,6 +276,6 @@ logging.debug("Create the Menu Bar")
 create_menu_bar()
 
 # Start the Window Main Loop
-logging.debug("Start tk Window Main Loop")
+logging.debug("------------------------------\nStart Tkinter Window Main Loop")
 window.mainloop()
-logging.debug("Stop tk Window Main Loop")
+logging.debug("=============================\nStop Tkinter Window Main Loop")
