@@ -56,7 +56,7 @@ The following Menu options are availble:
 ## Command Line / Bash (```unique.py```)
 ### Summary
 The following arguments are compatible with the respective UUID-version generation.
-Version | Switch | Specifics                  | Additional Options (___Bold = Mandatory__)
+Version | Switch | Specifics                  | Additional Options (__Bold = Mandatory__)
 --------|--------|----------------------------|-------------------------------------------
 0 / Nil | -v 0   | Special Nil UUID           | -q, -u, -U
 1       | -v 1   | Datetime and MAC address   | -q, -u, -U
@@ -190,7 +190,7 @@ The following software was used to create this project:
 * Windows Icon (```.ico```) file created with: [IcoFX Portable (1.6.4 Rev 3)](https://portableapps.com/apps/graphics_pictures/icofx_portable)
 * IDE: [Microsoft Visual Studio Code](https://code.visualstudio.com)
 
-# miscellaneous
+# Miscellaneous
 
 ## Project Icon
 The following project icon was created with paint.net. Using a screenshot of Powershell executing the creation of 20 Version 1 UUIDs. 4 image resolutions where then produced and compiled into the single compressed ```.ico``` format.
@@ -207,7 +207,7 @@ __32x32:__
 
 ![](icon/32.png)
 
-__16x16:__ 
+__16x16:__
 
 ![](icon/16.png)
 
