@@ -25,8 +25,6 @@ A universally unique identifier (UUID) is a 128-bit number used to identify info
 * [X.500 Distinguished Names](https://www.ibm.com/support/knowledgecenter/en/SSYKE2_7.0.0/com.ibm.java.security.component.70.doc/security-component/keytoolDocs/x500dnames.html)
 * [MAC Address](https://www.ibm.com/support/knowledgecenter/en/SSYKE2_7.0.0/com.ibm.java.security.component.70.doc/security-component/keytoolDocs/x500dnames.html)
 
-
-
 # Usage
 ## Grapphical User Interface (```unique_gui.py```)
 Using the ```tkinter``` library, a gui is available to generate UUIDs for those not comfortable with the command line. Simply open/execute ```% python3 unique_gui.py```/```unique-gui.exe``` to be presented with the following grpahical interface:
@@ -195,21 +193,9 @@ The following software was used to create this project:
 ## Project Icon
 The following project icon was created with paint.net. Using a screenshot of Powershell executing the creation of 20 Version 1 UUIDs. 4 image resolutions where then produced and compiled into the single compressed ```.ico``` format.
 
-__256x256:__
-
-![](icon/256.png)
-
-__48x48:__
-
-![](icon/48.png)
-
-__32x32:__
-
-![](icon/32.png)
-
-__16x16:__
-
-![](icon/16.png)
+![](icon/256.png) | ![](icon/48.png) | ![](icon/32.png) | ![](icon/16.png)
+------------------|------------------|------------------|-----------------
+__256x256:__      | __48x48:__       | __32x32:__       | __16x16:__
 
 ## Known Limitations
 The following are known limitations and probably wont get fixed. Feel free to raise a pull request if you can help:
