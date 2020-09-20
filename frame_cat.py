@@ -1,16 +1,16 @@
 #https://pythonbasics.org/tkinter-frame/
-from tkinter import *
+import tkinter as tk
 
-root = Tk()
+root = tk.Tk()
 
-textLabel = Label(root,
+textLabel = tk.Label(root,
                   text="Label",
-                  justify=LEFT,
+                  justify=tk.LEFT,
                   padx=10)
-textLabel.pack(side=LEFT)
+textLabel.pack(side=tk.LEFT)
 
-photo = PhotoImage(file="cat.png")
-imgLabel = Label(root, image=photo)
-imgLabel.pack(side=LEFT)
+photo = tk.PhotoImage(file="cat.png")
+imgLabel = tk.Label(root, image=photo)
+imgLabel.pack(side=tk.LEFT)
 
-mainloop()
+tk.mainloop()
