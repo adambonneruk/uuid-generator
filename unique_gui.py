@@ -1,12 +1,15 @@
 """Generate UUIDs using a Simple GUI"""
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import filedialog
 import logging
+import re
 from generate_uuid import generate_uuid
 from valid import is_reasonable_quantity
 
 class Settings:
-    """Settings for UUID Generation Class"""
+    """Settings for UUID Generation Class
+       Learning Classes from: https://www.programiz.com/python-programming/property"""
     def __init__(self):
         """Initialise Application Settings Class"""
         logging.debug("Initialise Application Settings Class")
@@ -16,6 +19,26 @@ class Settings:
         self.namespace = ""
         self.name = ""
         self.quant_colour = "pale green"
+        self.filename = ""
+        self.title = ""
+
+    def short_fn(self):
+        """Return just the short name (instead of whole path) of the current_settings.filename"""
+        try:
+            shortfilename = re.search(r"[a-zA-Z0-9#! ._\-+\(\)]+?$", self.filename).group()
+            #logging.debug("\tRegEx Match: %s", shortfilename)
+        except AttributeError:
+            shortfilename = ""
+        return str(shortfilename)
+
+    def window_title(self):
+        """Create or Update the window title using current file name (if applicable)"""
+        if self.short_fn() != "":
+            title = "Unique: UUID Generator - " + self.short_fn()
+        else:
+            title = "Unique: UUID Generator"
+
+        window.title(title)
 
 def about():
     """Display About Message"""
@@ -25,6 +48,53 @@ def about():
                 "Adam Bonner, 2020",
                 "https://github.com/adambonneruk/uuid-generator"]
     messagebox.showinfo("About", "\n".join(about_me))
+
+def file_save_as():
+    """Prompt for Save As File Location and Write to the File"""
+    logging.debug("---------")
+    logging.debug("File: Save As")
+    logging.debug("\tOpening Save As FileDialog")
+    persisted_file = filedialog.asksaveasfile(initialdir="~",
+                                              defaultextension='.txt',
+                                              mode='w',
+                                              title="Save As",
+                                              filetypes=[("Text Documents", ".txt"),
+                                                         ("UUID Plain Text", ".uuid"),
+                                                         ("All Files", ".*")])
+
+    if persisted_file is not None:
+        logging.debug("\tSaving...")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        persisted_file.write(text_blob)
+        persisted_file.close()
+        logging.debug("\tSaved")
+
+        # Saved File Settings
+        current_settings.filename = str(persisted_file.name)
+        logging.debug("\tFilename: %s", current_settings.filename)
+
+        # Refresh Window Title
+        current_settings.window_title()
+
+    else:
+        logging.debug("\tCancelled")
+
+def file_new():
+    """Empties the Plain Text Area (prompting to save a non-empty area first)"""
+    logging.debug("---------")
+    logging.debug("File: New")
+    logging.debug("Getting contents of \"Plain Text Area\"")
+    text_blob = plain_text_area.get('1.0', "end"+'-1c')
+    logging.debug(text_blob)
+
+    """if contents != "":
+        if messagebox.askyesnocancel("Save Changes", "Do you want to Save your changes? ", default='yes'):
+            savef()
+        elif "no":
+            text.delete('1.0', END)
+        else:
+            text.config(text=contents)
+    """
 
 def add_uuids_to_pta(version):
     """Append a new UUID(s) to the Plain Text Area"""
@@ -214,12 +284,12 @@ def create_menu_bar():
     # Create the File Menu
     logging.debug("Create the File Menu")
     file_menu = tk.Menu(menu_bar, tearoff=0)
-    file_menu.add_command(label="New")
-    file_menu.add_command(label="Open")
-    file_menu.add_command(label="Save")
-    file_menu.add_separator()
-    file_menu.add_command(label="Exit", command=exit_are_you_sure)
-    #menu_bar.add_cascade(label="File", menu=file_menu)
+    file_menu.add_command(label="New", command=file_new)
+    #file_menu.add_command(label="Open")
+    file_menu.add_command(label="Save As...", command=file_save_as)
+    #file_menu.add_separator()
+    #file_menu.add_command(label="Exit", command=exit_are_you_sure)
+    menu_bar.add_cascade(label="File", menu=file_menu)
 
     # Create the Generate Menu
     logging.debug("Create the Generate Menu")
@@ -257,7 +327,8 @@ current_settings = Settings()
 # Create the Window
 logging.info("Create the Window")
 window = tk.Tk()
-window.title("Unique: UUID Generator")
+#window.title(current_settings.title)
+current_settings.window_title()
 window.iconbitmap("./icon/icon.ico")
 window.geometry("385x275+100+100")
 window.wm_attributes("-topmost", 1) #always on top
@@ -270,6 +341,11 @@ scroll_bar = tk.Scrollbar(window, command=plain_text_area.yview)
 plain_text_area.configure(yscrollcommand=scroll_bar.set, font=("Lucida Console", 10))
 scroll_bar.pack(side='right', fill="both")
 plain_text_area.pack(fill="both", expand="yes")
+
+#debugging saving
+logging.debug("Current Filename: \"%s\"", current_settings.short_fn())
+current_settings.quantity = 5
+add_uuids_to_pta(1)
 
 # Create the Menu Bar
 logging.debug("Create the Menu Bar")
