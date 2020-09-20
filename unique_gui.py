@@ -174,7 +174,7 @@ def file_new():
         else: #no file, and no text area contents
             logging.debug("\tNo content in the \"Plain Text Area\" detected, Do Nothing")
 
-def file_open():
+def file_open(): #ctrl o
     """Display are you sure message before opening file, then load the new file in"""
     logging.debug("----------\nFile: Open")
     if current_settings.filename != "":
@@ -204,7 +204,7 @@ def file_open():
     else:
         logging.debug("\twe don't have an existing savefile")
         text_blob = plain_text_area.get('1.0', "end"+'-1c')
-        if text_blob != "": #plain text is not empty
+        if text_blob.strip != "": #plain text is not empty
             quit_ask = messagebox.askyesnocancel("Untitled", "Save changes to \"Untitled\"?")
             if quit_ask: #Yes
                 logging.debug("\tOption: Save & Open")
@@ -218,6 +218,8 @@ def file_open():
         else: #no file, and no text area contents
             logging.debug("\tNo content in the \"Plain Text Area\" detected, Just Open")
             file_load()
+
+    return "break" #fix for default ctrl + o binding
 
 def add_uuids_to_pta(version):
     """Append a new UUID(s) to the Plain Text Area"""
@@ -486,15 +488,15 @@ menu_bar.add_cascade(label="File", menu=file_menu)
 # Create the Generate Menu
 logging.debug("Create the Generate Menu")
 uuid_menu = tk.Menu(menu_bar, tearoff=0)
-uuid_menu.add_command(label="Version 1", accelerator='Ctrl+1', compound=tk.LEFT,
+uuid_menu.add_command(label="Version 1 UUID", accelerator='Ctrl+1', compound=tk.LEFT,
                       image=uuid1_icon, underline=0, command=lambda: add_uuids_to_pta(1))
-uuid_menu.add_command(label="Version 4", accelerator='Ctrl+4', compound=tk.LEFT,
+uuid_menu.add_command(label="Version 4 UUID", accelerator='Ctrl+4', compound=tk.LEFT,
                       image=uuid4_icon, underline=0, command=lambda: add_uuids_to_pta(4))
 uuid_menu.add_separator()
-uuid_menu.add_command(label="Version 3", accelerator='Ctrl+3', compound=tk.LEFT,
+uuid_menu.add_command(label="Version 3 UUID", accelerator='Ctrl+3', compound=tk.LEFT,
                       image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3),
                       state="disabled")
-uuid_menu.add_command(label="Version 5", accelerator='Ctrl+5', compound=tk.LEFT,
+uuid_menu.add_command(label="Version 5 UUID", accelerator='Ctrl+5', compound=tk.LEFT,
                       image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5),
                       state="disabled")
 uuid_menu.add_separator()
@@ -525,6 +527,23 @@ scroll_bar = tk.Scrollbar(window, command=plain_text_area.yview)
 plain_text_area.configure(yscrollcommand=scroll_bar.set, font=("Lucida Console", 10))
 scroll_bar.pack(side='right', fill="both")
 plain_text_area.pack(fill="both", expand="yes")
+
+# Bind Keyboard Shortcuts to the Plain Text Area
+window.bind_all('<Control-Key-N>', lambda event: file_new())
+window.bind_all('<Control-Key-n>', lambda event: file_new())
+window.bind_all('<Control-Key-S>', lambda event: file_save())
+window.bind_all('<Control-Key-s>', lambda event: file_save())
+window.bind_all('<Control-Key-0>', lambda event: add_uuids_to_pta(0))
+window.bind_all('<Control-Key-1>', lambda event: add_uuids_to_pta(1))
+window.bind_all('<Control-Key-4>', lambda event: add_uuids_to_pta(4))
+window.bind('<F9>', lambda event: options_popup())
+window.bind('<F1>', lambda event: about())
+
+# Fix for Default Ctrl+O Binding
+window.bind('<Control-Key-O>', lambda event: file_open())
+window.bind('<Control-Key-o>', lambda event: file_open())
+plain_text_area.bind('<Control-Key-o>', lambda event: file_open())
+plain_text_area.bind('<Control-Key-o>', lambda event: file_open())
 
 # Start the Window Main Loop
 logging.debug("------------------------------\nStart Tkinter Window Main Loop")
