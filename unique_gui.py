@@ -51,8 +51,8 @@ def about():
 
 def file_save_as():
     """Prompt for Save As File Location and Write to the File"""
-    logging.debug("---------")
-    logging.debug("File: Save As")
+    logging.debug("----------------")
+    logging.debug("File: Save As...")
     logging.debug("\tOpening Save As FileDialog")
     persisted_file = filedialog.asksaveasfile(initialdir="~",
                                               defaultextension='.txt',
@@ -79,6 +79,30 @@ def file_save_as():
     else:
         logging.debug("\tCancelled")
 
+def file_save():
+    """Save to existing file, or Prompt for Save As if no existning file"""
+    logging.debug("----------")
+    logging.debug("File: Save")
+
+    if current_settings.filename == "":
+        logging.debug("\tNo File!, Launch Save As...")
+        file_save_as()
+    else:
+        logging.debug("\tWe have a file: %s", current_settings.filename)
+
+        # Compare text_blob to file contents
+        logging.debug("\tCompare text_blob to file contents")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        persisted_file = open(current_settings.filename, "r")
+        if text_blob == persisted_file.read():
+            logging.debug("\tPlain Text Area and File Contents are the Same, No Save")
+        else:
+            logging.debug("\tPlain Text Area and File Contents are Different, Saving...")
+            persisted_file = open(current_settings.filename, "w")
+            persisted_file.write(text_blob)
+            persisted_file.close()
+            logging.debug("\t...Saved")
+
 def file_new():
     """Empties the Plain Text Area (prompting to save a non-empty area first)"""
     logging.debug("---------")
@@ -87,6 +111,7 @@ def file_new():
     text_blob = plain_text_area.get('1.0', "end"+'-1c')
     logging.debug(text_blob)
 
+    #if text_block is not empty, then prompt to save changes
     """if contents != "":
         if messagebox.askyesnocancel("Save Changes", "Do you want to Save your changes? ", default='yes'):
             savef()
@@ -286,6 +311,7 @@ def create_menu_bar():
     file_menu = tk.Menu(menu_bar, tearoff=0)
     file_menu.add_command(label="New", command=file_new)
     #file_menu.add_command(label="Open")
+    file_menu.add_command(label="Save", command=file_save)
     file_menu.add_command(label="Save As...", command=file_save_as)
     #file_menu.add_separator()
     #file_menu.add_command(label="Exit", command=exit_are_you_sure)
