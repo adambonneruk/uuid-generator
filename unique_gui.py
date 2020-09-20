@@ -1,6 +1,7 @@
 """Generate UUIDs using a Simple GUI"""
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 import logging
 from generate_uuid import generate_uuid
 from valid import is_reasonable_quantity
@@ -16,6 +17,7 @@ class Settings:
         self.namespace = ""
         self.name = ""
         self.quant_colour = "pale green"
+        self.dark_mode = False
 
 def about():
     """Display About Message"""
@@ -267,7 +269,7 @@ window.wm_attributes("-topmost", 1) #always on top
 logging.debug("Create Plain Text Area")
 plain_text_area = tk.Text(window)
 scroll_bar = tk.Scrollbar(window, command=plain_text_area.yview)
-plain_text_area.configure(yscrollcommand=scroll_bar.set, font=("Lucida Console", 10))
+plain_text_area.configure(yscrollcommand=scroll_bar.set, font=("Lucida Console", 10), bg="#1E1E1E", fg="#D4D4D4", insertbackground="#D4D4D4")
 scroll_bar.pack(side='right', fill="both")
 plain_text_area.pack(fill="both", expand="yes")
 
