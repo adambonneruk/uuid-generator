@@ -189,6 +189,7 @@ def file_open(): #ctrl o
 
             if quit_ask: #Yes
                 logging.debug("\tOption: Save & Open")
+                file_save()
                 file_load()
 
             elif quit_ask is None: #Cancel
