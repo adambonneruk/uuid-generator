@@ -49,6 +49,12 @@ def about():
                 "https://github.com/adambonneruk/uuid-generator"]
     messagebox.showinfo("About", "\n".join(about_me))
 
+def empty_pta():
+    """Empty the plain text area and reset the current filename"""
+    plain_text_area.delete('1.0', "end")
+    current_settings.filename = ""
+    current_settings.window_title()
+
 def file_save_as():
     """Prompt for Save As File Location and Write to the File"""
     logging.debug("----------------")
@@ -104,34 +110,48 @@ def file_save():
             logging.debug("\t...Saved")
 
 def file_new():
-    """Empties the Plain Text Area (prompting to save a non-empty area first)"""
-    logging.debug("---------")
-    logging.debug("File: New")
-    logging.debug("\tGetting contents of \"Plain Text Area\"")
-    text_blob = plain_text_area.get('1.0', "end"+'-1c')
-    #logging.debug(text_blob)
+    """Display are you sure message before emptying window"""
+    logging.debug("---------\nFile: New")
+    if current_settings.filename != "":
+        logging.debug("\twe have an existing savefile")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        persisted_file = open(current_settings.filename, "r")
+        if text_blob != persisted_file.read():
+            logging.debug("\tthere are changes")
 
-    #Does the plain text area have content?
-    if text_blob != "":
-        logging.debug("\tContent in the \"Plain Text Area\" detected")
+            message = "Save changes to " + current_settings.short_fn() + "?"
+            quit_ask = messagebox.askyesnocancel(current_settings.short_fn(), message)
 
+            if quit_ask: #Yes
+                logging.debug("\tOption: Save & New")
+                empty_pta()
 
+            elif quit_ask is None: #Cancel
+                logging.debug("\tOption: Cancel")
+            else: #No
+                logging.debug("\tOption: New")
+                empty_pta()
 
+        else: #theres no changes
+            logging.debug("\tthere are no changes")
+            empty_pta()
 
     else:
-        logging.debug("\tNo content in the \"Plain Text Area\" detected, Do Nothing")
-
-
-
-    #if text_block is not empty, then prompt to save changes
-    """if contents != "":
-        if messagebox.askyesnocancel("Save Changes", "Do you want to Save your changes? ", default='yes'):
-            savef()
-        elif "no":
-            text.delete('1.0', END)
-        else:
-            text.config(text=contents)
-    """
+        logging.debug("\twe don't have an existing savefile")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        if text_blob != "": #plain text is not empty
+            quit_ask = messagebox.askyesnocancel("New", "Save changes to \"Untitled\"?")
+            if quit_ask: #Yes
+                logging.debug("\tOption: Save & New")
+                file_save()
+                empty_pta()
+            elif quit_ask is None: #Cancel
+                logging.debug("\tOption: Cancel")
+            else: #No
+                logging.debug("\tOption: New")
+                empty_pta()
+        else: #no file, and no text area contents
+            logging.debug("\tNo content in the \"Plain Text Area\" detected, Do Nothing")
 
 def add_uuids_to_pta(version):
     """Append a new UUID(s) to the Plain Text Area"""
