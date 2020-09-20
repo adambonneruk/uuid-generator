@@ -5,7 +5,7 @@ import codecs
 
 def shorten_uuid(input_uuid):
     """convert hexidecimal uuid to base64"""
-    logging.debug("\nshorten_uuid():")
+    logging.debug("shorten_uuid():")
 
     str_uuid = str(input_uuid)
     logging.debug("str_uuid: %s", str_uuid)

@@ -50,12 +50,19 @@ parser.add_argument("-u", "--urn",
                     default=False,
                     help="Specify URN standard prefix"
                     )
-parser.add_argument("-U", "--uppercase",
-                    dest="upper_flag",
-                    action="store_true",
-                    default=False,
-                    help="Non-standard uppercase UUID string"
-                    )
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-U", "--uppercase",
+                   dest="upper_flag",
+                   action="store_true",
+                   default=False,
+                   help="Non-standard uppercase UUID string"
+                   )
+group.add_argument("-s", "--short",
+                   dest="short_flag",
+                   action="store_true",
+                   default=False,
+                   help="Shortened UUID using Base64 Encoding"
+                   )
 args = parser.parse_args()
 
 #Argument Validation
@@ -71,7 +78,10 @@ else:
 logging.debug("\n\tURN Mode: %s", str(args.urn_flag))
 
 #Uppercase Check
-logging.debug("\n\tUppercase Mode: %s", str(args.upper_flag))
+logging.debug("\tUppercase Mode: %s", str(args.upper_flag))
+
+#Shorten with Base64 Check
+logging.debug("\tBase64 Mode: %s", str(args.short_flag))
 
 #Version Check
 logging.debug("\n\tVersion: %s", str(args.version))
@@ -120,7 +130,8 @@ for i in range(0, args.quantity):
                                 args.urn_flag,
                                 args.namespace,
                                 args.name,
-                                args.upper_flag
+                                args.upper_flag,
+                                args.short_flag
                                 )
 
     print(output_uuid)

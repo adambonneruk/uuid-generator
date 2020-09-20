@@ -1,6 +1,7 @@
 """Functions in this module are independenant of the unique function that calls them.
 Therefore there is the asumption they could work in other scenarios too."""
 import uuid
+from short import shorten_uuid
 
 def uuid_0():
     """returns a special nil uuid"""
@@ -40,7 +41,8 @@ def uuid_5(namespace, name):
 
     return uuid5_string
 
-def generate_uuid(version=4, urn_flag=False, namespace="dns", name="example.com", upper_flag=False):
+def generate_uuid(version=4, urn_flag=False, namespace="dns",
+                  name="example.com", upper_flag=False, short_flag=False):
     """Generate UUID passing in a number of flags for the configuration of the output string"""
 
     if version == 0:
@@ -56,6 +58,9 @@ def generate_uuid(version=4, urn_flag=False, namespace="dns", name="example.com"
 
     if upper_flag:
         uuid_string = uuid_string.upper()
+
+    if short_flag:
+        uuid_string = shorten_uuid(uuid_string)
 
     if urn_flag:
         uuid_string = "urn:uuid:" + uuid_string
