@@ -107,9 +107,21 @@ def file_new():
     """Empties the Plain Text Area (prompting to save a non-empty area first)"""
     logging.debug("---------")
     logging.debug("File: New")
-    logging.debug("Getting contents of \"Plain Text Area\"")
+    logging.debug("\tGetting contents of \"Plain Text Area\"")
     text_blob = plain_text_area.get('1.0', "end"+'-1c')
-    logging.debug(text_blob)
+    #logging.debug(text_blob)
+
+    #Does the plain text area have content?
+    if text_blob != "":
+        logging.debug("\tContent in the \"Plain Text Area\" detected")
+
+
+
+
+    else:
+        logging.debug("\tNo content in the \"Plain Text Area\" detected, Do Nothing")
+
+
 
     #if text_block is not empty, then prompt to save changes
     """if contents != "":
@@ -160,15 +172,47 @@ def add_uuids_to_pta(version):
 
 def exit_are_you_sure():
     """Display exit message before destorying window"""
-    quit_ask = messagebox.askyesnocancel("Save", "Save changes to file?")
-    if quit_ask:
-        logging.debug("Save & Quit")
-        # Save Logic Here
-    elif quit_ask is None:
-        logging.debug("Cancel")
+    logging.debug("----\nExit")
+    if current_settings.filename != "":
+        logging.debug("\twe have an existing savefile")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        persisted_file = open(current_settings.filename, "r")
+        if text_blob != persisted_file.read():
+            logging.debug("\tthere are changes")
+
+            message = "Save changes to " + current_settings.short_fn() + "?"
+            quit_ask = messagebox.askyesnocancel(current_settings.short_fn(), message)
+
+            if quit_ask: #Yes
+                logging.debug("\tOption: Save & Quit")
+                file_save()
+                window.destroy()
+            elif quit_ask is None: #Cancel
+                logging.debug("\tOption: Cancel")
+            else: #No
+                logging.debug("\tOption: Quit")
+                window.destroy()
+
+        else: #theres no changes
+            logging.debug("\tthere are no changes")
+            window.destroy()
+
     else:
-        logging.debug("Quit")
-        window.destroy()
+        logging.debug("\twe don't have an existing savefile")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        if text_blob != "": #plain text is not empty
+            quit_ask = messagebox.askyesnocancel("Quit", "Save changes to \"Untitled\"?")
+            if quit_ask: #Yes
+                logging.debug("\tOption: Save & Quit")
+                file_save()
+                window.destroy()
+            elif quit_ask is None: #Cancel
+                logging.debug("\tOption: Cancel")
+            else: #No
+                logging.debug("\tOption: Quit")
+                window.destroy()
+        else: #no file, and no text area contents
+            window.destroy()
 
 def options_quantity(popup):
     """Create Quantity Entry Box"""
@@ -313,8 +357,8 @@ def create_menu_bar():
     #file_menu.add_command(label="Open")
     file_menu.add_command(label="Save", command=file_save)
     file_menu.add_command(label="Save As...", command=file_save_as)
-    #file_menu.add_separator()
-    #file_menu.add_command(label="Exit", command=exit_are_you_sure)
+    file_menu.add_separator()
+    file_menu.add_command(label="Exit", command=exit_are_you_sure)
     menu_bar.add_cascade(label="File", menu=file_menu)
 
     # Create the Generate Menu
