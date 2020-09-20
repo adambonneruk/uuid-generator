@@ -488,7 +488,7 @@ current_settings.window_title()
 window.iconbitmap("./icon/icon.ico")
 window.geometry("385x275+100+100")
 window.wm_attributes("-topmost", 1) #always on top
-#window.protocol("WM_DELETE_WINDOW", lambda: exit_are_you_sure(window)) #Close Buttom Prompt
+window.protocol("WM_DELETE_WINDOW", exit_are_you_sure) #Close Buttom Prompt
 
 # Create Plain Text Area
 logging.debug("Create Plain Text Area")
@@ -499,9 +499,9 @@ scroll_bar.pack(side='right', fill="both")
 plain_text_area.pack(fill="both", expand="yes")
 
 #debugging saving
-logging.debug("Current Filename: \"%s\"", current_settings.short_fn())
-current_settings.quantity = 5
-add_uuids_to_pta(1)
+#logging.debug("Current Filename: \"%s\"", current_settings.short_fn())
+#current_settings.quantity = 5
+#add_uuids_to_pta(1)
 
 # Create the Menu Bar
 logging.debug("Create the Menu Bar")

@@ -220,14 +220,25 @@ Thanks to these great projects I was able to figure out how to use tkinter for t
 * ~~Auto-generated help~~
 * ~~Redo the Icon~~
 * ~~Adding support for uuid namespaces, enabling UUIDv3 and UUIDv5~~
-* ~~Add a Graphical User Interface~~
-* Enable File Open/Save in the GUI
-* Dark mode
-* ~~Utilise a tools/options panel/frame/window~~
-* Encode UUIDs in Base64 to reduce character length
 * ~~Dockerise the commandline tool~~
-* Dockerise the GUI (as Web Application?)
-* Decode Base64 encoded UUID
-* Reverse-Engineer UUID: Version
-* Reverse-Engineer UUID: Date/Time
-* Reverse-Engineer UUID: MAC Address
+* ~~Add a Graphical User Interface~~
+* ~~Utilise a tools/options panel/frame/window~~
+* ~~Enable File: New/Open/Save/Save As.../Exit in the GUI~~
+* __GUI:__ Add Iconography to the Menu Bar
+* __GUI:__ Enable Keyboard Shortcuts in the GUI
+* __GUI:__ Highlight Current Line
+* __GUI:__ Highlight Regex Version
+* __GUI:__ Add (floating?) File Information Pane
+* __GUI:__ Add UUIDv3 and UUIDv5
+* __GUI:__ Dark Mode
+* __GUI:__ Dockerise the GUI (as Web Application?)
+* ```CLI:``` Encode UUIDs in Base64 to reduce character length
+* ```CLI:``` Decode Base64 encoded UUID
+* ```CLI:``` Reverse-Engineer UUID: Version
+* ```CLI:``` Reverse-Engineer UUID: Date/Time
+* ```CLI:``` Reverse-Engineer UUID: MAC Address
+* __GUI:__ Encode UUIDs in Base64 to reduce character length
+* __GUI:__ Decode Base64 encoded UUID
+* __GUI:__ Reverse-Engineer UUID: Version
+* __GUI:__ Reverse-Engineer UUID: Date/Time
+* __GUI:__ Reverse-Engineer UUID: MAC Address
