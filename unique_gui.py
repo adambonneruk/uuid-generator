@@ -432,47 +432,6 @@ def options_popup():
     #URN Prefix Drop Down
     options_uppercase(popup)
 
-def create_menu_bar():
-    """creates the menu bar, including all menus and commands"""
-    menu_bar = tk.Menu(window)
-
-    # Create the File Menu
-    logging.debug("Create the File Menu")
-    file_menu = tk.Menu(menu_bar, tearoff=0)
-    file_menu.add_command(label="New", command=file_new)
-    file_menu.add_command(label="Open", command=file_open)
-    file_menu.add_command(label="Save", command=file_save)
-    file_menu.add_command(label="Save As...", command=file_save_as)
-    file_menu.add_separator()
-    file_menu.add_command(label="Exit", command=exit_are_you_sure)
-    menu_bar.add_cascade(label="File", menu=file_menu)
-
-    # Create the Generate Menu
-    logging.debug("Create the Generate Menu")
-    uuid_menu = tk.Menu(menu_bar, tearoff=0)
-    uuid_menu.add_command(label="Version 1", command=lambda: add_uuids_to_pta(1))
-    uuid_menu.add_command(label="Version 4", command=lambda: add_uuids_to_pta(4))
-    uuid_menu.add_separator()
-    uuid_menu.add_command(label="Version 3", command=lambda: add_uuids_to_pta(3), state="disabled")
-    uuid_menu.add_command(label="Version 5", command=lambda: add_uuids_to_pta(5), state="disabled")
-    uuid_menu.add_separator()
-    uuid_menu.add_command(label="Special Nil UUID", command=lambda: add_uuids_to_pta(0))
-    menu_bar.add_cascade(label="Generate", menu=uuid_menu)
-
-    # Create the Tools Menu
-    logging.debug("Create the Tools Menu")
-    tools_menu = tk.Menu(menu_bar, tearoff=0)
-    tools_menu.add_command(label="Options...", command=options_popup)
-    menu_bar.add_cascade(label="Tools", menu=tools_menu)
-
-    # Create the Help Menu
-    logging.debug("Create the Help Menu")
-    help_menu = tk.Menu(menu_bar, tearoff=0)
-    help_menu.add_command(label="About Unique...", command=about)
-    menu_bar.add_cascade(label="Help", menu=help_menu)
-
-    window.config(menu=menu_bar)
-
 DEBUG = True
 if DEBUG:
     logging.basicConfig(format='%(message)s', level=logging.DEBUG)
@@ -490,6 +449,61 @@ window.geometry("385x275+100+100")
 window.wm_attributes("-topmost", 1) #always on top
 window.protocol("WM_DELETE_WINDOW", exit_are_you_sure) #Close Buttom Prompt
 
+# Create the Menu Bar
+logging.debug("Create the Menu Bar")
+menu_bar = tk.Menu(window)
+
+# Load Icons
+new_icon = tk.PhotoImage(file='icon/vswin2019/NewFile_16x.png')
+open_icon = tk.PhotoImage(file='icon/vswin2019/OpenFile_16x.png')
+save_icon = tk.PhotoImage(file='icon/vswin2019/Save_16x.png')
+saveas_icon = tk.PhotoImage(file='icon/vswin2019/SaveAs_16x.png')
+exit_icon = tk.PhotoImage(file='icon/vswin2019/CloseSolution_16x.png')
+uuid0_icon = tk.PhotoImage(file='icon/vswin2019/LevelAll_16x.png')
+uuid1_icon = tk.PhotoImage(file='icon/vswin2019/LevelOne_16x.png')
+uuid3_icon = tk.PhotoImage(file='icon/vswin2019/LevelThree_16x.png')
+uuid4_icon = tk.PhotoImage(file='icon/vswin2019/LevelFour_16x.png')
+uuid5_icon = tk.PhotoImage(file='icon/vswin2019/LevelFive_16x.png')
+options_icon = tk.PhotoImage(file='icon/vswin2019/Settings_16x.png')
+about_icon = tk.PhotoImage(file='icon/vswin2019/InformationSymbol_16x.png')
+
+# Create the File Menu
+logging.debug("Create the File Menu")
+file_menu = tk.Menu(menu_bar, tearoff=0)
+file_menu.add_command(label="New", accelerator='Ctrl+N', compound=tk.LEFT, image=new_icon, underline=0, command=file_new)
+file_menu.add_command(label="Open", accelerator='Ctrl+O', compound=tk.LEFT, image=open_icon, underline=0, command=file_open)
+file_menu.add_command(label="Save", accelerator='Ctrl+S', compound=tk.LEFT, image=save_icon, underline=0, command=file_save)
+file_menu.add_command(label="Save As...", compound=tk.LEFT, image=saveas_icon, underline=0, command=file_save_as)
+file_menu.add_separator()
+file_menu.add_command(label="Exit", accelerator='Alt+F4', compound=tk.LEFT, image=exit_icon, underline=0, command=exit_are_you_sure)
+menu_bar.add_cascade(label="File", menu=file_menu)
+
+# Create the Generate Menu
+logging.debug("Create the Generate Menu")
+uuid_menu = tk.Menu(menu_bar, tearoff=0)
+uuid_menu.add_command(label="Version 1", accelerator='Ctrl+1', compound=tk.LEFT, image=uuid1_icon, underline=0, command=lambda: add_uuids_to_pta(1))
+uuid_menu.add_command(label="Version 4", accelerator='Ctrl+4', compound=tk.LEFT, image=uuid4_icon, underline=0, command=lambda: add_uuids_to_pta(4))
+uuid_menu.add_separator()
+uuid_menu.add_command(label="Version 3", accelerator='Ctrl+3', compound=tk.LEFT, image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3), state="disabled")
+uuid_menu.add_command(label="Version 5", accelerator='Ctrl+5', compound=tk.LEFT, image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5), state="disabled")
+uuid_menu.add_separator()
+uuid_menu.add_command(label="Special Nil UUID", accelerator='Ctrl+0', compound=tk.LEFT, image=uuid0_icon, underline=0, command=lambda: add_uuids_to_pta(0))
+menu_bar.add_cascade(label="Generate", menu=uuid_menu)
+
+# Create the Tools Menu
+logging.debug("Create the Tools Menu")
+tools_menu = tk.Menu(menu_bar, tearoff=0)
+tools_menu.add_command(label="Options...", accelerator='F9', compound=tk.LEFT, image=options_icon, underline=0, command=options_popup)
+menu_bar.add_cascade(label="Tools", menu=tools_menu)
+
+# Create the Help Menu
+logging.debug("Create the Help Menu")
+help_menu = tk.Menu(menu_bar, tearoff=0)
+help_menu.add_command(label="About Unique...", accelerator='F1', compound=tk.LEFT, image=about_icon, underline=0, command=about)
+menu_bar.add_cascade(label="Help", menu=help_menu)
+
+window.config(menu=menu_bar)
+
 # Create Plain Text Area
 logging.debug("Create Plain Text Area")
 plain_text_area = tk.Text(window)
@@ -497,15 +511,6 @@ scroll_bar = tk.Scrollbar(window, command=plain_text_area.yview)
 plain_text_area.configure(yscrollcommand=scroll_bar.set, font=("Lucida Console", 10))
 scroll_bar.pack(side='right', fill="both")
 plain_text_area.pack(fill="both", expand="yes")
-
-#debugging saving
-#logging.debug("Current Filename: \"%s\"", current_settings.short_fn())
-#current_settings.quantity = 5
-#add_uuids_to_pta(1)
-
-# Create the Menu Bar
-logging.debug("Create the Menu Bar")
-create_menu_bar()
 
 # Start the Window Main Loop
 logging.debug("------------------------------\nStart Tkinter Window Main Loop")
