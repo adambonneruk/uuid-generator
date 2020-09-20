@@ -8,8 +8,7 @@ from generate_uuid import generate_uuid
 from valid import is_reasonable_quantity
 
 class Settings:
-    """Settings for UUID Generation Class
-       Learning Classes from: https://www.programiz.com/python-programming/property"""
+    """Settings for UUID Generation Class"""
     def __init__(self):
         """Initialise Application Settings Class"""
         logging.debug("Initialise Application Settings Class")
@@ -54,6 +53,28 @@ def empty_pta():
     plain_text_area.delete('1.0', "end")
     current_settings.filename = ""
     current_settings.window_title()
+
+def file_load():
+    """Open file dialog to select a file, then loads file into plain text area"""
+    persisted_file = filedialog.askopenfile(defaultextension='.txt',
+                                            mode='r',
+                                            title='Select your file',
+                                            filetypes=[("All Files", ".*"),
+                                                       ("UUID Plain Text", ".uuid"),
+                                                       ("Text Documents", ".txt")])
+
+    if persisted_file is not None:
+        empty_pta()
+        text_blob = persisted_file.read()
+        plain_text_area.insert('1.0', text_blob)
+        persisted_file.close()
+
+        # Saved File Settings
+        current_settings.filename = str(persisted_file.name)
+        logging.debug("\tFilename: %s", current_settings.filename)
+
+        # Refresh Window Title
+        current_settings.window_title()
 
 def file_save_as():
     """Prompt for Save As File Location and Write to the File"""
@@ -140,7 +161,7 @@ def file_new():
         logging.debug("\twe don't have an existing savefile")
         text_blob = plain_text_area.get('1.0', "end"+'-1c')
         if text_blob != "": #plain text is not empty
-            quit_ask = messagebox.askyesnocancel("New", "Save changes to \"Untitled\"?")
+            quit_ask = messagebox.askyesnocancel("Untitled", "Save changes to \"Untitled\"?")
             if quit_ask: #Yes
                 logging.debug("\tOption: Save & New")
                 file_save()
@@ -152,6 +173,51 @@ def file_new():
                 empty_pta()
         else: #no file, and no text area contents
             logging.debug("\tNo content in the \"Plain Text Area\" detected, Do Nothing")
+
+def file_open():
+    """Display are you sure message before opening file, then load the new file in"""
+    logging.debug("----------\nFile: Open")
+    if current_settings.filename != "":
+        logging.debug("\twe have an existing savefile")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        persisted_file = open(current_settings.filename, "r")
+        if text_blob != persisted_file.read():
+            logging.debug("\tthere are changes")
+
+            message = "Save changes to " + current_settings.short_fn() + "?"
+            quit_ask = messagebox.askyesnocancel(current_settings.short_fn(), message)
+
+            if quit_ask: #Yes
+                logging.debug("\tOption: Save & Open")
+                file_load()
+
+            elif quit_ask is None: #Cancel
+                logging.debug("\tOption: Cancel")
+            else: #No
+                logging.debug("\tOption: Just Open")
+                file_load()
+
+        else: #theres no changes
+            logging.debug("\tthere are no changes")
+            file_load()
+
+    else:
+        logging.debug("\twe don't have an existing savefile")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+        if text_blob != "": #plain text is not empty
+            quit_ask = messagebox.askyesnocancel("Untitled", "Save changes to \"Untitled\"?")
+            if quit_ask: #Yes
+                logging.debug("\tOption: Save & Open")
+                file_save()
+                file_load()
+            elif quit_ask is None: #Cancel
+                logging.debug("\tOption: Cancel")
+            else: #No
+                logging.debug("\tOption: Just Open")
+                file_load()
+        else: #no file, and no text area contents
+            logging.debug("\tNo content in the \"Plain Text Area\" detected, Just Open")
+            file_load()
 
 def add_uuids_to_pta(version):
     """Append a new UUID(s) to the Plain Text Area"""
@@ -374,7 +440,7 @@ def create_menu_bar():
     logging.debug("Create the File Menu")
     file_menu = tk.Menu(menu_bar, tearoff=0)
     file_menu.add_command(label="New", command=file_new)
-    #file_menu.add_command(label="Open")
+    file_menu.add_command(label="Open", command=file_open)
     file_menu.add_command(label="Save", command=file_save)
     file_menu.add_command(label="Save As...", command=file_save_as)
     file_menu.add_separator()
