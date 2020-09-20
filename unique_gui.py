@@ -470,36 +470,50 @@ about_icon = tk.PhotoImage(file='icon/vswin2019/InformationSymbol_16x.png')
 # Create the File Menu
 logging.debug("Create the File Menu")
 file_menu = tk.Menu(menu_bar, tearoff=0)
-file_menu.add_command(label="New", accelerator='Ctrl+N', compound=tk.LEFT, image=new_icon, underline=0, command=file_new)
-file_menu.add_command(label="Open", accelerator='Ctrl+O', compound=tk.LEFT, image=open_icon, underline=0, command=file_open)
-file_menu.add_command(label="Save", accelerator='Ctrl+S', compound=tk.LEFT, image=save_icon, underline=0, command=file_save)
-file_menu.add_command(label="Save As...", compound=tk.LEFT, image=saveas_icon, underline=0, command=file_save_as)
+file_menu.add_command(label="New", accelerator='Ctrl+N', compound=tk.LEFT,
+                      image=new_icon, underline=0, command=file_new)
+file_menu.add_command(label="Open", accelerator='Ctrl+O', compound=tk.LEFT,
+                      image=open_icon, underline=0, command=file_open)
+file_menu.add_command(label="Save", accelerator='Ctrl+S', compound=tk.LEFT,
+                      image=save_icon, underline=0, command=file_save)
+file_menu.add_command(label="Save As...", compound=tk.LEFT,
+                      image=saveas_icon, underline=0, command=file_save_as)
 file_menu.add_separator()
-file_menu.add_command(label="Exit", accelerator='Alt+F4', compound=tk.LEFT, image=exit_icon, underline=0, command=exit_are_you_sure)
+file_menu.add_command(label="Exit", accelerator='Alt+F4', compound=tk.LEFT,
+                      image=exit_icon, underline=0, command=exit_are_you_sure)
 menu_bar.add_cascade(label="File", menu=file_menu)
 
 # Create the Generate Menu
 logging.debug("Create the Generate Menu")
 uuid_menu = tk.Menu(menu_bar, tearoff=0)
-uuid_menu.add_command(label="Version 1", accelerator='Ctrl+1', compound=tk.LEFT, image=uuid1_icon, underline=0, command=lambda: add_uuids_to_pta(1))
-uuid_menu.add_command(label="Version 4", accelerator='Ctrl+4', compound=tk.LEFT, image=uuid4_icon, underline=0, command=lambda: add_uuids_to_pta(4))
+uuid_menu.add_command(label="Version 1", accelerator='Ctrl+1', compound=tk.LEFT,
+                      image=uuid1_icon, underline=0, command=lambda: add_uuids_to_pta(1))
+uuid_menu.add_command(label="Version 4", accelerator='Ctrl+4', compound=tk.LEFT,
+                      image=uuid4_icon, underline=0, command=lambda: add_uuids_to_pta(4))
 uuid_menu.add_separator()
-uuid_menu.add_command(label="Version 3", accelerator='Ctrl+3', compound=tk.LEFT, image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3), state="disabled")
-uuid_menu.add_command(label="Version 5", accelerator='Ctrl+5', compound=tk.LEFT, image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5), state="disabled")
+uuid_menu.add_command(label="Version 3", accelerator='Ctrl+3', compound=tk.LEFT,
+                      image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3),
+                      state="disabled")
+uuid_menu.add_command(label="Version 5", accelerator='Ctrl+5', compound=tk.LEFT,
+                      image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5),
+                      state="disabled")
 uuid_menu.add_separator()
-uuid_menu.add_command(label="Special Nil UUID", accelerator='Ctrl+0', compound=tk.LEFT, image=uuid0_icon, underline=0, command=lambda: add_uuids_to_pta(0))
+uuid_menu.add_command(label="Special Nil UUID", accelerator='Ctrl+0', compound=tk.LEFT,
+                      image=uuid0_icon, underline=0, command=lambda: add_uuids_to_pta(0))
 menu_bar.add_cascade(label="Generate", menu=uuid_menu)
 
 # Create the Tools Menu
 logging.debug("Create the Tools Menu")
 tools_menu = tk.Menu(menu_bar, tearoff=0)
-tools_menu.add_command(label="Options...", accelerator='F9', compound=tk.LEFT, image=options_icon, underline=0, command=options_popup)
+tools_menu.add_command(label="Options...", accelerator='F9', compound=tk.LEFT,
+                       image=options_icon, underline=0, command=options_popup)
 menu_bar.add_cascade(label="Tools", menu=tools_menu)
 
 # Create the Help Menu
 logging.debug("Create the Help Menu")
 help_menu = tk.Menu(menu_bar, tearoff=0)
-help_menu.add_command(label="About Unique...", accelerator='F1', compound=tk.LEFT, image=about_icon, underline=0, command=about)
+help_menu.add_command(label="About Unique...", accelerator='F1', compound=tk.LEFT,
+                      image=about_icon, underline=0, command=about)
 menu_bar.add_cascade(label="Help", menu=help_menu)
 
 window.config(menu=menu_bar)
