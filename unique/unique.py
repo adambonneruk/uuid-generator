@@ -3,7 +3,6 @@ import uuid
 import codecs
 import re
 import argparse
-import logging
 
 def is_uuid_version(version):
     '''version (int) check, should be 0, 1, 3, 4, or 5'''
@@ -222,11 +221,7 @@ class Unique:
 
 def main():
     """main cli-based unix-like tool"""
-    #logging.basicConfig(format='%(message)s', level=logging.DEBUG)
-    logging.debug("DEBUG MODE ACTIVE")
-
     #Configure Arguments
-    logging.debug("\nConfigure Arguments")
     parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
     parser.add_argument("-v", "--version",
                         type=int,
@@ -256,13 +251,14 @@ def main():
                         metavar="<NAME>",
                         help="Specify UUID v3 or v4 name"
                         )
-    parser.add_argument("-u", "--urn",
-                        dest="urn_flag",
-                        action="store_true",
-                        default=False,
-                        help="Specify URN standard prefix"
-                        )
+    #Mutually Exclusive Group
     group = parser.add_mutually_exclusive_group()
+    group.add_argument("-u", "--urn",
+                       dest="urn_flag",
+                       action="store_true",
+                       default=False,
+                       help="Specify URN standard prefix"
+                       )
     group.add_argument("-U", "--uppercase",
                        dest="upper_flag",
                        action="store_true",
@@ -278,65 +274,25 @@ def main():
     args = parser.parse_args()
 
     #Argument Validation
-    logging.debug("\nValidate Arguments")
-    #Quanitity Check
-    logging.debug("\n\tQuantity: %s", str(args.quantity))
     if not is_reasonable_quantity(args.quantity):
         parser.error("Not a Valid Quantity")
-    else:
-        logging.debug("\tQuantity OK")
-
-    #URN Check
-    logging.debug("\n\tURN Mode: %s", str(args.urn_flag))
-
-    #Uppercase Check
-    logging.debug("\tUppercase Mode: %s", str(args.upper_flag))
-
-    #Shorten with Base64 Check
-    logging.debug("\tBase64 Mode: %s", str(args.short_flag))
 
     #Version Check
-    logging.debug("\n\tVersion: %s", str(args.version))
     if not is_uuid_version(args.version):
         parser.error("Not a Valid UUID Version")
-    else:
-        logging.debug("\tVersion OK")
 
-        #Versions 0, 1, and 4
-        if (str(args.version) == "0" or str(args.version) == "1" or str(args.version) == "4"):
-            logging.debug("\tNamespace and Name: Not Required")
-            if str(args.namespace) != "":
-                parser.error("Namespace not required for Version " + str(args.version) + " UUID")
-            if str(args.name) != "":
-                parser.error("Name not required for Version " + str(args.version) + " UUID")
+    if args.version in [0, 1, 4] and (str(args.namespace) != "" or str(args.name) != ""):
+        parser.error("Namespace/Name not required for Version " + str(args.version) + " UUID")
 
-        #Versions 3 and 5
-        elif (str(args.version) == "3" or str(args.version) == "5"):
-            logging.debug("\tNamespace and Name: Required")
-
-            #Namespace Checking
-            logging.debug("\n\tNamespace: %s", str(args.namespace))
-            if str(args.namespace) == "":
-                parser.error("Namespace required for Version " + str(args.version) + " UUID")
-            elif not is_uuid_namespace(args.namespace):
-                parser.error("Not a Valid Namespace")
-            else:
-                logging.debug("\tNamespace OK")
-
-            #Namespace & Name Checking
-            logging.debug("\n\tName: %s", str(args.name))
-            if str(args.name) == "":
-                parser.error("Name required for Version " + str(args.version) + " UUID")
-            elif not is_uuid_ns_name(args.namespace, args.name):
-                parser.error("Not a Valid Name for " + str(args.namespace).upper() + " Namespace")
-            else:
-                logging.debug("\tName OK")
-
-        else:
-            pass
+    if args.version in [3, 5]:
+        if str(args.namespace) == "" or str(args.name) == "":
+            parser.error("Namespace and Name required for Version " + str(args.version) + " UUID")
+        elif not is_uuid_namespace(args.namespace):
+            parser.error("Not a Valid Namespace")
+        elif not is_uuid_ns_name(args.namespace, args.name):
+            parser.error("Not a Valid Name for " + str(args.namespace).upper() + " Namespace")
 
     #Print UUID "--quantity" times
-    logging.debug("\nUUIDs:")
     for _ in range(0, args.quantity):
         myuuid = Unique(args.version, args.namespace, args.name)
 
