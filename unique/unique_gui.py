@@ -4,8 +4,8 @@ from tkinter import messagebox
 from tkinter import filedialog
 import logging
 import re
-from generate_uuid import generate_uuid
-from valid import is_reasonable_quantity
+from unique import Unique
+from unique import is_reasonable_quantity
 
 class Settings:
     """Settings for UUID Generation Class"""
@@ -239,11 +239,19 @@ def add_uuids_to_pta(version):
     for _ in range(0, current_settings.quantity):
         # Generate a UUID
         logging.debug("Generate a UUID:")
-        generated_uuid = generate_uuid(version,
-                                       current_settings.urn_flag,
-                                       current_settings.namespace,
-                                       current_settings.name,
-                                       current_settings.upper_flag)
+        myuuid = Unique(version,
+                        current_settings.namespace,
+                        current_settings.name)
+
+        if current_settings.upper_flag:
+            generated_uuid = myuuid.upper()
+        elif current_settings.urn_flag:
+            generated_uuid = myuuid.prefix()
+        #elif current_settings.short_flag:
+        #    generated_uuid = myuuid.encode()
+        else:
+            generated_uuid = myuuid
+
         logging.debug(generated_uuid)
 
         # Get contents of "Plain Text Area" as text_blob
@@ -435,10 +443,8 @@ def options_popup():
     #URN Prefix Drop Down
     options_uppercase(popup)
 
-DEBUG = True
-if DEBUG:
-    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
-    logging.debug("-----------------\nDEBUG MODE ACTIVE\n-----------------")
+#logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+logging.debug("-----------------\nDEBUG MODE ACTIVE\n-----------------")
 
 current_settings = Settings()
 
