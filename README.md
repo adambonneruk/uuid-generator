@@ -1,5 +1,5 @@
-# Unique: UUID Generation (in Python) ![](icon/32.png)
-"Unique", the UUID generator tool. ```unique_gui.py``` and ```unique.py``` will generate UUIDs in a variety of flavours. This project builds on code originally developed in 2016; leveraging different python libraries to provide all the uuid related features in a single project. Windows Executables created with pyinstaller 4.0.
+# Unique: UUID Generation (in Python) ![](unique/icon/32.png)
+"Unique": the UUID generator tool. ```unique.py``` will generate UUIDs (using a CLI) in a variey of flavours whilst ```unique_gui.py``` wraps this up in a pretty GUI. This project in availble as native python source, a windows executable and docker image.
 
 >__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
 
@@ -26,41 +26,58 @@ A universally unique identifier (UUID) is a 128-bit number used to identify info
 * [MAC Address](https://www.ibm.com/support/knowledgecenter/en/SSYKE2_7.0.0/com.ibm.java.security.component.70.doc/security-component/keytoolDocs/x500dnames.html)
 
 # Usage
-## Grapphical User Interface (```unique_gui.py```)
-Using the ```tkinter``` library, a gui is available to generate UUIDs for those not comfortable with the command line. Simply open/execute ```% python3 unique_gui.py```/```unique-gui.exe``` to be presented with the following grpahical interface:
+## Graphical User Interface (```unique_gui.py```)
+Using the ```tkinter``` library, a gui is available to generate UUIDs for those not comfortable with the command line. Simply open/execute ```python3 unique_gui.py``` to be presented with the following graphical interface:
 
-Windows                  | Linux
--------------------------|---------------
-![](screenshots/gui.png) | <span style="color:red">Work in Progres...</span>
+&nbsp;    | Windows                           | Linux
+----------|-----------------------------------|--------------------------
+_Unique_  | ![](screenshot-win10.gif)         | ![](screenshot-linux.png)
+Options   | ![](screenshot-win10-options.png) | ![](screenshot-linux.png)
+About     | ![](screenshot-win10-about.png)   | ![](screenshot-linux.png)
 
 <br>
 
 The following Menu options are availble:
 * File
   * __New__: Clear-down the UUIDs in the current tool, ready for new generation
-  * __Open__: Open a text (```.txt```) file, useful for appending UUIDs
-  * __Save__: Save the current UUIDs to a text (```.txt```) file
+  * __Open__: Open a text (```.txt```/```.uuid```) file, useful for appending UUIDs
+  * __Save__: Save the current UUIDs to a text (```.txt```/```.uuid```) file
+  * __Save As..__: Save the current UUIDs to a new text (```.txt```/```.uuid```) file
   * __Quit__
 * Generate
-  * __Version 1__: Generare a Version 1 (Datetime & MAC Address) UUID
-  * __Version 4__: Generate a Version 4 UUID (based on RNG)
-  * ~~__Version 3__: Generate a Version 3 (MD5, Namespace & Name-based) UUID~~ (<span style="color:red">Work in Progres</span>)
-  * ~~__Version 5__: Generate a Version 5 (SHA-1, Namespace & Name-based) UUID~~
-  * __Special Nil UUID__: Generate a Nil UUID (_0's_) (<span style="color:red">Work in Progres</span>)
+  * __Version 1 UUID__: Generare a Version 1 (Datetime & MAC Address) UUID
+  * __Version 4 UUID__: Generate a Version 4 UUID (based on RNG)
+  * ~~__Version 3 UUID__: Generate a Version 3 (MD5, Namespace & Name-based) UUID~~
+  * ~~__Version 5 UUID__: Generate a Version 5 (SHA-1, Namespace & Name-based) UUID~~
+  * __Special Nil UUID__: Generate a Nil UUID (_0's_)
 * Tools
   * __Options__: Open the Options popup
 * Help
   * __About__: Opens a popup window with author/version information
+
+The following Keyboard Shortcuts are available:
+* __CTRL + N__: Clear-down the UUIDs in the current tool,ready for new generation
+* __CTRL + O__: Open a text (```.txt```/```.uuid```) file,useful for appending UUIDs
+* __CTRL + S__: Save the current UUIDs to a text (```.txt``````.uuid```) file
+* __CTRL + 0__: Generate a Nil UUID (_0's_)
+* __CTRL + 1__: Generare a Version 1 (Datetime & MAC Address)UUID
+* ~~__CTRL + 3__: Generate a Version 3 (MD5, Namespace &Name-based) UUID~~
+* __CTRL + 4__: Generate a Version 4 UUID (based on RNG)
+* ~~__CTRL + 5__: Generate a Version 5 (SHA-1, Namespace &Name-based) UUID~~
+* __F1__: Opens a popup window with author/version information
+* __F9__: Open the Options popup
+* __ALT + F4__: Exit/Quit
+
 ## Command Line / Bash (```unique.py```)
 ### Summary
 The following arguments are compatible with the respective UUID-version generation.
 Version | Switch | Specifics                  | Additional Options (__Bold = Mandatory__)
 --------|--------|----------------------------|-------------------------------------------
-0 / Nil | -v 0   | Special Nil UUID           | -q, -u, -U
-1       | -v 1   | Datetime and MAC address   | -q, -u, -U
-4       | -v 4   | Random Data                | -q, -u, -U
-3       | -v 3   | Namespace & Name-based     | -q, -u, -U, __--ns__, __-n__
-5       | -v 5   | Namespace & Name-based     | -q, -u, -U, __--ns__, __-n__
+0 / Nil | -v 0   | Special Nil UUID           | -q, -u, -U, -s
+1       | -v 1   | Datetime and MAC address   | -q, -u, -U, -s
+4       | -v 4   | Random Data                | -q, -u, -U, -s
+3       | -v 3   | Namespace & Name-based     | __--ns__, __-n__, -q, -u, -U, -s
+5       | -v 5   | Namespace & Name-based     | __--ns__, __-n__, -q, -u, -U, -s
 
 ### Usage Examples (Windows)
 
@@ -98,7 +115,7 @@ urn:uuid:1FDC56DF-BB86-3F0D-9356-8612ABA227FF
 
 # Display Help
 >./unique.py --help
-usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u] [-U]
+usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u | -U | -s]
 
 Generate a number of version specific UUIDs.
 
@@ -114,10 +131,11 @@ optional arguments:
                         Specify UUID v3 or v4 name
   -u, --urn             Specify URN standard prefix
   -U, --uppercase       Non-standard uppercase UUID string
+  -s, --short           Shortened UUID using Base64 Encoding
 ```
 
 ### Usage Example (Linux)
-<span style="color:red">Work in Progres...</span>
+<span style="color:red">_Work in Progres..._</span>
 
 ## Docker (```docker run --rm -it uuid:latest```)
 The project's Dockerfile can be utilised to create a platform independant container image; supporting the generation of UUIDs in cloud (e.g. Kubernetes/OpenShift) environments.
@@ -151,12 +169,11 @@ $ docker run --rm -it uuid:latest --help
 ```Unique``` is build with utilising the following Python 3 libraries:
 
 * ```uuid```
-* ```argparse```
-* ```tk``` (_including:_ messagebox, simpledialog)
-* ```re```
-* ```sys```
-* ```logging```
 * ```codecs```
+* ```re```
+* ```argparse```
+* ```tk```/```tkinter``` (including: ```messagebox```, ```simpledialog```, ```filedialog```)
+* ```logging```
 * ```pyinstaller```
 
 To utilise ```unique``` on multiple platforms Python 3 is required.
@@ -185,6 +202,7 @@ sudo apt-get install python3
 ## Other Software
 The following software was used to create this project:
 * Graphics and Images created with: [Paint.net](https://www.getpaint.net)
+* Microsoft [Visual Studio Image Library](https://www.microsoft.com/en-us/download/details.aspx?id=35825)
 * Windows Icon (```.ico```) file created with: [IcoFX Portable (1.6.4 Rev 3)](https://portableapps.com/apps/graphics_pictures/icofx_portable)
 * IDE: [Microsoft Visual Studio Code](https://code.visualstudio.com)
 
@@ -193,9 +211,9 @@ The following software was used to create this project:
 ## Project Icon
 The following project icon was created with paint.net. Using a screenshot of Powershell executing the creation of 20 Version 1 UUIDs. 4 image resolutions where then produced and compiled into the single compressed ```.ico``` format.
 
-![](icon/256.png) | ![](icon/48.png) | ![](icon/32.png) | ![](icon/16.png)
-------------------|------------------|------------------|-----------------
-__256x256:__      | __48x48:__       | __32x32:__       | __16x16:__
+![](unique/icon/256.png) | ![](unique/icon/48.png) | ![](unique/icon/32.png) | ![](unique/icon/16.png)
+-------------------------|-------------------------|-------------------------|------------------------
+256x256                  | 48x48                   | 32x32                   | 16x16
 
 ## Known Limitations
 The following are known limitations and probably wont get fixed. Feel free to raise a pull request if you can help:
@@ -211,28 +229,28 @@ Thanks to these great projects I was able to figure out how to use tkinter for t
 ## Roadmap
 ```Unique``` is a hobby project with no guarantees. I've been thinking about adding the following functionaity somewhere down the line though!:
 
-* ~~Support for more than UUIDv4~~
-* ~~Make code more Unix-like (no boilerplate on execution)~~
-* ~~Parameterise the number of returned UUIDs~~
-* ~~Special Nil UUID~~
-* ~~Support for standard UUID URN prefix~~
-* ~~Support for non-standard uppercase UUID~~
-* ~~Auto-generated help~~
+* ~~```CLI:``` Support for more than UUIDv4~~
+* ~~```CLI:``` Make code more Unix-like (no boilerplate on execution)~~
+* ~~```CLI:``` Parameterise the number of returned UUIDs~~
+* ~~```CLI:``` Special Nil UUID~~
+* ~~```CLI:``` Support for standard UUID URN prefix~~
+* ~~```CLI:``` Support for non-standard uppercase UUID~~
+* ~~```CLI:``` Auto-generated help~~
 * ~~Redo the Icon~~
-* ~~Adding support for uuid namespaces, enabling UUIDv3 and UUIDv5~~
+* ~~```CLI:``` Adding support for uuid namespaces, enabling UUIDv3 and UUIDv5~~
 * ~~Dockerise the commandline tool~~
-* ~~Add a Graphical User Interface~~
-* ~~Utilise a tools/options panel/frame/window~~
-* ~~Enable File: New/Open/Save/Save As.../Exit in the GUI~~
-* __GUI:__ Add Iconography to the Menu Bar
-* __GUI:__ Enable Keyboard Shortcuts in the GUI
+* ~~__GUI:__ Add a Graphical User Interface~~
+* ~~__GUI:__ Utilise a tools/options panel/frame/window~~
+* ~~__GUI:__ Enable File: New/Open/Save/Save As.../Exit in the GUI~~
+* ~~__GUI:__ Add Iconography to the Menu Bar~~
+* ~~__GUI:__ Enable Keyboard Shortcuts in the GUI~~
 * __GUI:__ Highlight Current Line
 * __GUI:__ Highlight Regex Version
 * __GUI:__ Add (floating?) File Information Pane
 * __GUI:__ Add UUIDv3 and UUIDv5
 * __GUI:__ Dark Mode
 * __GUI:__ Dockerise the GUI (as Web Application?)
-* ```CLI:``` Encode UUIDs in Base64 to reduce character length
+* ~~```CLI:``` Encode UUIDs in Base64 to reduce character length~~
 * ```CLI:``` Decode Base64 encoded UUID
 * ```CLI:``` Reverse-Engineer UUID: Version
 * ```CLI:``` Reverse-Engineer UUID: Date/Time
