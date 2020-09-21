@@ -2,4 +2,4 @@ FROM python:3
 WORKDIR /app
 COPY . /app
 
-ENTRYPOINT [ "python", "./unique.py" ]
+ENTRYPOINT [ "python", "./unique/unique.py" ]
