@@ -432,7 +432,9 @@ def options_popup():
     popup.transient(window)
     popup.title("Options")
     popup.geometry("+150+150")
-    popup.iconbitmap("./icon/icon.ico")
+    #popup.iconbitmap("./icon/icon.ico")
+    img = tk.Image("photo", file="icon/48.png")
+    popup.tk.call('wm','iconphoto',popup._w,img)
 
     #Quanitity Entrybox
     options_quantity(popup)
@@ -453,7 +455,9 @@ logging.info("Create the Window")
 window = tk.Tk()
 #window.title(current_settings.title)
 current_settings.window_title()
-window.iconbitmap("./icon/icon.ico")
+#window.iconbitmap("./icon/icon.ico")
+img = tk.Image("photo", file="icon/48.png")
+window.tk.call('wm','iconphoto',window._w,img)
 window.geometry("385x275+100+100")
 window.wm_attributes("-topmost", 1) #always on top
 window.protocol("WM_DELETE_WINDOW", exit_are_you_sure) #Close Buttom Prompt
