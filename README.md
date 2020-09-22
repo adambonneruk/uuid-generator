@@ -32,8 +32,8 @@ Using the ```tkinter``` library, a gui is available to generate UUIDs for those 
 &nbsp;    | Windows                           | Linux
 ----------|-----------------------------------|--------------------------
 _Unique_  | ![](screenshot-win10.gif)         | ![](screenshot-linux.png)
-Options   | ![](screenshot-win10-options.png) | ![](screenshot-linux.png)
-About     | ![](screenshot-win10-about.png)   | ![](screenshot-linux.png)
+Options   | ![](screenshot-win10-options.png) | ![](screenshot-linux-options.png)
+About     | ![](screenshot-win10-about.png)   | ![](screenshot-linux-about.png)
 
 <br>
 
