@@ -31,7 +31,7 @@ Using the ```tkinter``` library, a gui is available to generate UUIDs for those 
 
 &nbsp;    | Windows                           | Linux
 ----------|-----------------------------------|--------------------------
-_Unique_  | ![](screenshot-win10.gif)         | ![](screenshot-linux.png)
+__Unique__  | ![](screenshot-win10.gif)         | ![](screenshot-linux.png)
 Options   | ![](screenshot-win10-options.png) | ![](screenshot-linux-options.png)
 About     | ![](screenshot-win10-about.png)   | ![](screenshot-linux-about.png)
 
@@ -150,7 +150,7 @@ optional arguments:
 ```
 
 ## Docker (```docker run --rm -it uuid:latest```)
-The project's Dockerfile can be utilised to create a platform independant container image; supporting the generation of UUIDs in cloud (e.g. Kubernetes/OpenShift) environments.
+The project's Dockerfile can be utilised to create a platform independant container image; supporting the generation of UUIDs in cloud (e.g. Kubernetes/OpenShift) environments. Getting ```unique``` to work with docker requires two steps, first create the docker image, then run it in the docker service
 
 ### Build Docker Image
 ```bash
@@ -158,6 +158,7 @@ The project's Dockerfile can be utilised to create a platform independant contai
 $ docker build . -t uuid
 ```
 ### Run Docker Image (Examples)
+
 ```bash
 # UUIDv4
 $ docker run --rm -it uuid:latest
@@ -173,6 +174,9 @@ b6a4587d-a3de-4e4c-8d84-a3fad6b14192
 # Display Help
 $ docker run --rm -it uuid:latest --help
 ```
+
+### Ubuntu 20.04 LTS Bash Example
+![](screenshot-docker.png)
 
 ## Installation / Prerequisites / Dependencies
 
@@ -208,7 +212,7 @@ __Linux:__
 sudo apt-get install python3
 
 # Install tkinter
-?????????????????????????????
+sudo apt-get install python3-tk
 ```
 
 ## Other Software
