@@ -337,10 +337,49 @@ class Decode(Unique):
         """grab the uuid version from the string"""
         return int(self._uuid[14:15], 16)
 
+def print_uuid(args):
+    """Validates severage inbound arguments then prints x number of UUIDs"""
+    #Argument Validation
+    if not is_reasonable_quantity(args.quantity):
+        parser.error("Not a Valid Quantity")
+
+    #Version Check
+    if not is_uuid_version(args.version):
+        parser.error("Not a Valid UUID Version")
+
+    if args.version in [0, 1, 4] and (str(args.namespace) != "" or str(args.name) != ""):
+        parser.error("Namespace/Name not required for Version " + str(args.version) + " UUID")
+
+    if args.version in [3, 5]:
+        if str(args.namespace) == "" or str(args.name) == "":
+            parser.error("Namespace and Name required for Version " + str(args.version) + " UUID")
+        elif not is_uuid_namespace(args.namespace):
+            parser.error("Not a Valid Namespace")
+        elif not is_uuid_ns_name(args.namespace, args.name):
+            parser.error("Not a Valid Name for " + str(args.namespace).upper() + " Namespace")
+
+    #Print UUID "--quantity" times
+    for _ in range(0, args.quantity):
+        myuuid = Unique(args.version, args.namespace, args.name)
+
+        if args.upper_flag:
+            print(myuuid.upper())
+        elif args.urn_flag:
+            print(myuuid.prefix())
+        elif args.short_flag:
+            print(myuuid.encode())
+        else:
+            print(myuuid)
+
+def decode_string(args):
+    print("decoding here...")
+
 def main():
     """main cli-based unix-like tool"""
     #Configure Arguments
     parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
+    subparsers = parser.add_subparsers(help='sub-command help')
+    parser.set_defaults(func=print_uuid)
     parser.add_argument("-v", "--version",
                         type=int,
                         default=4,
@@ -389,39 +428,14 @@ def main():
                        default=False,
                        help="Shortened UUID using Base64 Encoding"
                        )
+    # create the parser for the "b" command
+    decoder = subparsers.add_parser('decode')
+    decoder.add_argument('a_new_uuid', metavar='UUID', type=str, help='an integer for the accumulator')
+    decoder.add_argument('-v', "--verbose",dest="verbose",action="store_true",default=False,help="Provide detailed information about decoded UUID")
+    decoder.set_defaults(func=decode_string)
     args = parser.parse_args()
-
-    #Argument Validation
-    if not is_reasonable_quantity(args.quantity):
-        parser.error("Not a Valid Quantity")
-
-    #Version Check
-    if not is_uuid_version(args.version):
-        parser.error("Not a Valid UUID Version")
-
-    if args.version in [0, 1, 4] and (str(args.namespace) != "" or str(args.name) != ""):
-        parser.error("Namespace/Name not required for Version " + str(args.version) + " UUID")
-
-    if args.version in [3, 5]:
-        if str(args.namespace) == "" or str(args.name) == "":
-            parser.error("Namespace and Name required for Version " + str(args.version) + " UUID")
-        elif not is_uuid_namespace(args.namespace):
-            parser.error("Not a Valid Namespace")
-        elif not is_uuid_ns_name(args.namespace, args.name):
-            parser.error("Not a Valid Name for " + str(args.namespace).upper() + " Namespace")
-
-    #Print UUID "--quantity" times
-    for _ in range(0, args.quantity):
-        myuuid = Unique(args.version, args.namespace, args.name)
-
-        if args.upper_flag:
-            print(myuuid.upper())
-        elif args.urn_flag:
-            print(myuuid.prefix())
-        elif args.short_flag:
-            print(myuuid.encode())
-        else:
-            print(myuuid)
+    args.func(args)
+    print(args)
 
 if __name__ == "__main__":
     main()
