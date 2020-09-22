@@ -112,9 +112,24 @@ urn:uuid:7ed0c3d9-f14c-11ea-aabd-e4b31802edf0
 # Uppercase UUIDv3 for "http://adambonner.co.uk" URL with URN prefix
 >./unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url -u
 urn:uuid:1FDC56DF-BB86-3F0D-9356-8612ABA227FF
+```
 
-# Display Help
->./unique.py --help
+### Usage Example (Linux)
+```bash
+# UUIDv4
+$ python3 unique.py
+31c2c13c-60c9-4883-8f12-16ede5022da4
+
+# 3x UUIDv1 encoded as Base64
+$ python3 unique.py -v 1 -q 3 --short
+EHuMMPxlEeqNuc2jzUq+xw==
+EHuMMfxlEeqNuc2jzUq+xw==
+EHuMMvxlEeqNuc2jzUq+xw==
+```
+
+### Display Help
+Using the ```-h``` (```--help```) argument on either Windows or Linux displays the following information:
+```
 usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u | -U | -s]
 
 Generate a number of version specific UUIDs.
@@ -133,9 +148,6 @@ optional arguments:
   -U, --uppercase       Non-standard uppercase UUID string
   -s, --short           Shortened UUID using Base64 Encoding
 ```
-
-### Usage Example (Linux)
-<span style="color:red">_Work in Progres..._</span>
 
 ## Docker (```docker run --rm -it uuid:latest```)
 The project's Dockerfile can be utilised to create a platform independant container image; supporting the generation of UUIDs in cloud (e.g. Kubernetes/OpenShift) environments.
