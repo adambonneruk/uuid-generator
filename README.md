@@ -31,9 +31,9 @@ Using the ```tkinter``` library, a gui is available to generate UUIDs for those 
 
 &nbsp;     | Windows                           | Linux                             | macOS
 ---------- |-----------------------------------|-----------------------------------|----------------------------------
-__Unique__ | ![](screenshot-win10.gif)         | ![](screenshot-linux.png)         | ![](screenshot-macOS.png)
-Options    | ![](screenshot-win10-options.png) | ![](screenshot-linux-options.png) | ![](screenshot-macOS-options.png)
-About      | ![](screenshot-win10-about.png)   | ![](screenshot-linux-about.png)   | ![](screenshot-macOS-about.png)
+__Unique__ | ![](.screenshot/win10.gif)         | ![](.screenshot/linux.png)         | ![](.screenshot/macos.png)
+Options    | ![](.screenshot/win10-options.png) | ![](.screenshot/linux-options.png) | ![](.screenshot/macos-options.png)
+About      | ![](.screenshot/win10-about.png)   | ![](.screenshot/linux-about.png)   | ![](.screenshot/macos-about.png)
 
 <br>
 
@@ -176,7 +176,7 @@ $ docker run --rm -it uuid:latest --help
 ```
 
 ### Ubuntu 20.04 LTS Bash Example
-![](screenshot-docker.png)
+![](.screenshot/docker.png)
 
 ## Installation / Prerequisites / Dependencies
 
