@@ -29,11 +29,11 @@ A universally unique identifier (UUID) is a 128-bit number used to identify info
 ## Graphical User Interface (```unique_gui.py```)
 Using the ```tkinter``` library, a gui is available to generate UUIDs for those not comfortable with the command line. Simply open/execute ```python3 unique_gui.py``` to be presented with the following graphical interface:
 
-&nbsp;    | Windows                           | Linux
-----------|-----------------------------------|--------------------------
-__Unique__  | ![](screenshot-win10.gif)         | ![](screenshot-linux.png)
-Options   | ![](screenshot-win10-options.png) | ![](screenshot-linux-options.png)
-About     | ![](screenshot-win10-about.png)   | ![](screenshot-linux-about.png)
+&nbsp;    | Windows                           | Linux                                | mac os
+----------|-----------------------------------|----------------------------------------|--------- 
+__Unique__  | ![](screenshot-win10.gif)       | ![](screenshot-linux.png)             | ![](screenshot-macOS.png)
+Options   | ![](screenshot-win10-options.png) | ![](screenshot-linux-options.png)     | ![](screenshot-macOS-options.png)
+About     | ![](screenshot-win10-about.png)   | ![](screenshot-linux-about.png)       | ![](screenshot-macOS-about.png)
 
 <br>
 
