@@ -32,6 +32,7 @@ Using the ```tkinter``` library, a gui is available to generate UUIDs for those 
 &nbsp;     | Windows                           | Linux                             | macOS
 ---------- |-----------------------------------|-----------------------------------|----------------------------------
 __Unique__ | ![](.screenshot/win10.gif)         | ![](.screenshot/linux.png)         | ![](.screenshot/macos.png)
+Menu       | ![](.screenshot/win10-menu.png)    | ![](.screenshot/linux-menu.png)    | ![](.screenshot/macos-menu.png)
 Options    | ![](.screenshot/win10-options.png) | ![](.screenshot/linux-options.png) | ![](.screenshot/macos-options.png)
 About      | ![](.screenshot/win10-about.png)   | ![](.screenshot/linux-about.png)   | ![](.screenshot/macos-about.png)
 
