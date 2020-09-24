@@ -4,7 +4,7 @@
 >__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
 
 ## Features
-* Generate UUID Versions 1, 3, 4, 5 and the "Special Nil Case"/0
+* Generate UUID Versions 1, 3, 4, 5 and the "Special Nil Case"/0 (_GUI 0/1/4 Only_)
 * Support for DNS (FWDN), URL, OID and X.500 Namespaces (```--ns```)
 * Prefix UUID with URN (RFC 4122) (```-u```)
 * Commandline Unix-Like tool and Graphical User Interface
@@ -48,8 +48,6 @@ The following Menu options are availble:
 * Generate
   * __Version 1 UUID__: Generare a Version 1 (Datetime & MAC Address) UUID
   * __Version 4 UUID__: Generate a Version 4 UUID (based on RNG)
-  * ~~__Version 3 UUID__: Generate a Version 3 (MD5, Namespace & Name-based) UUID~~
-  * ~~__Version 5 UUID__: Generate a Version 5 (SHA-1, Namespace & Name-based) UUID~~
   * __Special Nil UUID__: Generate a Nil UUID (_0's_)
 * Tools
   * __Options__: Open the Options popup
@@ -62,9 +60,7 @@ The following Keyboard Shortcuts are available:
 * __CTRL + S__: Save the current UUIDs to a text (```.txt``````.uuid```) file
 * __CTRL + 0__: Generate a Nil UUID (_0's_)
 * __CTRL + 1__: Generare a Version 1 (Datetime & MAC Address)UUID
-* ~~__CTRL + 3__: Generate a Version 3 (MD5, Namespace &Name-based) UUID~~
 * __CTRL + 4__: Generate a Version 4 UUID (based on RNG)
-* ~~__CTRL + 5__: Generate a Version 5 (SHA-1, Namespace &Name-based) UUID~~
 * __F1__: Opens a popup window with author/version information
 * __F9__: Open the Options popup
 * __ALT + F4__: Exit/Quit
@@ -277,3 +273,4 @@ Thanks to these great projects I was able to figure out how to use tkinter for t
 * __GUI:__ Reverse-Engineer UUID: Version
 * __GUI:__ Reverse-Engineer UUID: Date/Time
 * __GUI:__ Reverse-Engineer UUID: MAC Address
+* Creating a Windows Installer
