@@ -222,7 +222,10 @@ class Unique:
 def main():
     """main cli-based unix-like tool"""
     #Configure Arguments
-    parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
+    parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.",
+                                     allow_abbrev=False, #Allows labbreviationif unambiguous
+                                     epilog="\"Unique\" (Version 4.0.0) by Adam Bonner, 2020"
+                                     )
     parser.add_argument("-v", "--version",
                         type=int,
                         default=4,
