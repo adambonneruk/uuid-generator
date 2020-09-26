@@ -425,7 +425,7 @@ def main():
     parser_meg = parser.add_mutually_exclusive_group()
 
     # Secondary "Decode()" Parser / Subparser
-    subparsers = parser.add_subparsers(help='Pretty-print and display UUID information')
+    subparsers = parser.add_subparsers(help='DECODE UUID or GENERATE a ULID')
     decode = subparsers.add_parser('decode')
     decode.set_defaults(func=uuid_decode) #call uuid_decode() function
     ulid = subparsers.add_parser('ulid')
