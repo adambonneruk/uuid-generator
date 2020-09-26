@@ -1,4 +1,4 @@
-"""Generate a Universally Unique ID (CLI and Object)"""
+"""Generate or Decode a Universally Unique ID (CLI and Object)"""
 import uuid
 import codecs
 import re
@@ -195,7 +195,6 @@ class Unique:
         bin_uuid = codecs.decode(hex_uuid, "hex")
         b64_uuid = codecs.encode(bin_uuid, "base64")
         output_uuid = str(b64_uuid)[2:-3]
-        self._uuid_as_base64 = output_uuid
         return output_uuid
 
     def prefix(self):
@@ -220,12 +219,13 @@ class Unique:
         """extract the datetime from a UUIDv1 string"""
         if self._version == 1:
             #https://stackoverflow.com/questions/3795554/extract-the-time-from-a-uuid-v1-in-python
-            gen_dttm = datetime(1582, 10, 15) + timedelta(microseconds=uuid.UUID(self._uuid).time//10)
+            dttm = datetime(1582, 10, 15) + timedelta(microseconds=uuid.UUID(self._uuid).time//10)
         else:
-            gen_dttm = "n/a"
-        return gen_dttm
+            dttm = "n/a"
+        return dttm
 
     def mac_address(self):
+        """extract the mac address from a UUIDv1 using string manipulation"""
         if self._version == 1:
             mac_plain = self._uuid[-12:]
             mac_formatted = '-'.join(mac_plain[i:i + 2] for i in range(0, 12, 2))
@@ -234,6 +234,7 @@ class Unique:
         return mac_formatted
 
     def version_desc(self):
+        """pretty decription of each known uuid version, otherwise: unknown"""
         if self._version == 0:
             description = "Special Case: DCE 1.1 Nil UUID"
         elif self._version == 1:
@@ -378,7 +379,7 @@ def uuid_decode(args, parser):
     try:
         tester = Decode(args.raw_uuid)
     except ValueError:
-        parser.error("Not a Valid (Hex|Base64|Uppercase) UUID")
+        parser.error("Not a Valid (Hex|Base64|Uppercase|Prefixed) UUID")
 
     # Pretty Print or Full Information?
     if args.full_info:
@@ -401,71 +402,50 @@ def uuid_decode(args, parser):
         print(tester)
 
 def main():
-    """main cli-based unix-like tool"""
-    #Configure Arguments
-    parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
-    subparsers = parser.add_subparsers(help='sub-command help')
-    parser.set_defaults(func=uuid_generate)
-    parser.add_argument("-v", "--version",
-                        type=int,
-                        default=4,
-                        dest="version",
+    """Using Main to execute a CLI based UUID Generate/Decode tool"""
+    # Default Parser
+    parser = argparse.ArgumentParser(description="Generate or Decode a Universally Unique ID")
+    parser.set_defaults(func=uuid_generate) #call uuid_generate() function
+
+    # Default Parser (Mutually Exclusive Group)
+    parser_meg = parser.add_mutually_exclusive_group()
+
+    # Secondary "Decode()" Parser / Subparser
+    subparsers = parser.add_subparsers(help='Pretty-print and display UUID information')
+    decode = subparsers.add_parser('decode')
+    decode.set_defaults(func=uuid_decode) #call uuid_decode() function
+
+    # Add Arguments - Main Parser
+    parser.add_argument("-v", "--version", type=int, default=4, dest="version",
                         metavar="<VERSION>",
-                        help="Specify output UUID version (0, 1, 3, 4, or 5)"
-                        )
-    parser.add_argument("-q", "--quantity",
-                        type=int,
-                        default=1,
-                        dest="quantity",
+                        help="Specify output UUID version (0, 1, 3, 4, or 5)")
+    parser.add_argument("-q", "--quantity", type=int, default=1, dest="quantity",
                         metavar="<QUANTITY>",
-                        help="Specify output quanitity (1 - 65536)"
-                        )
-    parser.add_argument("--ns", "--namespace",
-                        type=lambda s: s.lower(),
-                        default="",
-                        dest="namespace",
-                        metavar="<NAMESPACE>",
-                        help="UUID v3 or v5 namespace"
-                        )
-    parser.add_argument("-n", "--name",
-                        type=str,
-                        default="",
-                        dest="name",
+                        help="Specify output quanitity (1 - 65536)")
+    parser.add_argument("--ns", "--namespace", type=lambda s: s.lower(), default="",
+                        dest="namespace", metavar="<NAMESPACE>",
+                        help="UUID v3 or v5 namespace")
+    parser.add_argument("-n", "--name", type=str, default="", dest="name",
                         metavar="<NAME>",
-                        help="Specify UUID v3 or v4 name"
-                        )
-    #Mutually Exclusive Group
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("-u", "--urn",
-                       dest="urn_flag",
-                       action="store_true",
-                       default=False,
-                       help="Specify URN standard prefix"
-                       )
-    group.add_argument("-U", "--uppercase",
-                       dest="upper_flag",
-                       action="store_true",
-                       default=False,
-                       help="Non-standard uppercase UUID string"
-                       )
-    group.add_argument("-s", "--short",
-                       dest="short_flag",
-                       action="store_true",
-                       default=False,
-                       help="Shortened UUID using Base64 Encoding"
-                       )
-    # create the parser for the "b" command
-    decoder = subparsers.add_parser('decode')
-    decoder.add_argument('raw_uuid',
-                         metavar='UUID',
-                         type=str,
-                         help='a uuid to do something with')
-    decoder.add_argument('-i', "--information",
-                         dest="full_info",
-                         action="store_true",
-                         default=False,
-                         help="Provide detailed information about decoded UUID")
-    decoder.set_defaults(func=uuid_decode)
+                        help="Specify UUID v3 or v5 name")
+
+    # Add Arguments - Main Parser (MEG)
+    parser_meg.add_argument("-u", "--urn", dest="urn_flag",
+                            action="store_true", default=False,
+                            help="Specify URN standard prefix")
+    parser_meg.add_argument("-U", "--uppercase", dest="upper_flag",
+                            action="store_true", default=False,
+                            help="Non-standard uppercase UUID string")
+    parser_meg.add_argument("-s", "--short", dest="short_flag",
+                            action="store_true", default=False,
+                            help="Shortened UUID using Base64 Encoding")
+
+    # Add Arguments - Decode Subparser
+    decode.add_argument('raw_uuid', type=str, metavar='UUID',
+                        help='A valid (Hex|Base64|Uppercase|Prefixed) UUID string')
+    decode.add_argument('-i', "--information", dest="full_info",
+                        action="store_true", default=False,
+                        help="Provide detailed information about decoded UUID")
 
     # Store the ArgParse Arguments in a Varible named Args
     args = parser.parse_args()
