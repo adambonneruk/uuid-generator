@@ -500,13 +500,13 @@ uuid_menu.add_command(label="Version 1 UUID", accelerator='Ctrl+1', compound=tk.
 uuid_menu.add_command(label="Version 4 UUID", accelerator='Ctrl+4', compound=tk.LEFT,
                       image=uuid4_icon, underline=0, command=lambda: add_uuids_to_pta(4))
 uuid_menu.add_separator()
-uuid_menu.add_command(label="Version 3 UUID", accelerator='Ctrl+3', compound=tk.LEFT,
-                      image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3),
-                      state="disabled")
-uuid_menu.add_command(label="Version 5 UUID", accelerator='Ctrl+5', compound=tk.LEFT,
-                      image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5),
-                      state="disabled")
-uuid_menu.add_separator()
+#uuid_menu.add_command(label="Version 3 UUID", accelerator='Ctrl+3', compound=tk.LEFT,
+#                      image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3),
+#                      state="disabled")
+#uuid_menu.add_command(label="Version 5 UUID", accelerator='Ctrl+5', compound=tk.LEFT,
+#                      image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5),
+#                      state="disabled")
+#uuid_menu.add_separator()
 uuid_menu.add_command(label="Special Nil UUID", accelerator='Ctrl+0', compound=tk.LEFT,
                       image=uuid0_icon, underline=0, command=lambda: add_uuids_to_pta(0))
 menu_bar.add_cascade(label="Generate", menu=uuid_menu)
