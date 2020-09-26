@@ -304,7 +304,7 @@ class Decode(Unique):
     def __is_supported_regex(self):
         if re.search(r"[a-zA-Z0-9\+\/]{22}==", self._incoming):
             self._uuid = self.__decode_b64()
-            self._input_type = "Base 64"
+            self._input_type = "Base64"
         elif re.search(r"[0-9a-f]{32}", self._incoming.lower()):
             self._uuid = self.__decode_hex()
             self._input_type = "Hexadecimal"
@@ -316,7 +316,7 @@ class Decode(Unique):
             self._uuid = self._incoming.lower()
             self._input_type = "Plain Text"
         else:
-            raise Exception("not a valid/supported uuid format")
+            raise ValueError("not a valid/supported uuid format")
 
     def __decode_b64(self):
         """convert base64 to dashed-hexadecimal uuid"""
@@ -337,7 +337,7 @@ class Decode(Unique):
         """grab the uuid version from the string"""
         return int(self._uuid[14:15], 16)
 
-def print_uuid(args):
+def uuid_generate(args, parser):
     """Validates severage inbound arguments then prints x number of UUIDs"""
     #Argument Validation
     if not is_reasonable_quantity(args.quantity):
@@ -371,15 +371,41 @@ def print_uuid(args):
         else:
             print(myuuid)
 
-def decode_string(args):
-    print("decoding here...")
+def uuid_decode(args, parser):
+    """validates incoming string and if a uuid and pretty prints or fully parses"""
+
+    #Catch Non-Conformant UUID / Decode class has several RegEx checks in __is_supported_regex()
+    try:
+        tester = Decode(args.raw_uuid)
+    except ValueError:
+        parser.error("Not a Valid (Hex|Base64|Uppercase) UUID")
+
+    # Pretty Print or Full Information?
+    if args.full_info:
+        print("Input String: \t" + str(tester.input_string))
+        print("Input Type: \t" + str(tester.input_type))
+        print("UUID:   \t" + str(tester))
+        print("Version: \t" + str(tester.version))
+        print("Description: \t" + str(tester.version_desc()))
+        print("Namespace: \t" + str(tester.namespace))
+        print("Name:   \t" + str(tester.name))
+        print("Date & Time: \t" + str(tester.datetime()))
+        print("MAC Address: \t" + str(tester.mac_address()))
+        print("Base64: \t" + str(tester.encode()))
+        print("URN Prefix: \t" + str(tester.prefix()))
+        print("Hexadecimal: \t" + str(tester.hex()))
+        print("Integer: \t" + str(tester.int()))
+        print("Uppercase: \t" + str(tester.upper()))
+    else:
+        # Pretty Print the UUID (lowercase string with dashes/groups)
+        print(tester)
 
 def main():
     """main cli-based unix-like tool"""
     #Configure Arguments
     parser = argparse.ArgumentParser(description="Generate a number of version specific UUIDs.")
     subparsers = parser.add_subparsers(help='sub-command help')
-    parser.set_defaults(func=print_uuid)
+    parser.set_defaults(func=uuid_generate)
     parser.add_argument("-v", "--version",
                         type=int,
                         default=4,
@@ -430,12 +456,22 @@ def main():
                        )
     # create the parser for the "b" command
     decoder = subparsers.add_parser('decode')
-    decoder.add_argument('a_new_uuid', metavar='UUID', type=str, help='an integer for the accumulator')
-    decoder.add_argument('-v', "--verbose",dest="verbose",action="store_true",default=False,help="Provide detailed information about decoded UUID")
-    decoder.set_defaults(func=decode_string)
+    decoder.add_argument('raw_uuid',
+                         metavar='UUID',
+                         type=str,
+                         help='a uuid to do something with')
+    decoder.add_argument('-i', "--information",
+                         dest="full_info",
+                         action="store_true",
+                         default=False,
+                         help="Provide detailed information about decoded UUID")
+    decoder.set_defaults(func=uuid_decode)
+
+    # Store the ArgParse Arguments in a Varible named Args
     args = parser.parse_args()
-    args.func(args)
-    print(args)
+
+    # Execute the request ArgParse Function
+    args.func(args, parser)
 
 if __name__ == "__main__":
     main()
