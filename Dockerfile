@@ -1,5 +1,6 @@
 FROM python:3
-WORKDIR /app
-COPY . /app
 
-ENTRYPOINT [ "python", "./unique/unique.py" ]
+WORKDIR /opt/python/unique
+COPY /unique/unique.py /opt/python/unique
+
+ENTRYPOINT [ "python", "unique.py" ]
