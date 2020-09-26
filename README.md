@@ -167,7 +167,7 @@ EHuMMvxlEeqNuc2jzUq+xw==
 ### Display Help
 Using the ```-h``` (```--help```) argument on either Windows or Linux displays the following information:
 ```
-usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u | -U | -s] {decode} ...
+usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u | -U | -s] {decode,ulid} ...
 
 Generate or Decode a Universally Unique ID
 
