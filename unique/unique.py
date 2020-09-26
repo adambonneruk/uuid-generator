@@ -417,7 +417,7 @@ def main():
     """Using Main to execute a CLI based UUID Generate/Decode tool"""
     # Default Parser
     parser = argparse.ArgumentParser(description="Generate or Decode a Universally Unique ID",
-                                     epilog="Unique v5 | Adam Bonner | 2020",
+                                     epilog="Unique v5.0.0 | Adam Bonner | 2020",
                                      allow_abbrev=False) # fix: --help not --he
     parser.set_defaults(func=uuid_generate) #call uuid_generate() function
 

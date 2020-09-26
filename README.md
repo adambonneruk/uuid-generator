@@ -172,7 +172,7 @@ usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAM
 Generate or Decode a Universally Unique ID
 
 positional arguments:
-  {decode}              Pretty-print and display UUID information
+  {decode,ulid}              Pretty-print and display UUID information
 
 optional arguments:
   -h, --help            show this help message and exit
