@@ -5,6 +5,7 @@ import re
 import argparse
 from datetime import datetime
 from datetime import timedelta
+from ulid import Ulid
 
 def is_uuid_version(version):
     '''version (int) check, should be 0, 1, 3, 4, or 5'''
@@ -372,6 +373,17 @@ def uuid_generate(args, parser):
         else:
             print(myuuid)
 
+def ulid_generate(args, parser):
+    """Validates arguments then prints x number of ULIDs"""
+    # Argument Validation
+    if not is_reasonable_quantity(args.quantity):
+        parser.error("Not a Valid Quantity")
+
+    # Print ULID "--quantity" times
+    for _ in range(0, args.quantity):
+        myulid = Ulid()
+        print(myulid)
+
 def uuid_decode(args, parser):
     """validates incoming string and if a uuid and pretty prints or fully parses"""
 
@@ -416,6 +428,8 @@ def main():
     subparsers = parser.add_subparsers(help='Pretty-print and display UUID information')
     decode = subparsers.add_parser('decode')
     decode.set_defaults(func=uuid_decode) #call uuid_decode() function
+    ulid = subparsers.add_parser('ulid')
+    ulid.set_defaults(func=ulid_generate) #call ulid_generate() function
 
     # Add Arguments - Main Parser
     parser.add_argument("-v", "--version", type=int, default=4, dest="version",
@@ -448,6 +462,11 @@ def main():
     decode.add_argument('-i', "--information", dest="full_info",
                         action="store_true", default=False,
                         help="Provide detailed information about decoded UUID")
+
+    # Add Arguments - Decode Subparser
+    ulid.add_argument("-q", "--quantity", type=int, default=1, dest="quantity",
+                      metavar="<QUANTITY>",
+                      help="Specify output quanitity (1 - 65536)")
 
     # Store the ArgParse Arguments in a Varible named Args
     args = parser.parse_args()
