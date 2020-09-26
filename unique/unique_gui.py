@@ -6,6 +6,7 @@ import logging
 import re
 from unique import Unique
 from unique import is_reasonable_quantity
+from ulid import Ulid
 
 class Settings:
     """Settings for UUID Generation Class"""
@@ -267,6 +268,31 @@ def add_uuids_to_pta(version):
         logging.debug("Insert UUID at \"end\" of plain_text_area")
         plain_text_area.insert("end", generated_uuid)
 
+def add_ulids_to_pta():
+    """Append a new ULID(s) to the Plain Text Area"""
+    logging.debug("---------------------------------------------")
+    logging.debug("Append a new ULID(s) to the \"Plain Text Area\"")
+
+    for _ in range(0, current_settings.quantity):
+        # Generate a ULID
+        logging.debug("Generate a ULID:")
+        my_ulid = Ulid()
+
+        logging.debug(my_ulid)
+
+        # Get contents of "Plain Text Area" as text_blob
+        logging.debug("Get contents of \"Plain Text Area\" as text_blob")
+        text_blob = plain_text_area.get('1.0', "end"+'-1c')
+
+        # If the "Plain Text Area" isn't Empty, Newline Required
+        if text_blob != "":
+            logging.debug("\"Plain Text Area\" isn't Empty, Newline Required")
+            plain_text_area.insert("end", "\n")
+
+        # Insert text_blob into Plain Text Area with new ULID
+        logging.debug("Insert ULID at \"end\" of plain_text_area")
+        plain_text_area.insert("end", my_ulid)
+
 def exit_are_you_sure():
     """Display exit message before destorying window"""
     logging.debug("----\nExit")
@@ -443,7 +469,7 @@ def options_popup():
     #URN Prefix Drop Down
     options_uppercase(popup)
 
-#logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 logging.debug("-----------------\nDEBUG MODE ACTIVE\n-----------------")
 
 current_settings = Settings()
@@ -473,6 +499,7 @@ uuid1_icon = tk.PhotoImage(file='icon/vswin2019/LevelOne_16x.png')
 uuid3_icon = tk.PhotoImage(file='icon/vswin2019/LevelThree_16x.png')
 uuid4_icon = tk.PhotoImage(file='icon/vswin2019/LevelFour_16x.png')
 uuid5_icon = tk.PhotoImage(file='icon/vswin2019/LevelFive_16x.png')
+ulid_icon = tk.PhotoImage(file='icon/vswin2019/Sort_16x.png')
 options_icon = tk.PhotoImage(file='icon/vswin2019/Settings_16x.png')
 about_icon = tk.PhotoImage(file='icon/vswin2019/InformationSymbol_16x.png')
 
@@ -509,6 +536,9 @@ uuid_menu.add_separator()
 #uuid_menu.add_separator()
 uuid_menu.add_command(label="Special Nil UUID", accelerator='Ctrl+0', compound=tk.LEFT,
                       image=uuid0_icon, underline=0, command=lambda: add_uuids_to_pta(0))
+uuid_menu.add_separator()
+uuid_menu.add_command(label="Sortable ULID", accelerator='Ctrl+L', compound=tk.LEFT,
+                      image=ulid_icon, underline=0, command=lambda: add_ulids_to_pta())
 menu_bar.add_cascade(label="Generate", menu=uuid_menu)
 
 # Create the Tools Menu
@@ -543,6 +573,8 @@ window.bind_all('<Control-Key-s>', lambda event: file_save())
 window.bind_all('<Control-Key-0>', lambda event: add_uuids_to_pta(0))
 window.bind_all('<Control-Key-1>', lambda event: add_uuids_to_pta(1))
 window.bind_all('<Control-Key-4>', lambda event: add_uuids_to_pta(4))
+window.bind_all('<Control-Key-L>', lambda event: add_uuids_to_pta(4))
+window.bind_all('<Control-Key-l>', lambda event: add_ulids_to_pta())
 window.bind('<F9>', lambda event: options_popup())
 window.bind('<F1>', lambda event: about())
 
