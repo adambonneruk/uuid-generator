@@ -111,11 +111,11 @@ urn:uuid:7ed0c3d9-f14c-11ea-aabd-e4b31802edf0
 >.\unique.py -v 5 --ns dns -n "python.org"
 886313e1-3b8a-5372-9b90-0c9aee199e5d
 
-# Uppercase UUIDv3 for "http://adambonner.co.uk" URL with URN prefix
->.\unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url -u
-urn:uuid:1FDC56DF-BB86-3F0D-9356-8612ABA227FF
+# Uppercase UUIDv3 for "http://adambonner.co.uk" URL
+>.\unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url
+1FDC56DF-BB86-3F0D-9356-8612ABA227FF
 
-# Decode Base64 Encoded UUID
+# Decode and Pretty-Print Base64 Encoded UUID
 > .\unique.py decode EaLLP0e7R9akp4EC/wyw4w==
 11a2cb3f-47bb-47d6-a4a7-8102ff0cb0e3
 
@@ -153,9 +153,12 @@ EHuMMvxlEeqNuc2jzUq+xw==
 ### Display Help
 Using the ```-h``` (```--help```) argument on either Windows or Linux displays the following information:
 ```
-usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u | -U | -s]
+usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAME>] [-u | -U | -s] {decode} ...
 
-Generate a number of version specific UUIDs.
+Generate or Decode a Universally Unique ID
+
+positional arguments:
+  {decode}              Pretty-print and display UUID information
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -166,10 +169,12 @@ optional arguments:
   --ns <NAMESPACE>, --namespace <NAMESPACE>
                         UUID v3 or v5 namespace
   -n <NAME>, --name <NAME>
-                        Specify UUID v3 or v4 name
+                        Specify UUID v3 or v5 name
   -u, --urn             Specify URN standard prefix
   -U, --uppercase       Non-standard uppercase UUID string
   -s, --short           Shortened UUID using Base64 Encoding
+
+Unique vX.Y.Z | Adam Bonner | 2020
 ```
 
 ## Docker (```docker run --rm -it uuid:latest```)
