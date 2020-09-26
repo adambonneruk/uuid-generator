@@ -1,7 +1,7 @@
 # Unique: UUID Generation (in Python) ![](unique/icon/32.png)
 "Unique": the UUID generator tool. ```unique.py``` will generate/decode UUIDs using a CLI, whilst ```unique_gui.py``` wraps this up in a multi-OS GUI. This project in availble as native python source, a windows executable and docker image.
 
->__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
+>__Note:__ This project uses git submodules, clone with: ```git clone <link> --recurse-submodules```
 
 ## Features
 * Generate UUID Versions 1, 3, 4, 5 and the "Special Nil Case"/0 (_GUI 0/1/4 Only_)
@@ -11,13 +11,19 @@
 * Non-Standard: Output UUID as Uppercase (```-U```)
 * Shorten UUIDs using Base64 Encoding (```-s```)
 * Decode UUID with pretty-print or version/type information
+* Generation of Unique Lexicographically Sortable Identifiers / [ULIDs](https://github.com/adambonneruk/ulid)
 * __Platform Agnostic:__ Python, Docker & Windows
 
 ## Background
-Back in May 2016, I needed a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only one not static or engineered to a set of hardware) and has now been updated and released to hopefully demonstrate my profeciency with ```git```, ```git-flow```, ```markdown```, ```python```, ui design, ux design, ```tkinter```, oosd, argument parsing, ```RegEx```, ```Base64```, ```Hexadecimal```, Docker, and more!
+Back in May 2016, I needed a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only one not static or engineered to a set of hardware) and has now been updated and released to hopefully demonstrate my profeciency with ```git```, ```git submodule```, ```git-flow```, ```markdown```, ```python```, ui design, ux design, ```tkinter```, oosd, argument parsing, ```RegEx```, ```Base64```, ```Hexadecimal```, Docker, and more!
 
 ## What is a UUID? (from [Wikipedia](https://https://en.wikipedia.org/wiki/Universally_unique_identifier))
 A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems. UUIDs are, for practical purposes, unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them. Anyone can create a UUID and use it to identify something with near certainty that the identifier does not duplicate one that has already been, or will be, created to identify something else.
+
+>__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
+
+### ...and what is a ULID?
+Unique Lexicographically Sortable Identifiers (ULIDs) are; like UUIDs, 128-bit random numbers used to to universally identify data items. With the added benefits of being shorter (26 character Base32-encoded string), sortable (lexigraphically and monotonic) and case insensitive.
 
 ## Further Reading:
 * [Base64](https://en.wikipedia.org/wiki/Base64)
@@ -89,30 +95,30 @@ The following code block uses shorthand arguments, the tool provides the facilit
 
 ```powershell
 # UUIDv4
->.\unique.py
+> .\unique.py
 27fd1448-3c0d-4d73-94c4-9f16dd9e0c16
 
 # 5 x UUIDv4
->.\unique.py -q 3
+> .\unique.py -q 3
 32ec9ca1-2a84-40c9-afa4-f67a7a8c3156
 039ee9f1-c5a0-4d85-805a-89b84974a6c7
 b6a4587d-a3de-4e4c-8d84-a3fad6b14192
 
 # 2 x UUIDv1 with URN prefix
->.\unique.py -v 1 -q 2 -u
+> .\unique.py -v 1 -q 2 -u
 urn:uuid:7ed04b31-f14c-11ea-ac52-e4b31802edf0
 urn:uuid:7ed0c3d9-f14c-11ea-aabd-e4b31802edf0
 
 # Special Nil UUID
->.\unique.py -q 1 -v 0
+> .\unique.py -q 1 -v 0
 00000000-0000-0000-0000-000000000000
 
 # UUIDv5 for "python.org" Fully qualified domain name
->.\unique.py -v 5 --ns dns -n "python.org"
+> .\unique.py -v 5 --ns dns -n "python.org"
 886313e1-3b8a-5372-9b90-0c9aee199e5d
 
 # Uppercase UUIDv3 for "http://adambonner.co.uk" URL
->.\unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url
+> .\unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url
 1FDC56DF-BB86-3F0D-9356-8612ABA227FF
 
 # Decode and Pretty-Print Base64 Encoded UUID
@@ -120,7 +126,7 @@ urn:uuid:7ed0c3d9-f14c-11ea-aabd-e4b31802edf0
 11a2cb3f-47bb-47d6-a4a7-8102ff0cb0e3
 
 # Decode Base64 Encoded UUID with verbose information
->.\unique.py decode -i famfC///EeqRY6RMyKyUKg==
+> .\unique.py decode -i famfC///EeqRY6RMyKyUKg==
 Input String:   famfC///EeqRY6RMyKyUKg==
 Input Type:     Base64
 UUID:           7da99f0b-ffff-11ea-9163-a44cc8ac942a
@@ -135,6 +141,14 @@ URN Prefix:     urn:uuid:7da99f0b-ffff-11ea-9163-a44cc8ac942a
 Hexadecimal:    7da99f0bffff11ea9163a44cc8ac942a
 Integer:        167034223496070676450392100360877282346
 Uppercase:      7DA99F0B-FFFF-11EA-9163-A44CC8AC942A
+
+# Generate 5xULIDs
+> .\unique.py ulid -q 5
+01EK645S91Q27M3343C2607VWY
+01EK645S92V05X50AGX4BB337R
+01EK645S93CTX4SE9TQJ03DQKA
+01EK645S936YJ7CPR6ME36G44B
+01EK645S9GM5RDNAT1YG6Z8AJV
 
 ```
 ### Usage Example (Linux)
@@ -158,14 +172,14 @@ usage: unique.py [-h] [-v <VERSION>] [-q <QUANTITY>] [--ns <NAMESPACE>] [-n <NAM
 Generate or Decode a Universally Unique ID
 
 positional arguments:
-  {decode}              Pretty-print and display UUID information
+  {decode,ulid}              DECODE UUID or GENERATE a ULID
 
 optional arguments:
   -h, --help            show this help message and exit
   -v <VERSION>, --version <VERSION>
                         Specify output UUID version (0, 1, 3, 4, or 5)
   -q <QUANTITY>, --quantity <QUANTITY>
-                        Specify output quanitity (1 - 65536)
+                        Specify output quantity (1 - 65536)
   --ns <NAMESPACE>, --namespace <NAMESPACE>
                         UUID v3 or v5 namespace
   -n <NAME>, --name <NAME>
@@ -305,3 +319,7 @@ Thanks to these great projects I was able to figure out how to use tkinter for t
 * __GUI:__ Reverse-Engineer UUID: Date/Time
 * __GUI:__ Reverse-Engineer UUID: MAC Address
 * Creating a Windows Installer
+* ~~```CLI:``` Generate a ULID~~
+* ```CLI:``` Decode a ULID
+* __GUI:__ Generate a ULID
+* __GUI:__ Decode a ULID
