@@ -437,7 +437,7 @@ def main():
                         help="Specify output UUID version (0, 1, 3, 4, or 5)")
     parser.add_argument("-q", "--quantity", type=int, default=1, dest="quantity",
                         metavar="<QUANTITY>",
-                        help="Specify output quanitity (1 - 65536)")
+                        help="Specify output quantity (1 - 65536)")
     parser.add_argument("--ns", "--namespace", type=lambda s: s.lower(), default="",
                         dest="namespace", metavar="<NAMESPACE>",
                         help="UUID v3 or v5 namespace")
@@ -466,7 +466,7 @@ def main():
     # Add Arguments - Decode Subparser
     ulid.add_argument("-q", "--quantity", type=int, default=1, dest="quantity",
                       metavar="<QUANTITY>",
-                      help="Specify output quanitity (1 - 65536)")
+                      help="Specify output quantity (1 - 65536)")
 
     # Store the ArgParse Arguments in a Varible named Args
     args = parser.parse_args()

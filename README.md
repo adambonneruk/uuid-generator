@@ -179,7 +179,7 @@ optional arguments:
   -v <VERSION>, --version <VERSION>
                         Specify output UUID version (0, 1, 3, 4, or 5)
   -q <QUANTITY>, --quantity <QUANTITY>
-                        Specify output quanitity (1 - 65536)
+                        Specify output quantity (1 - 65536)
   --ns <NAMESPACE>, --namespace <NAMESPACE>
                         UUID v3 or v5 namespace
   -n <NAME>, --name <NAME>
