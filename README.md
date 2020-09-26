@@ -5,7 +5,7 @@
 
 ## Features
 * Generate UUID Versions 1, 3, 4, 5 and the "Special Nil Case"/0
-* Support for DNS (FWDN), URL, OID and X.500 Namespaces (```--ns```)
+* Support for DNS (FQDN), URL, OID and X.500 Namespaces (```--ns```)
 * Prefix UUID with URN (RFC 4122) (```-u```)
 * Commandline Unix-Like tool and Graphical User Interface
 * Non-Standard: Output UUID as Uppercase (```-U```)
