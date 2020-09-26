@@ -11,10 +11,11 @@
 * Non-Standard: Output UUID as Uppercase (```-U```)
 * Shorten UUIDs using Base64 Encoding (```-s```)
 * Decode UUID with pretty-print or version/type information
+* Generation of  Unique Lexicographically Sortable Identifiers / [ULIDs](https://github.com/adambonneruk/ulid)
 * __Platform Agnostic:__ Python, Docker & Windows
 
 ## Background
-Back in May 2016, I needed a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only one not static or engineered to a set of hardware) and has now been updated and released to hopefully demonstrate my profeciency with ```git```, ```git-flow```, ```markdown```, ```python```, ui design, ux design, ```tkinter```, oosd, argument parsing, ```RegEx```, ```Base64```, ```Hexadecimal```, Docker, and more!
+Back in May 2016, I needed a random number generator and started learning about UUIDs. This tool started as a way to automatically generate 20 v4 UUIDs (the only one not static or engineered to a set of hardware) and has now been updated and released to hopefully demonstrate my profeciency with ```git```, ```git submodule```, ```git-flow```, ```markdown```, ```python```, ui design, ux design, ```tkinter```, oosd, argument parsing, ```RegEx```, ```Base64```, ```Hexadecimal```, Docker, and more!
 
 ## What is a UUID? (from [Wikipedia](https://https://en.wikipedia.org/wiki/Universally_unique_identifier))
 A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems. UUIDs are, for practical purposes, unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them. Anyone can create a UUID and use it to identify something with near certainty that the identifier does not duplicate one that has already been, or will be, created to identify something else.
@@ -305,3 +306,7 @@ Thanks to these great projects I was able to figure out how to use tkinter for t
 * __GUI:__ Reverse-Engineer UUID: Date/Time
 * __GUI:__ Reverse-Engineer UUID: MAC Address
 * Creating a Windows Installer
+* ~~```CLI:``` Generate a ULID~~
+* ```CLI:``` Decode a ULID
+* __GUI:__ Generate a ULID
+* __GUI:__ Decode a ULID
