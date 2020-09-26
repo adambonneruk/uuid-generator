@@ -1,5 +1,5 @@
 # Unique: UUID Generation (in Python) ![](unique/icon/32.png)
-"Unique": the UUID generator tool. ```unique.py``` will generate UUIDs (using a CLI) in a variey of flavours whilst ```unique_gui.py``` wraps this up in a pretty GUI. This project in availble as native python source, a windows executable and docker image.
+"Unique": the UUID generator tool. ```unique.py``` will generate/decode UUIDs using a CLI, whilst ```unique_gui.py``` wraps this up in a multi-OS GUI. This project in availble as native python source, a windows executable and docker image.
 
 >__Note:__ A Version 4 UUID is the default, safe and extremely random output of this tool.
 
@@ -10,6 +10,7 @@
 * Commandline Unix-Like tool and Graphical User Interface
 * Non-Standard: Output UUID as Uppercase (```-U```)
 * Shorten UUIDs using Base64 Encoding (```-s```)
+* Decode UUID with pretty-print or version/type information
 * __Platform Agnostic:__ Python, Docker & Windows
 
 ## Background
@@ -66,7 +67,7 @@ The following Keyboard Shortcuts are available:
 * __ALT + F4__: Exit/Quit
 
 ## Command Line / Bash (```unique.py```)
-### Summary
+### Summary (Generate)
 The following arguments are compatible with the respective UUID-version generation.
 Version | Switch | Specifics                  | Additional Options (__Bold = Mandatory__)
 --------|--------|----------------------------|-------------------------------------------
@@ -76,41 +77,66 @@ Version | Switch | Specifics                  | Additional Options (__Bold = Man
 3       | -v 3   | Namespace & Name-based     | __--ns__, __-n__, -q, -u, -U, -s
 5       | -v 5   | Namespace & Name-based     | __--ns__, __-n__, -q, -u, -U, -s
 
-### Usage Examples (Windows)
+### Summary (Decode)
+Utilising the ```decode``` positional argument, ```unique``` will instead process/decode a given UUID and pretty print the output as a lowercase, dash-seperated string. The input can be in multiple formats (urn-prefix, hexadecimal, base64 etc.)
 
+Mode   | Argument | Description                  | Additional Options
+-------|----------|------------------------------|-------------------------------------------
+decode |  &lt;UUID&gt;  | Decode string <UUID> as UUID | -i, --information
+
+### Usage Examples (Windows)
 The following code block uses shorthand arguments, the tool provides the facility to use both short (e.g. ```-q```) and long (e.g. ```--quantity```) arguments interchangebly. Windows can natively execute ```.py``` files if Python is installed. If you are using the independant released exexutable; simply substitute the extensions in the following examples to ```.exe```.
 
 ```powershell
 # UUIDv4
->./unique.py
+>.\unique.py
 27fd1448-3c0d-4d73-94c4-9f16dd9e0c16
 
 # 5 x UUIDv4
->./unique.py -q 5
+>.\unique.py -q 3
 32ec9ca1-2a84-40c9-afa4-f67a7a8c3156
 039ee9f1-c5a0-4d85-805a-89b84974a6c7
 b6a4587d-a3de-4e4c-8d84-a3fad6b14192
-91bd7bf0-8b6e-46af-ad01-7f91ca66aa25
-4085c90e-b195-40fb-b31e-e5faf76eb34a
 
 # 2 x UUIDv1 with URN prefix
->./unique.py -v 1 -q 2 -u
+>.\unique.py -v 1 -q 2 -u
 urn:uuid:7ed04b31-f14c-11ea-ac52-e4b31802edf0
 urn:uuid:7ed0c3d9-f14c-11ea-aabd-e4b31802edf0
 
 # Special Nil UUID
->./unique.py -q 1 -v 0
+>.\unique.py -q 1 -v 0
 00000000-0000-0000-0000-000000000000
 
 # UUIDv5 for "python.org" Fully qualified domain name
->./unique.py -v 5 --ns dns -n "python.org"
+>.\unique.py -v 5 --ns dns -n "python.org"
 886313e1-3b8a-5372-9b90-0c9aee199e5d
 
 # Uppercase UUIDv3 for "http://adambonner.co.uk" URL with URN prefix
->./unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url -u
+>.\unique.py -U -v 3 -n "http://adambonner.co.uk" --ns url -u
 urn:uuid:1FDC56DF-BB86-3F0D-9356-8612ABA227FF
-```
 
+# Decode Base64 Encoded UUID
+> .\unique.py decode EaLLP0e7R9akp4EC/wyw4w==
+11a2cb3f-47bb-47d6-a4a7-8102ff0cb0e3
+
+# Decode Base64 Encoded UUID with verbose information
+>.\unique.py decode -i famfC///EeqRY6RMyKyUKg==
+Input String:   famfC///EeqRY6RMyKyUKg==
+Input Type:     Base64
+UUID:           7da99f0b-ffff-11ea-9163-a44cc8ac942a
+Version:        1
+Description:    Time and Node Based UUID
+Namespace:      None
+Name:           None
+Date & Time:    2020-09-26 13:52:17.823309
+MAC Address:    a4-4c-c8-ac-94-2a
+Base64:         famfC///EeqRY6RMyKyUKg==
+URN Prefix:     urn:uuid:7da99f0b-ffff-11ea-9163-a44cc8ac942a
+Hexadecimal:    7da99f0bffff11ea9163a44cc8ac942a
+Integer:        167034223496070676450392100360877282346
+Uppercase:      7DA99F0B-FFFF-11EA-9163-A44CC8AC942A
+
+```
 ### Usage Example (Linux)
 ```bash
 # UUIDv4
@@ -264,10 +290,10 @@ Thanks to these great projects I was able to figure out how to use tkinter for t
 * __GUI:__ Dark Mode
 * __GUI:__ Dockerise the GUI (as Web Application?)
 * ~~```CLI:``` Encode UUIDs in Base64 to reduce character length~~
-* ```CLI:``` Decode Base64 encoded UUID
-* ```CLI:``` Reverse-Engineer UUID: Version
-* ```CLI:``` Reverse-Engineer UUID: Date/Time
-* ```CLI:``` Reverse-Engineer UUID: MAC Address
+* ~~```CLI:``` Decode Base64 encoded UUID~~
+* ~~```CLI:``` Reverse-Engineer UUID: Version~~
+* ~~```CLI:``` Reverse-Engineer UUID: Date/Time~~
+* ~~```CLI:``` Reverse-Engineer UUID: MAC Address~~
 * __GUI:__ Encode UUIDs in Base64 to reduce character length
 * __GUI:__ Decode Base64 encoded UUID
 * __GUI:__ Reverse-Engineer UUID: Version
