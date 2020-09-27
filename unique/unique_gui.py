@@ -385,11 +385,11 @@ def options_quantity(popup):
     current_settings.quant_colour = "pale green"
 
     #Create Entry Box with current colour
-    quant = tk.Entry(popup, width=6, textvariable=quant_var, bg=current_settings.quant_colour)
-    tk.Label(popup, text="Quantity").grid(sticky="w", padx=2, row=0, column=0)
+    quant = tk.Entry(popup, width=10, textvariable=quant_var, bg=current_settings.quant_colour)
+    tk.Label(popup, text="Quantity").grid(sticky="w", pady=5, padx=2, row=0, column=0)
     quant.grid(row=0, column=1, pady=8)
 
-    def set_quant():
+    def set_quant(close_if_good=False):
         """Quanitiy Set Button Pressed"""
         logging.debug("Event: Quanitiy Set Button Pressed")
         new_quant = quant_var.get()
@@ -402,6 +402,9 @@ def options_quantity(popup):
                 current_settings.quantity = int(new_quant)
                 current_settings.quant_colour = "pale green"
                 quant.config(bg=current_settings.quant_colour) #refresh
+                if close_if_good:
+                    #destroy the popup
+                    popup.destroy()
             else:
                 logging.debug("\t...but too low or high")
                 current_settings.quant_colour = "light goldenrod"
@@ -413,79 +416,13 @@ def options_quantity(popup):
             quant.config(bg=current_settings.quant_colour) #refresh
             messagebox.showerror("Quantity", "Value not an integer")
 
-    button = tk.Button(popup, text="Set", command=set_quant)
-    button.grid(row=0, column=2)
+    button_ok = tk.Button(popup, text="OK", command=lambda: set_quant(True), width=10)
+    button_apply = tk.Button(popup, text="Apply", command=set_quant, width=10)
+    button_close = tk.Button(popup, text="Close", command=popup.destroy, width=10)
+    button_ok.grid(row=1, column=0, padx=5, pady=5)
+    button_apply.grid(row=1, column=1, padx=5, pady=5)
+    button_close.grid(row=1, column=2, padx=5, pady=5)
 
-def options_urnprefix(popup):
-    """Create URN Prefix Option Box"""
-    logging.debug("Create URN Prefix Option Box")
-
-    prefixes_var = tk.StringVar()
-    prefixes = {"Disabled", "Enabled"}
-
-    # Set and Log current_settings.urn_flag
-    logging.debug("Original URN Prefix Flag: %s", str(current_settings.urn_flag))
-    if current_settings.urn_flag:
-        prefixes_var.set("Enabled")
-    else:
-        prefixes_var.set("Disabled")
-
-    # Create Option Box
-    tk.Label(popup, text="URN Prefix").grid(sticky="w", padx=2, row=1, column=0)
-    prefixes_popup = tk.OptionMenu(popup, prefixes_var, *prefixes)
-    prefixes_popup.grid(row=1, column=1, columnspan=2, padx=2, pady=2)
-
-    def change_prefix(*args):
-        """Changing the Prefix"""
-        logging.debug("Event: Changing the URN Prefix Flag with the following arguments: %s",
-                      str(args))
-
-        current_prefix = prefixes_var.get()
-        logging.debug("\tNew Selection is: %s", current_prefix)
-
-        #Update current_settings Class
-        logging.debug("\tSaving new URN Prefix Flag choice in current_settings")
-        if current_prefix == "Enabled":
-            current_settings.urn_flag = True
-        else:
-            current_settings.urn_flag = False
-
-    prefixes_var.trace('w', change_prefix)
-
-def options_uppercase(popup):
-    """Create Uppercase Option Box"""
-    logging.debug("Create Uppercase Option Box")
-
-    uppercase_var = tk.StringVar()
-    uppercase = {"Enabled", "Disabled"}
-
-    # Set and Log current_settings.upper_flag
-    logging.debug("Original Uppercase Flag: %s", str(current_settings.upper_flag))
-    if current_settings.upper_flag:
-        uppercase_var.set("Enabled")
-    else:
-        uppercase_var.set("Disabled")
-
-    tk.Label(popup, text="Uppercase").grid(sticky="w", padx=2, row=2, column=0)
-    uppercase_popup = tk.OptionMenu(popup, uppercase_var, *uppercase)
-    uppercase_popup.grid(row=2, column=1, columnspan=2, padx=2, pady=2)
-
-    def change_uppercase(*args):
-        """Changing the Prefix"""
-        logging.debug("Event: Changing the Uppercase Flag with the following arguments: %s",
-                      str(args))
-
-        current_uppercase = uppercase_var.get()
-        logging.debug("\tNew Selection is: %s", current_uppercase)
-
-        #Update current_settings Class
-        logging.debug("\tSaving new Uppercase Flag choice in current_settings")
-        if current_uppercase == "Enabled":
-            current_settings.upper_flag = True
-        else:
-            current_settings.upper_flag = False
-
-    uppercase_var.trace('w', change_uppercase)
 
 def options_popup():
     """Create a Small Popup Window to Set Application Options"""
@@ -499,12 +436,6 @@ def options_popup():
 
     #Quanitity Entrybox
     options_quantity(popup)
-
-    #URN Prefix Drop Down
-    options_urnprefix(popup)
-
-    #URN Prefix Drop Down
-    options_uppercase(popup)
 
 logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 logging.debug("-----------------\nDEBUG MODE ACTIVE\n-----------------")
