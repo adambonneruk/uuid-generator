@@ -16,6 +16,7 @@ class Settings:
         self.quantity = 1
         self.urn_flag = False
         self.upper_flag = False
+        self.short_flag = False
         self.namespace = ""
         self.name = ""
         self.quant_colour = "pale green"
@@ -39,6 +40,41 @@ class Settings:
             title = "Unique: UUID Generator"
 
         window.title(title)
+
+    def toggle_uppercase(self):
+        """turn on uppercase"""
+        if menu_var_upper.get():
+            self.upper_flag = 1
+            self.short_flag = 0
+            self.urn_flag = 0
+        else:
+            self.upper_flag = 0
+        self.__update_toggles()
+
+    def toggle_base64(self):
+        """turn on base64"""
+        if menu_var_base64.get():
+            self.short_flag = 1
+            self.upper_flag = 0
+            self.urn_flag = 0
+        else:
+            self.short_flag = 0
+        self.__update_toggles()
+
+    def toggle_urn_prefix(self):
+        """turn on base64"""
+        if menu_var_prefix.get():
+            self.urn_flag = 1
+            self.short_flag = 0
+            self.upper_flag = 0
+        else:
+            self.urn_flag = 0
+        self.__update_toggles()
+
+    def __update_toggles(self):
+        menu_var_upper.set(current_settings.upper_flag)
+        menu_var_base64.set(current_settings.short_flag)
+        menu_var_prefix.set(current_settings.urn_flag)
 
 def about():
     """Display About Message"""
@@ -236,6 +272,7 @@ def add_uuids_to_pta(version):
     logging.debug("Quantity: %s", str(current_settings.quantity))
     logging.debug("URN Prefix?: %s", str(current_settings.urn_flag))
     logging.debug("Uppercase?: %s", str(current_settings.upper_flag))
+    logging.debug("Base64?: %s", str(current_settings.short_flag))
 
     for _ in range(0, current_settings.quantity):
         # Generate a UUID
@@ -248,8 +285,8 @@ def add_uuids_to_pta(version):
             generated_uuid = myuuid.upper()
         elif current_settings.urn_flag:
             generated_uuid = myuuid.prefix()
-        #elif current_settings.short_flag:
-        #    generated_uuid = myuuid.encode()
+        elif current_settings.short_flag:
+            generated_uuid = myuuid.encode()
         else:
             generated_uuid = myuuid
 
@@ -500,6 +537,9 @@ uuid3_icon = tk.PhotoImage(file='icon/vswin2019/LevelThree_16x.png')
 uuid4_icon = tk.PhotoImage(file='icon/vswin2019/LevelFour_16x.png')
 uuid5_icon = tk.PhotoImage(file='icon/vswin2019/LevelFive_16x.png')
 ulid_icon = tk.PhotoImage(file='icon/vswin2019/Sort_16x.png')
+uppercase_icon = tk.PhotoImage(file='icon/vswin2019/CaseSensitive_16x.png')
+base64_icon = tk.PhotoImage(file='icon/vswin2019/Binary_16x.png')
+urn_icon = tk.PhotoImage(file='icon/vswin2019/Link_16x.png')
 options_icon = tk.PhotoImage(file='icon/vswin2019/Settings_16x.png')
 about_icon = tk.PhotoImage(file='icon/vswin2019/InformationSymbol_16x.png')
 
@@ -543,7 +583,21 @@ menu_bar.add_cascade(label="Generate", menu=uuid_menu)
 
 # Create the Tools Menu
 logging.debug("Create the Tools Menu")
+menu_var_upper = tk.IntVar()
+menu_var_upper.set(current_settings.upper_flag)
+menu_var_base64 = tk.IntVar()
+menu_var_base64.set(current_settings.short_flag)
+menu_var_prefix = tk.IntVar()
+menu_var_prefix.set(current_settings.urn_flag)
+
 tools_menu = tk.Menu(menu_bar, tearoff=0)
+tools_menu.add_checkbutton(label=" Toggle URN Prefix", variable=menu_var_prefix, compound=tk.LEFT,
+                           image=urn_icon,  command=current_settings.toggle_urn_prefix)
+tools_menu.add_checkbutton(label=" Toggle Base64", variable=menu_var_base64, compound=tk.LEFT,
+                           image=base64_icon, command=current_settings.toggle_base64)
+tools_menu.add_checkbutton(label=" Toggle Uppercase", variable=menu_var_upper, compound=tk.LEFT,
+                           image=uppercase_icon, command=current_settings.toggle_uppercase)
+tools_menu.add_separator()
 tools_menu.add_command(label="Options...", accelerator='F9', compound=tk.LEFT,
                        image=options_icon, underline=0, command=options_popup)
 menu_bar.add_cascade(label="Tools", menu=tools_menu)
