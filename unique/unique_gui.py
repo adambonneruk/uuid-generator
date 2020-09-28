@@ -6,6 +6,7 @@ import logging
 import re
 from unique import Unique
 from unique import is_reasonable_quantity
+from unique import is_uuid_ns_name
 from ulid import Ulid
 
 class Settings:
@@ -20,6 +21,7 @@ class Settings:
         self.namespace = ""
         self.name = ""
         self.quant_colour = "pale green"
+        self.name_colour = ""
         self.filename = ""
         self.title = ""
 
@@ -269,6 +271,9 @@ def add_uuids_to_pta(version):
     if version == 3 or version == 5:
         logging.debug("\tNamespace:%s", str(current_settings.namespace).upper())
         logging.debug("\tName: %s", str(current_settings.name))
+        if not is_uuid_ns_name(current_settings.namespace, current_settings.name):
+            options_popup()
+            return
     logging.debug("Quantity: %s", str(current_settings.quantity))
     logging.debug("URN Prefix?: %s", str(current_settings.urn_flag))
     logging.debug("Uppercase?: %s", str(current_settings.upper_flag))
@@ -374,56 +379,6 @@ def exit_are_you_sure():
         else: #no file, and no text area contents
             window.destroy()
 
-def options_quantity(popup):
-    """Create Quantity Entry Box"""
-    logging.debug("Create Quantity Entry Box")
-    quant_var = tk.StringVar()
-
-    # Log current_settings.quantity
-    logging.debug("Original Quantity: %s", str(current_settings.quantity))
-    quant_var.set(str(current_settings.quantity))
-    current_settings.quant_colour = "pale green"
-
-    #Create Entry Box with current colour
-    quant = tk.Entry(popup, width=10, textvariable=quant_var, bg=current_settings.quant_colour)
-    tk.Label(popup, text="Quantity").grid(sticky="w", pady=5, padx=2, row=0, column=0)
-    quant.grid(row=0, column=1, pady=8)
-
-    def set_quant(close_if_good=False):
-        """Quanitiy Set Button Pressed"""
-        logging.debug("Event: Quanitiy Set Button Pressed")
-        new_quant = quant_var.get()
-        try:
-            int(new_quant)
-            logging.debug("\tValue is an Integer")
-            if is_reasonable_quantity(int(new_quant)):
-                logging.debug("\t...and of a reasonable quanitity")
-                logging.debug("\tSaving new quanitity is current_settings")
-                current_settings.quantity = int(new_quant)
-                current_settings.quant_colour = "pale green"
-                quant.config(bg=current_settings.quant_colour) #refresh
-                if close_if_good:
-                    #destroy the popup
-                    popup.destroy()
-            else:
-                logging.debug("\t...but too low or high")
-                current_settings.quant_colour = "light goldenrod"
-                quant.config(bg=current_settings.quant_colour) #refresh
-                messagebox.showwarning("Quantity", "Value too large (1 - 65536)")
-        except ValueError:
-            logging.debug("\tValue is not an Integer")
-            current_settings.quant_colour = "light coral"
-            quant.config(bg=current_settings.quant_colour) #refresh
-            messagebox.showerror("Quantity", "Value not an integer")
-
-    button_ok = tk.Button(popup, text="OK", command=lambda: set_quant(True), width=10)
-    button_apply = tk.Button(popup, text="Apply", command=set_quant, width=10)
-    button_close = tk.Button(popup, text="Close", command=popup.destroy, width=10)
-    button_ok.grid(row=1, column=0, padx=5, pady=5)
-    button_apply.grid(row=1, column=1, padx=5, pady=5)
-    button_close.grid(row=1, column=2, padx=5, pady=5)
-
-
 def options_popup():
     """Create a Small Popup Window to Set Application Options"""
     logging.debug("------------------------------------------------------")
@@ -434,8 +389,131 @@ def options_popup():
     popup.geometry("+150+150")
     popup.iconbitmap("./icon/icon.ico")
 
-    #Quanitity Entrybox
-    options_quantity(popup)
+    logging.debug("Create Quantity Entry Box")
+    quant_var = tk.StringVar()
+
+    # Log current_settings.quantity
+    logging.debug("Original Quantity: %s", str(current_settings.quantity))
+    quant_var.set(str(current_settings.quantity))
+    current_settings.quant_colour = "pale green"
+
+    #Create Entry Box with current colour
+    quant = tk.Entry(popup, width=20, textvariable=quant_var, bg=current_settings.quant_colour)
+    tk.Label(popup, text="Quantity").grid(sticky="w", pady=5, padx=2, row=0, column=0)
+    quant.grid(row=0, column=1, pady=12, columnspan=2)
+
+    ###################################################################################
+
+    name_var = tk.StringVar()
+
+    # Log current_settings.name
+    logging.debug("Original Name: %s", str(current_settings.name))
+    name_var.set(str(current_settings.name))
+    current_settings.name_colour = "white"
+
+    #Create Entry Box with current colour
+    name = tk.Entry(popup, width=20, textvariable=name_var, bg=current_settings.name_colour)
+    tk.Label(popup, text="Name").grid(sticky="w", pady=5, padx=2, row=2, column=0)
+    name.grid(row=2, column=1, pady=12, columnspan=2)
+
+    ###############################################################################################################
+    tk.Label(popup, text="1").grid(sticky="w", pady=5, padx=2, row=3, column=0)
+    ###############################################################################################################
+
+    namespaces_var = tk.StringVar()
+    namespaces = {"dns", "url", "oid", "x500"}
+
+    # Set and Log current_settings.namespace
+    logging.debug("Current NS: %s", str(current_settings.namespace))
+    namespaces_var.set(str(current_settings.namespace))
+
+    # Create Option Box
+    tk.Label(popup, text="Namespace").grid(sticky="w", padx=2, row=1, column=0)
+    namespaces_popup = tk.OptionMenu(popup, namespaces_var, *namespaces)
+    namespaces_popup.grid(row=1, column=1, padx=2, sticky="w")
+
+    def change_namespaces(*args):
+        """Changing the namespaces"""
+        logging.debug("Event: Changing the Namespace: %s",
+                      str(args))
+
+        current_namespace = namespaces_var.get()
+        logging.debug("\tNew Selection is: %s", current_namespace)
+
+        #Update current_settings Class
+        logging.debug("\tSaving new URN namespaces Flag choice in current_settings")
+
+        current_settings.namespace = current_namespace
+
+        return True
+
+    #namespaces_var.trace('w', change_namespaces)
+
+    def set_quantity():
+        """Quanitiy Set Button Pressed"""
+        logging.debug("Event: Quanitiy Set Button Pressed")
+        new_quant = quant_var.get()
+        is_destroyable = False
+        try:
+            int(new_quant)
+            logging.debug("\tValue is an Integer")
+            if is_reasonable_quantity(int(new_quant)):
+                logging.debug("\t...and of a reasonable quanitity")
+                logging.debug("\tSaving new quanitity is current_settings")
+                current_settings.quantity = int(new_quant)
+                current_settings.quant_colour = "pale green"
+                quant.config(bg=current_settings.quant_colour) #refresh
+                is_destroyable = True
+
+            else:
+                logging.debug("\t...but too low or high")
+                current_settings.quant_colour = "light goldenrod"
+                quant.config(bg=current_settings.quant_colour) #refresh
+                messagebox.showwarning("Quantity", "Value too large (1 - 65536)")
+        except ValueError:
+            logging.debug("\tValue is not an Integer")
+            current_settings.quant_colour = "light coral"
+            quant.config(bg=current_settings.quant_colour) #refresh
+            messagebox.showerror("Quantity", "Value not an integer")
+        return is_destroyable
+
+    def set_name():
+        """name Set Button Pressed"""
+        logging.debug("Event: name Set Button Pressed")
+        new_name = name_var.get()
+        logging.debug(new_name)
+        is_destroyable = False
+        if is_uuid_ns_name(current_settings.namespace, new_name):
+            current_settings.name = new_name
+            current_settings.name_colour = "pale green"
+            name.config(bg=current_settings.name_colour) #refresh
+            is_destroyable = True
+        else:
+            logging.debug("\t..fail check")
+            current_settings.name_colour = "light coral"
+            name.config(bg=current_settings.name_colour) #refresh
+            messagebox.showwarning("not a good", "name for the namespace")
+        return is_destroyable
+
+    def press_button_ok():
+        if set_quantity() and change_namespaces() and current_settings.namespace == "":
+            popup.destroy()
+
+        elif set_quantity() and change_namespaces() and current_settings.namespace != "" and set_name():
+            popup.destroy()
+
+    def press_button_apply():
+        set_quantity()
+        change_namespaces()
+        if current_settings.namespace != "":
+            set_name()
+
+    button_ok = tk.Button(popup, text="OK", command=press_button_ok, width=5)
+    button_apply = tk.Button(popup, text="Apply", command=press_button_apply, width=5)
+    button_close = tk.Button(popup, text="Close", command=popup.destroy, width=5)
+    button_ok.grid(row=4, column=0, padx=5, pady=5)
+    button_apply.grid(row=4, column=1, padx=5, pady=5)
+    button_close.grid(row=4, column=2, padx=5, pady=5)
 
 logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 logging.debug("-----------------\nDEBUG MODE ACTIVE\n-----------------")
@@ -498,13 +576,13 @@ uuid_menu.add_command(label="Version 1 UUID", accelerator='Ctrl+1', compound=tk.
 uuid_menu.add_command(label="Version 4 UUID", accelerator='Ctrl+4', compound=tk.LEFT,
                       image=uuid4_icon, underline=0, command=lambda: add_uuids_to_pta(4))
 uuid_menu.add_separator()
-#uuid_menu.add_command(label="Version 3 UUID", accelerator='Ctrl+3', compound=tk.LEFT,
-#                      image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3),
-#                      state="disabled")
-#uuid_menu.add_command(label="Version 5 UUID", accelerator='Ctrl+5', compound=tk.LEFT,
-#                      image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5),
-#                      state="disabled")
-#uuid_menu.add_separator()
+uuid_menu.add_command(label="Version 3 UUID", accelerator='Ctrl+3', compound=tk.LEFT,
+                      image=uuid3_icon, underline=0, command=lambda: add_uuids_to_pta(3))#,
+                      #state="disabled")
+uuid_menu.add_command(label="Version 5 UUID", accelerator='Ctrl+5', compound=tk.LEFT,
+                      image=uuid5_icon, underline=0, command=lambda: add_uuids_to_pta(5))#,
+                      #state="disabled")
+uuid_menu.add_separator()
 uuid_menu.add_command(label="Special Nil UUID", accelerator='Ctrl+0', compound=tk.LEFT,
                       image=uuid0_icon, underline=0, command=lambda: add_uuids_to_pta(0))
 uuid_menu.add_separator()
